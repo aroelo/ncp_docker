@@ -1,0 +1,115 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css">
+    <style>thead input {{width: 100%; }}</style>
+</head>
+<body>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {{
+    // Setup - add a text input to each footer cell
+    $('#example thead tr').clone(true).appendTo( '#example thead' );
+    $('#example thead tr:eq(1) th').each( function (i) {{
+        var title = $(this).text();
+        // Search fields in datatable to filter
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        $( 'input', this ).on( 'keyup change', function () {{
+            if ( table.column(i).search() !== this.value ) {{
+                table
+                    .column(i)
+                    .search( this.value )
+                    .draw();
+            }}
+        }} );
+    }} );
+    var events = $('#events');
+    var table = $('#example').DataTable( {{
+        orderCellsTop: true,
+        fixedHeader: true,
+        "ajax": {{
+            'url': '/get_json_data?df_pickle={}&taxid_list={}',
+            'dataType': 'json',
+            'dataSrc': 'data',
+            'contentType':'application/json'
+        }},
+        dom: 'Blfrtip',
+        select: true,
+        buttons: [
+            'selectAll',
+            'selectNone',
+            {{
+                text: 'Get selected data',
+                action: function () {{
+                    var all_data = ''
+                    table.rows( {{selected: true}} ).every( function ( rowIdx, tableLoop, rowLoop ) {{
+                        // Get string of read ids separated by a pipe
+                        var data = this.data()[0] + "|";
+                        all_data += data
+                        }} );
+                    // Blast reads link popup
+                    // events.prepend( '<div><a href= "http://localhost:9999/blast_reads?readids='+ all_data + '&subdir= &taxid= " target="_blank">Blast reads!</a></div>' )
+                    events.prepend( '<div><a href= "blast_reads?readids='+ all_data + '&subdir={}&taxid={}" target="_blank">Blast reads!</a></div>' )
+                    }}
+            }}
+            ]
+        }} );
+    }} );
+
+</script>
+<div id="events">
+    Secondary alignments always keep originally assigned taxid.<br/>
+    <b>NA</b>=Passed all filtering. <b>sc</b>=Too much soft clipping at read. <b>sd</b>=Score difference between primary and secondary is too high.
+    <b>sa</b>=Common taxid of all valid alignments is assigned to primary. <b>ct</b>=Common taxid is 0 or 1.
+				</div>
+<table id="example" class="display" style="width:100%">
+<thead>
+    <tr>
+	<th>readid</th>
+        <th>taxid0</th>
+        <th>AS0</th>
+        <th>error0</th>
+        <th>taxid1</th>
+        <th>AS1</th>
+        <th>error1</th>
+        <th>taxid2</th>
+        <th>AS2</th>
+        <th>error2</th>
+        <th>taxid3</th>
+        <th>AS3</th>
+        <th>error3</th>
+        <th>taxid4</th>
+        <th>AS4</th>
+        <th>error4</th>
+        <th>taxid5</th>
+        <th>AS5</th>
+        <th>error5</th>
+    </tr>
+</thead>
+<tfoot>
+    <tr>
+	<th>readid</th>
+        <th>taxid0</th>
+        <th>AS0</th>
+        <th>error0</th>
+        <th>taxid1</th>
+        <th>AS1</th>
+        <th>error1</th>
+        <th>taxid2</th>
+        <th>AS2</th>
+        <th>error2</th>
+        <th>taxid3</th>
+        <th>AS3</th>
+        <th>error3</th>
+        <th>taxid4</th>
+        <th>AS4</th>
+        <th>error4</th>
+        <th>taxid5</th>
+        <th>AS5</th>
+        <th>error5</th>
+    </tr>
+</tfoot>
+</table>

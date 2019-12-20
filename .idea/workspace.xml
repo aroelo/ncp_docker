@@ -2,32 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7574678b-f2a8-4bfc-9c44-1e1514f78fd3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.env.dev" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.env.prod" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.env.prod.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/flask-on-docker.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.prod.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/nginx/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/nginx/nginx.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/Dockerfile.prod" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/entrypoint.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/manage.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/project/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/project/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/project/static/hello.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/web/project/NCBIWWWcustom.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/web/project/reads_datatable_blast_flask.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/web/project_example/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/web/project_example/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.dev" beforeDir="false" afterPath="$PROJECT_DIR$/.env.dev" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/web/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/services/web/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/web/entrypoint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/services/web/entrypoint.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/web/project/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/web/project/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/web/project/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/web/project/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/web/project/static/hello.txt" beforeDir="false" afterPath="$PROJECT_DIR$/services/web/project_example/static/hello.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/web/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/services/web/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +44,19 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
   </component>
   <component name="ProjectId" id="1V2vpLxIJiVmqLn3maEx71J2c0e" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -75,20 +75,21 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/services/web/project" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.tabs" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/services/web/project" />
       <recent name="$PROJECT_DIR$/services/web/pavian" />
       <recent name="$PROJECT_DIR$/services/web/project/static" />
       <recent name="$PROJECT_DIR$/flask-on-docker/services/web" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/services/web/pavian" />
       <recent name="$PROJECT_DIR$/services/web/project" />
+      <recent name="$PROJECT_DIR$/services/web/pavian" />
       <recent name="$PROJECT_DIR$/services/web/project/scripts" />
       <recent name="$PROJECT_DIR$/services/web/project/static" />
       <recent name="$PROJECT_DIR$" />
@@ -137,12 +138,26 @@
       <workItem from="1576475401238" duration="78000" />
       <workItem from="1576475501757" duration="404000" />
       <workItem from="1576475929460" duration="10273000" />
-      <workItem from="1576541113077" duration="966000" />
+      <workItem from="1576541113077" duration="17527000" />
+      <workItem from="1576644912816" duration="23644000" />
+      <workItem from="1576803749237" duration="12876000" />
     </task>
+    <task id="LOCAL-00001" summary="Initial commit">
+      <created>1576544171569</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1576544171569</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial commit" />
   </component>
   <component name="WindowStateProjectService">
     <state x="521" y="214" width="800" height="677" key="#Docker" timestamp="1576475052395">
@@ -165,10 +180,10 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="577" y="145" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576476678128" />
-    <state x="627" y="357" width="687" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1576478790196">
+    <state x="627" y="357" width="687" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1576809910460">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="627" y="357" width="687" height="390" key="#com.intellij.fileTypes.FileTypeChooser/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576478790196" />
+    <state x="627" y="357" width="687" height="390" key="#com.intellij.fileTypes.FileTypeChooser/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576809910460" />
     <state x="499" y="325" width="1088" height="459" key="#com.intellij.tools.ToolEditorDialog" timestamp="1576465120864">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -181,10 +196,11 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="600" y="111" width="642" height="883" key="#web/Dockerfile/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576472045368" />
-    <state x="446" y="151" width="951" height="803" key="CommitChangelistDialog2" timestamp="1576544000325">
-      <screen x="0" y="27" width="1920" height="1053" />
+    <state x="2366" y="127" width="951" height="803" key="CommitChangelistDialog2" timestamp="1576544171466">
+      <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="446" y="151" width="951" height="803" key="CommitChangelistDialog2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576544000325" />
+    <state x="2366" y="127" key="CommitChangelistDialog2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576544171466" />
     <state x="53" y="183" width="1653" height="855" key="DirDiffDialog" timestamp="1576475839907">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -201,21 +217,58 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="831" y="310" width="447" height="484" key="FileChooserDialogImpl/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576543944037" />
-    <state x="509" y="289" width="824" height="526" key="IDE.errors.dialog" timestamp="1576472080549">
+    <state x="509" y="289" width="824" height="526" key="IDE.errors.dialog" timestamp="1576666783064">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="509" y="289" width="824" height="526" key="IDE.errors.dialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576472080549" />
-    <state x="674" y="265" width="495" height="574" key="RollbackChangesDialog" timestamp="1576544061723">
-      <screen x="0" y="27" width="1920" height="1053" />
+    <state x="509" y="289" width="824" height="526" key="IDE.errors.dialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576666783064" />
+    <state x="2594" y="244" width="481" height="574" key="RollbackChangesDialog" timestamp="1576558933000">
+      <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="674" y="265" width="495" height="574" key="RollbackChangesDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576544061723" />
-    <state x="313" y="219" width="1266" height="730" key="SettingsEditor" timestamp="1576478698533">
-      <screen x="0" y="27" width="1920" height="1053" />
+    <state x="2594" y="244" width="481" height="574" key="RollbackChangesDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576558933000" />
+    <state x="2233" y="197" width="1266" height="730" key="SettingsEditor" timestamp="1576558575655">
+      <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="313" y="219" width="1266" height="730" key="SettingsEditor/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576478698533" />
+    <state x="2233" y="197" key="SettingsEditor/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576558575655" />
+    <state x="737" y="285" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1576544255227">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="737" y="285" width="800" height="528" key="Vcs.Push.Dialog.v2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576544255227" />
+    <state x="580" y="170" width="683" height="764" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1576569998398">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="580" y="170" width="683" height="764" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576569998398" />
+    <state x="2054" y="0" width="1314" height="697" maximized="true" key="dock-window-1" timestamp="1576807713513">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2054" y="0" width="1314" height="697" maximized="true" key="dock-window-1/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576807713513" />
+    <state x="191" y="27" width="1392" height="1038" maximized="true" key="dock-window-1/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576559694485" />
+    <state x="1920" y="1" width="1314" height="697" maximized="true" key="dock-window-2" timestamp="1576810757253">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1920" y="1" width="1314" height="697" maximized="true" key="dock-window-2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576810757253" />
+    <state x="191" y="27" width="1392" height="1038" key="dock-window-2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576559694485" />
+    <state x="1920" y="0" width="1807" height="1011" maximized="true" key="dock-window-3" timestamp="1576564979273">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1920" y="0" width="1807" height="1011" maximized="true" key="dock-window-3/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576564979273" />
+    <state x="1920" y="12" width="1807" height="697" key="dock-window-4" timestamp="1576565079489">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1920" y="12" width="1807" height="697" key="dock-window-4/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576565079489" />
+    <state x="2222" y="298" width="1412" height="694" key="find.popup" timestamp="1576806797923">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2222" y="298" width="1412" height="694" key="find.popup/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576806797923" />
+    <state x="2526" y="275" width="707" height="528" key="find.popup/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576559452229" />
     <state x="944" y="288" key="ftp.server.browser" timestamp="1576465120242">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="944" y="288" key="ftp.server.browser/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576465120242" />
+    <state x="2543" y="237" width="672" height="678" key="search.everywhere.popup" timestamp="1576559153173">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2543" y="237" width="672" height="678" key="search.everywhere.popup/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576559153173" />
   </component>
 </project>

@@ -2,10 +2,19 @@ version: '3.7'
 
 services:
   web:
-    build: ./services/web
+    build:
+      context: ./services/web
+      args:
+        - BLAST_VERSION=${BLAST_VERSION}
     command: python manage.py run -h 0.0.0.0
     volumes:
       - ./services/web/:/usr/src/app/
+      - ${PAVIAN_IN_H}:/pavian/in:ro
+      - ${PAVIAN_OUT_H}:/pavian/out
+      - ${TAXA_SQLITE_H}:/pavian/taxa.sqlite
+      - ${TAXA_SQLITE_PKL_H}:/pavian/taxa.sqlite.traverse.pkl
+      - ${BLASTDB_NT_H}:/blast_db/nt
+      - ${BLASTDB_REFSEQ_H}:/blast_db/refseq
     ports:
       - 5000:5000
     env_file:
@@ -18,6 +27,25 @@ services:
       - POSTGRES_USER=***REMOVED***
       - POSTGRES_PASSWORD=***REMOVED***
       - POSTGRES_DB=***REMOVED***_dev
+  jbrowse:
+    build: ./services/jbrowse
+    volumes:
+      - ${PAVIAN_OUT_H}:/jbrowse/data/pavianfiles
+    ports:
+      - 5004:5004
+  pavian:
+    build:
+      context: ./services/pavian
+      args:
+        - SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}
+        - SSH_PUBLIC_KEY=${SSH_PUBLIC_KEY}
+        - CACHE_DATE=${CACHE_DATE}
+    volumes:
+      - ${PAVIAN_IN_H}:/pavian/in:ro
+    ports:
+      - 3838:3838
+    env_file:
+      - ./.env.dev
 
 volumes:
   postgres_data:
