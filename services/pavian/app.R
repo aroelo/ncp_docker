@@ -38,4 +38,4 @@ options(
 )
 
 # Uses environment variables from .env.dev
-pavian:::runApp(server_dir = Sys.getenv("PAVIAN_IN"), flask_host = Sys.getenv("HOST_IP"), flask_port = Sys.getenv("FLASK_PORT"))
+pavian::runApp(server_dir=Sys.getenv("PAVIAN_IN"), flask_host=Sys.getenv("HOST_IP"), flask_port=Sys.getenv("FLASK_PORT"), db="Postgresql")

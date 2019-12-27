@@ -13,7 +13,9 @@ class Config(object):
 
     HOST_IP = f"{os.getenv('HOST_IP')}"
     JBROWSE_PORT = f"{os.getenv('JBROWSE_PORT')}"
+    PAVIAN_IN = f"{os.getenv('PAVIAN_IN')}"
     PAVIAN_OUT = f"{os.getenv('PAVIAN_OUT')}"
+    print(PAVIAN_OUT)
     TAXA_SQLITE = f"{os.getenv('TAXA_SQLITE')}"
     BLASTDB_NT = f"{os.getenv('BLASTDB_NT')}"
     BLASTDB_REFSEQ = f"{os.getenv('BLASTDB_REFSEQ')}"

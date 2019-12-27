@@ -9,7 +9,8 @@ import pyBigWig
 import json
 import zipfile
 import pandas as pd
-from . import NCBIWWWcustom
+import argparse
+from project import NCBIWWWcustom
 
 from werkzeug import secure_filename
 from flask import (
@@ -38,6 +39,42 @@ class User(db.Model):
 
     def __init__(self, email):
         self.email = email
+
+
+class PavianInput(db.Model):
+    """
+CREATE TABLE pavian_data (
+    file varchar(100),
+    run varchar(100),
+    sample varchar(100),
+    nt varchar(10),
+    date DATE,
+    organism_taxid INT,
+    organism_name varchar(100)
+    support TINYINT(1)
+    );
+    """
+    __tablename__ = "pavian_data"
+
+    id = db.Column(db.Integer, primary_key=True)
+    file = db.Column(db.String(100))
+    run = db.Column(db.String(100))
+    sample = db.Column(db.String(100))
+    nt = db.Column(db.String(10))
+    date = db.Column(db.Date)
+    organism_taxid = db.Column(db.Integer)
+    organism_name = db.Column(db.String(100))
+    support = db.Column(db.Boolean)
+
+    def __init__(self, file, run, sample, nt, date, organism_taxid, organism_name, support):
+        self.file = file
+        self.run = run
+        self.sample = sample
+        self.nt = nt
+        self.date = date
+        self.organism_taxid = organism_taxid
+        self.organism_name = organism_name
+        self.support = support
 
 
 @app.route("/static/<path:filename>")
@@ -70,15 +107,21 @@ def hello_world():
     return jsonify(hello=app.config["STRING"])
 
 
-def get_parameters():
-    taxid = request.args.get('taxid')
-    taxid = int(taxid)
+def get_parameters(human):
+    if not human:
+        taxid = request.args.get('taxid')
+        taxid = int(taxid)
 
-    pavian_file = request.args.get('sample')
-    pavian_file = str(pavian_file)
+        pavian_file = request.args.get('sample')
+        pavian_file = str(pavian_file)
 
-    action = request.args.get('action')
-    action = str(action)
+        action = request.args.get('action')
+        action = str(action)
+
+    else:
+        taxid = args.taxid
+        pavian_file = args.pavian_file
+        action = args.action
 
     return taxid, pavian_file, action
 
@@ -363,7 +406,7 @@ def make_output(sub_dir_path, taxids, bam_in_path, bigwig_path, df_reads_path):
 
 
 @app.route("/download_pavian_data")
-def main():
+def main(human=False):
     """main function loop.
     Sample input that needs to be available:
        * sorted bam file (SAMPLE + ".filtered_s.bam")
@@ -374,8 +417,8 @@ def main():
        * df pickle of reads&scores (SAMPLE + ".readsdf.pickle)
     where SAMPLE can be either sample.nt or sample.ntwgs
     """
-    # get parameters, if cgi use form otherwise use argparse
-    taxid, pavian_file, action = get_parameters()
+    # get parameters, if app use request otherwise use argparse
+    taxid, pavian_file, action = get_parameters(human)
 
     # get all child taxids for given taxid.
     taxids = [taxid] + get_child_taxa(taxid)
@@ -410,7 +453,7 @@ def main():
     if all([os.path.isfile(f) for f in output_files]):
         pass
     # If files are being made atm, wait until finished.
-    if os.path.exists(running_log):
+    elif os.path.exists(running_log):
         while os.path.exists(running_log):
             time.sleep(1)
         pass
@@ -503,3 +546,52 @@ def blast_reads():
     url = blast_query(fasta_string)
     # print('<meta http-equiv="refresh" content="0;URL=%s" />' % url)
     return redirect(url, code=302)
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description='get command line arguments')
+    configuration = parser.add_argument_group('input', 'input parameters')
+    configuration.add_argument('-taxid', type=int,
+                               help='taxonomy id to retrieve')
+    configuration.add_argument('-pavian_file', type=str,
+                               help='sample from which taxid data is extracted')
+    configuration.add_argument('-action', type=str, choices={'download', 'jbrowse', 'view_reads'},
+                               help='which action will be executed (either download/jbrowse/view_reads)')
+
+    configuration.add_argument('-host', type=str,
+                               default='***REMOVED***',
+                               help='which address will be used to host the app on')
+    configuration.add_argument('-jbrowse_port', type=str,
+                               default=5004,
+                               help='port on which jbrowse is hosted')
+    configuration.add_argument('-out_dir_path', type=str,
+                               default="/5_workspace/pavianfiles/",
+                               help='output directory to store files')
+    configuration.add_argument('-taxa_sqlite', type=str,
+                               default="/5_workspace/repos/Nanopore-classification-pipeline/data/taxa.sqlite",
+                               help='taxa sqlite file used to look up taxids')
+    configuration.add_argument('-blastdb_nt', type=str,
+                               default="/6_db_ssd/blast_DBv5/nt_v5/nt_v5",
+                               help='nt blastdb to extract reference sequences from')
+    configuration.add_argument('-blastdb_refseq', type=str,
+                               default="/6_db_ssd/blast_DBv4/refseq_genomic/refseq_genomic",
+                               help='refseq blastdb to extract reference sequences from')
+
+    configuration.add_argument('--human',
+                               action='store_true')
+
+    args = parser.parse_args()
+    return args
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    if args.human:
+        app.config['PAVIAN_OUT'] = args.out_dir_path
+        app.config['BLASTDB_NT'] = args.blastdb_nt
+        app.config['BLASTDB_REFSEQ'] = args.blastdb_refseq
+        app.config['HOST_IP'] = args.host
+        app.config['JBROWSE_PORT'] = args.jbrowse_port
+        app.config['TAXA_SQLITE'] = args.taxa_sqlite
+        main(human=True)

@@ -10,15 +10,15 @@ RUN apt-get update && apt-get install -y \
     libxt-dev \
     xtail \
     wget \
-    git
-
-RUN sudo apt-get install -y \
+    git \
     libmariadb-client-lgpl-dev \
     libbz2-dev \
     liblzma-dev \
     libxml2-dev \
     libssl-dev \
-    default-libmysqlclient-dev
+    default-libmysqlclient-dev \
+    libpq-dev
+
 
 # Download and install shiny server
 RUN wget --no-verbose https://download3.rstudio.org/ubuntu-14.04/x86_64/VERSION -O "version.txt" && \
@@ -49,9 +49,12 @@ RUN chmod 600 /root/.ssh/id_rsa.pub
 RUN touch /root/.ssh/known_hosts
 RUN ssh-keyscan gitlab.naktuinbouw.net >> /root/.ssh/known_hosts
 
-# Use arg with different date to make sure everything after here is re-build without cache (so git pull is done again)
+# Execute install_git twice, first time to download & install packages which will likely not change much, cache of this can then be used in the following step, when the up-to-date repo is pulled.
+RUN R -e "creds <- git2r::cred_ssh_key('/root/.ssh/id_rsa.pub', '/root/.ssh/id_rsa');devtools::install_git('git@gitlab.naktuinbouw.net:bioinformatics/pavian.git', ref='dev', credentials=creds)"
+
+# Use arg with current datetime to make sure everything after here is re-build without cache (so git pull is done again)
 ARG CACHE_DATE=2019-11-28
-RUN R -e "creds <- git2r::cred_ssh_key('/root/.ssh/id_rsa.pub', '/root/.ssh/id_rsa');devtools::install_git('git@gitlab.naktuinbouw.net:bioinformatics/pavian.git', branch='dev', credentials=creds)"
+RUN R -e "creds <- git2r::cred_ssh_key('/root/.ssh/id_rsa.pub', '/root/.ssh/id_rsa');devtools::install_git('git@gitlab.naktuinbouw.net:bioinformatics/pavian.git', ref='dev', credentials=creds)"
 
 RUN R -e "sapply(list.files(system.file('shinyapp',package='pavian'),full.names=TRUE),file.copy,to='/srv/shiny-server/',recursive=TRUE)"
 
