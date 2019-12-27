@@ -39,12 +39,15 @@ services:
   pavian:
     build:
       context: ./services/pavian
+      args:
+        - BRANCH=dev
     volumes:
       - ${PAVIAN_IN_H}:/pavian/in:ro
     ports:
       - 3838:3838
     env_file:
       - ./.env.dev
+      - ./.env.dev.db
 
 volumes:
   postgres_data:

@@ -37,5 +37,5 @@ options(
   )
 )
 
-# Uses environment variables from .env.dev
-pavian::runApp(server_dir=Sys.getenv("PAVIAN_IN"), flask_host=Sys.getenv("HOST_IP"), flask_port=Sys.getenv("FLASK_PORT"), db="Postgresql")
+# Uses environment variables from .env.dev & env.dev.db or .env.prod & .env.prod.db, determined by env_file(s) in pavian service
+pavian::runApp(server_dir=Sys.getenv("PAVIAN_IN"), flask_host=Sys.getenv("HOST_IP"), flask_port=Sys.getenv("FLASK_PORT"), db_type="Postgresql", db_name=Sys.getenv("POSTGRES_DB"))

@@ -2,16 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7574678b-f2a8-4bfc-9c44-1e1514f78fd3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/flask-on-docker.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/flask-on-docker.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.env.dev.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.prod" beforeDir="false" afterPath="$PROJECT_DIR$/.env.prod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.prod.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.prod.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/pavian/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/services/pavian/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/pavian/app.R" beforeDir="false" afterPath="$PROJECT_DIR$/services/pavian/app.R" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/web/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/web/manage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/web/project/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/web/project/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/web/Dockerfile.prod" beforeDir="false" afterPath="$PROJECT_DIR$/services/web/Dockerfile.prod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/web/entrypoint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/services/web/entrypoint.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/web/project/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/web/project/config.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -72,10 +72,11 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/services/web/project" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/services/web/Dockerfile" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="PyConsoleConfigurable.Python Console" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/services/web/Dockerfile" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -284,7 +285,7 @@
       <workItem from="1577075466291" duration="367000" />
       <workItem from="1577077229299" duration="369000" />
       <workItem from="1577078420937" duration="7915000" />
-      <workItem from="1577086869209" duration="8634000" />
+      <workItem from="1577086869209" duration="18432000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1576544171569</created>
@@ -307,7 +308,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576820703813</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Create and use postgres database in data input section of pavian.&#10;&#10;Debug __init__.py script locally outside docker.">
+      <created>1577417776487</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1577417776487</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -381,15 +389,15 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="684" y="261" key="#xdebugger.evaluate/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577087567734" />
-    <state x="279" y="27" width="1308" height="546" key="CommitChangelistDialog2" timestamp="1577417768067">
+    <state x="279" y="27" width="1510" height="962" key="CommitChangelistDialog2" timestamp="1577432346440">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="279" y="27" width="1308" height="546" key="CommitChangelistDialog2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577417768067" />
+    <state x="279" y="27" width="1510" height="962" key="CommitChangelistDialog2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577432346440" />
     <state x="2366" y="127" key="CommitChangelistDialog2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576544171466" />
-    <state x="100" y="125" width="1653" height="855" key="DiffContextDialog" timestamp="1577084836394">
+    <state x="75" y="88" width="1643" height="855" key="DiffContextDialog" timestamp="1577418436725">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="100" y="125" width="1653" height="855" key="DiffContextDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577084836394" />
+    <state x="75" y="88" width="1643" height="855" key="DiffContextDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577418436725" />
     <state x="53" y="183" width="1653" height="855" key="DirDiffDialog" timestamp="1576475839907">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -402,26 +410,26 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="527" y="312" width="1122" height="727" key="EnvironmentVariablesDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577414506215" />
-    <state x="831" y="310" width="447" height="484" key="FileChooserDialogImpl" timestamp="1577085213350">
+    <state x="831" y="310" width="447" height="484" key="FileChooserDialogImpl" timestamp="1577418357786">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="831" y="310" width="447" height="484" key="FileChooserDialogImpl/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577085213350" />
-    <state width="1807" height="278" key="GridCell.Tab.0.bottom" timestamp="1577417684590">
+    <state x="831" y="310" width="447" height="484" key="FileChooserDialogImpl/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577418357786" />
+    <state width="903" height="56" key="GridCell.Tab.0.bottom" timestamp="1577419070987">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.bottom/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577417684590" />
-    <state width="1807" height="278" key="GridCell.Tab.0.center" timestamp="1577417684590">
+    <state width="903" height="56" key="GridCell.Tab.0.bottom/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577419070987" />
+    <state width="903" height="56" key="GridCell.Tab.0.center" timestamp="1577419070986">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.center/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577417684590" />
-    <state width="1807" height="278" key="GridCell.Tab.0.left" timestamp="1577417684590">
+    <state width="903" height="56" key="GridCell.Tab.0.center/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577419070986" />
+    <state width="903" height="56" key="GridCell.Tab.0.left" timestamp="1577419070986">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.left/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577417684590" />
-    <state width="1807" height="278" key="GridCell.Tab.0.right" timestamp="1577417684590">
+    <state width="903" height="56" key="GridCell.Tab.0.left/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577419070986" />
+    <state width="903" height="56" key="GridCell.Tab.0.right" timestamp="1577419070986">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.right/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577417684590" />
+    <state width="903" height="56" key="GridCell.Tab.0.right/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577419070986" />
     <state width="1807" height="293" key="GridCell.Tab.1.bottom" timestamp="1577416915831">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -479,15 +487,15 @@
     </state>
     <state x="674" y="265" width="495" height="574" key="RollbackChangesDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576544061723" />
     <state x="2594" y="244" width="481" height="574" key="RollbackChangesDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576558933000" />
-    <state x="347" y="215" width="1266" height="730" key="SettingsEditor" timestamp="1577086622104">
+    <state x="347" y="215" width="1266" height="730" key="SettingsEditor" timestamp="1577422789048">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="347" y="215" width="1266" height="730" key="SettingsEditor/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577086622104" />
+    <state x="347" y="215" width="1266" height="730" key="SettingsEditor/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577422789048" />
     <state x="2233" y="197" key="SettingsEditor/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576558575655" />
-    <state x="737" y="285" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1576820705370">
+    <state x="737" y="285" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1577417780233">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="737" y="285" width="800" height="528" key="Vcs.Push.Dialog.v2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576820705370" />
+    <state x="737" y="285" width="800" height="528" key="Vcs.Push.Dialog.v2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577417780233" />
     <state x="100" y="125" width="1653" height="855" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1577084785528">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -500,10 +508,10 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="690" y="316" width="501" height="535" key="com.jetbrains.plugins.remotesdk.ui.RemoteMappingsConfiguration/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577074536335" />
-    <state x="2054" y="0" width="1314" height="697" maximized="true" key="dock-window-1" timestamp="1576807713513">
+    <state x="1954" y="0" width="1317" height="1011" maximized="true" key="dock-window-1" timestamp="1577423128263">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2054" y="0" width="1314" height="697" maximized="true" key="dock-window-1/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576807713513" />
+    <state x="1954" y="0" width="1317" height="1011" maximized="true" key="dock-window-1/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577423128263" />
     <state x="191" y="27" width="1392" height="1038" maximized="true" key="dock-window-1/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576559694485" />
     <state x="1920" y="1" width="1314" height="697" maximized="true" key="dock-window-2" timestamp="1576810757253">
       <screen x="1920" y="0" width="1920" height="1080" />
@@ -518,10 +526,10 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="1920" y="12" width="1807" height="697" key="dock-window-4/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576565079489" />
-    <state x="2133" y="262" width="1412" height="694" key="find.popup" timestamp="1577413258853">
+    <state x="2133" y="262" width="1412" height="694" key="find.popup" timestamp="1577427438524">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2133" y="262" width="1412" height="694" key="find.popup/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577413258853" />
+    <state x="2133" y="262" width="1412" height="694" key="find.popup/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577427438524" />
     <state x="2526" y="275" width="707" height="528" key="find.popup/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576559452229" />
     <state x="895" y="426" width="817" height="533" key="ftp.server.browser" timestamp="1577074535158">
       <screen x="0" y="27" width="1920" height="1053" />

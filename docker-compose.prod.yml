@@ -5,10 +5,18 @@ services:
     build:
       context: ./services/web
       dockerfile: Dockerfile.prod
+      args:
+        - BLAST_VERSION=${BLAST_VERSION}
     command: gunicorn --bind 0.0.0.0:5000 manage:app
     volumes:
       - static_volume:/home/app/web/project/static
       - media_volume:/home/app/web/project/media
+      - ${PAVIAN_IN_H}:/pavian/in:ro
+      - ${PAVIAN_OUT_H}:/pavian/out
+      - ${TAXA_SQLITE_H}:/pavian/taxa.sqlite
+      - ${TAXA_SQLITE_PKL_H}:/pavian/taxa.sqlite.traverse.pkl
+      - ${BLASTDB_NT_H}:/blast_db/nt
+      - ${BLASTDB_REFSEQ_H}:/blast_db/refseq
     expose:
       - 5000
     env_file:
@@ -30,6 +38,24 @@ services:
       - 1337:80
     depends_on:
       - web
+  jbrowse:
+    build: ./services/jbrowse
+    volumes:
+      - ${PAVIAN_OUT_H}:/jbrowse/data/pavianfiles
+    ports:
+      - 5004:5004
+  pavian:
+    build:
+      context: ./services/pavian
+      args:
+        - BRANCH=master
+    volumes:
+      - ${PAVIAN_IN_H}:/pavian/in:ro
+    ports:
+      - 3838:3838
+    env_file:
+      - ./.env.prod
+      - ./.env.prod.db
 
 volumes:
   postgres_data:
