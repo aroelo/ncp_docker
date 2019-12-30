@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ "$DATABASE" = "postgres" ]
 then
@@ -9,12 +9,14 @@ then
     done
 
     echo "PostgreSQL started"
+    python manage.py seed_pavian_db
 fi
 
 if [ "$FLASK_ENV" = "development" ]
 then
     echo "Creating the database tables..."
     python manage.py create_db
+    python manage.py seed_pavian_db
     echo "Tables created"
 fi
 
