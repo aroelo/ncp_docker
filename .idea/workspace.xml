@@ -2,32 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7574678b-f2a8-4bfc-9c44-1e1514f78fd3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.env.dev" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.env.prod" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.env.prod.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/flask-on-docker.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.prod.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/nginx/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/nginx/nginx.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/Dockerfile.prod" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/entrypoint.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/manage.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/project/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/project/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/project/static/hello.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/web/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.env.dev.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.prod" beforeDir="false" afterPath="$PROJECT_DIR$/.env.prod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.prod.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.prod.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/pavian/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/services/pavian/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/pavian/app.R" beforeDir="false" afterPath="$PROJECT_DIR$/services/pavian/app.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/web/Dockerfile.prod" beforeDir="false" afterPath="$PROJECT_DIR$/services/web/Dockerfile.prod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/web/entrypoint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/services/web/entrypoint.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/web/project/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/web/project/config.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +41,19 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
   </component>
   <component name="ProjectId" id="1V2vpLxIJiVmqLn3maEx71J2c0e" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -75,26 +72,164 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/services/web/Dockerfile" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.tabs" />
+    <property name="settings.editor.selected.configurable" value="PyConsoleConfigurable.Python Console" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/services/web/Dockerfile" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="flask-on-docker" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="flask-on-docker" />
+      </console-settings>
+    </option>
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/services/web/pavian" />
-      <recent name="$PROJECT_DIR$/services/web/project/static" />
-      <recent name="$PROJECT_DIR$/flask-on-docker/services/web" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/services/web/pavian" />
       <recent name="$PROJECT_DIR$/services/web/project" />
+      <recent name="$PROJECT_DIR$/services/web/pavian" />
       <recent name="$PROJECT_DIR$/services/web/project/scripts" />
       <recent name="$PROJECT_DIR$/services/web/project/static" />
       <recent name="$PROJECT_DIR$" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/services/web/project" />
+      <recent name="$PROJECT_DIR$/services/web/pavian" />
+      <recent name="$PROJECT_DIR$/services/web/project/static" />
+      <recent name="$PROJECT_DIR$/flask-on-docker/services/web" />
+    </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.__init__">
+    <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="flask-on-docker" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/services/web/project" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+        </ENTRIES>
+      </EXTENSION>
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/services/web/project/__init__.py" />
+      <option name="PARAMETERS" value="-pavian_file /5_workspace/pavian/20191101_20190909_BKD_sample_1_no_cent.BKD_19_042.ntwgs.pavian -taxid 12173 -action view_reads --human" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="debug_flask" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="flask-on-docker" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/debug_local" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+        </ENTRIES>
+      </EXTENSION>
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/debug_local/debug_flask.py" />
+      <option name="PARAMETERS" value="-pavian_file /5_workspace/pavian/20191016_20190909_BKD_sample_1.BKD_19_039.ntwgs.pavian -taxid 32624 -action viewreads" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="flask_app" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="flask-on-docker" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/services/web/project" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+        </ENTRIES>
+      </EXTENSION>
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/services/web/project/flask_app.py" />
+      <option name="PARAMETERS" value="-pavian_file /5_workspace/pavian/20191016_20190909_BKD_sample_1.BKD_19_039.ntwgs.pavian -taxid 32624 -action view_reads --human" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="manage" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="flask-on-docker" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/services/web" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+        </ENTRIES>
+      </EXTENSION>
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/services/web/manage.py" />
+      <option name="PARAMETERS" value="-pavian_file /5_workspace/pavian/20191016_20190909_BKD_sample_1.BKD_19_039.ntwgs.pavian -taxid 32624 -action view_reads --human" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -103,6 +238,13 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+      <item itemvalue="Python.debug_flask" />
+      <item itemvalue="Python.flask_app" />
+      <item itemvalue="Python.__init__" />
+      <item itemvalue="Python.manage" />
+    </list>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -137,12 +279,54 @@
       <workItem from="1576475401238" duration="78000" />
       <workItem from="1576475501757" duration="404000" />
       <workItem from="1576475929460" duration="10273000" />
-      <workItem from="1576541113077" duration="966000" />
+      <workItem from="1576541113077" duration="17527000" />
+      <workItem from="1576644912816" duration="23644000" />
+      <workItem from="1576803749237" duration="33263000" />
+      <workItem from="1577075466291" duration="367000" />
+      <workItem from="1577077229299" duration="369000" />
+      <workItem from="1577078420937" duration="7915000" />
+      <workItem from="1577086869209" duration="18432000" />
     </task>
+    <task id="LOCAL-00001" summary="Initial commit">
+      <created>1576544171569</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1576544171569</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Initial commit working dev version.">
+      <created>1576820419684</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1576820419684</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Initial commit, forgot to add these files.">
+      <created>1576820703813</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1576820703813</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Create and use postgres database in data input section of pavian.&#10;&#10;Debug __init__.py script locally outside docker.">
+      <created>1577417776487</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1577417776487</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial commit" />
+    <MESSAGE value="Initial commit working dev version." />
+    <MESSAGE value="Initial commit, forgot to add these files." />
+    <MESSAGE value="Create and use postgres database in data input section of pavian.&#10;&#10;Debug __init__.py script locally outside docker." />
+    <option name="LAST_COMMIT_MESSAGE" value="Create and use postgres database in data input section of pavian.&#10;&#10;Debug __init__.py script locally outside docker." />
   </component>
   <component name="WindowStateProjectService">
     <state x="521" y="214" width="800" height="677" key="#Docker" timestamp="1576475052395">
@@ -161,30 +345,59 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="521" y="214" width="800" height="677" key="#Pull_Image/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576479974341" />
-    <state x="577" y="145" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1576476678128">
+    <state x="600" y="233" width="642" height="639" key="#__init__" timestamp="1577086441160">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="577" y="145" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576476678128" />
-    <state x="627" y="357" width="687" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1576478790196">
+    <state x="600" y="233" width="642" height="639" key="#__init__/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577086441160" />
+    <state x="669" y="243" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1577416904740">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="627" y="357" width="687" height="390" key="#com.intellij.fileTypes.FileTypeChooser/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576478790196" />
+    <state x="669" y="243" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577416904740" />
+    <state x="627" y="357" width="687" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1576809910460">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="627" y="357" width="687" height="390" key="#com.intellij.fileTypes.FileTypeChooser/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576809910460" />
+    <state x="704" y="260" width="424" height="584" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1577079674767">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="704" y="260" width="424" height="584" key="#com.intellij.ide.macro.MacrosDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577079674767" />
     <state x="499" y="325" width="1088" height="459" key="#com.intellij.tools.ToolEditorDialog" timestamp="1576465120864">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="499" y="325" width="1088" height="459" key="#com.intellij.tools.ToolEditorDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576465120864" />
+    <state x="600" y="233" width="642" height="639" key="#debug_flask" timestamp="1577079692554">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="600" y="233" width="642" height="639" key="#debug_flask/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577079692554" />
     <state x="436" y="49" width="1166" height="571" key="#flask-on-docker:_Compose_Deployment" timestamp="1576475066728">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="436" y="49" width="1166" height="571" key="#flask-on-docker:_Compose_Deployment/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576475066728" />
+    <state x="600" y="233" width="642" height="639" key="#flask_app" timestamp="1577084284585">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="600" y="233" width="642" height="639" key="#flask_app/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577084284585" />
+    <state x="600" y="289" width="642" height="527" key="#manage" timestamp="1577085528023">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="600" y="289" width="642" height="527" key="#manage/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577085528023" />
     <state x="600" y="111" width="642" height="883" key="#web/Dockerfile" timestamp="1576472045368">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="600" y="111" width="642" height="883" key="#web/Dockerfile/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576472045368" />
-    <state x="446" y="151" width="951" height="803" key="CommitChangelistDialog2" timestamp="1576544000325">
+    <state x="684" y="261" key="#xdebugger.evaluate" timestamp="1577087567734">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="446" y="151" width="951" height="803" key="CommitChangelistDialog2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576544000325" />
+    <state x="684" y="261" key="#xdebugger.evaluate/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577087567734" />
+    <state x="279" y="27" width="1510" height="962" key="CommitChangelistDialog2" timestamp="1577432346440">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="279" y="27" width="1510" height="962" key="CommitChangelistDialog2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577432346440" />
+    <state x="2366" y="127" key="CommitChangelistDialog2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576544171466" />
+    <state x="75" y="88" width="1643" height="855" key="DiffContextDialog" timestamp="1577418436725">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="75" y="88" width="1643" height="855" key="DiffContextDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577418436725" />
     <state x="53" y="183" width="1653" height="855" key="DirDiffDialog" timestamp="1576475839907">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -193,29 +406,192 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="756" y="365" width="689" height="213" key="DockerComposeFileDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576475970750" />
-    <state x="527" y="312" width="1122" height="727" key="EnvironmentVariablesDialog" timestamp="1576474732223">
+    <state x="527" y="312" width="1122" height="727" key="EnvironmentVariablesDialog" timestamp="1577414506215">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="527" y="312" width="1122" height="727" key="EnvironmentVariablesDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576474732223" />
-    <state x="831" y="310" width="447" height="484" key="FileChooserDialogImpl" timestamp="1576543944037">
+    <state x="527" y="312" width="1122" height="727" key="EnvironmentVariablesDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577414506215" />
+    <state x="831" y="310" width="447" height="484" key="FileChooserDialogImpl" timestamp="1577418357786">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="831" y="310" width="447" height="484" key="FileChooserDialogImpl/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576543944037" />
-    <state x="509" y="289" width="824" height="526" key="IDE.errors.dialog" timestamp="1576472080549">
+    <state x="831" y="310" width="447" height="484" key="FileChooserDialogImpl/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577418357786" />
+    <state width="903" height="56" key="GridCell.Tab.0.bottom" timestamp="1577419070987">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="509" y="289" width="824" height="526" key="IDE.errors.dialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576472080549" />
-    <state x="674" y="265" width="495" height="574" key="RollbackChangesDialog" timestamp="1576544061723">
+    <state width="903" height="56" key="GridCell.Tab.0.bottom/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577419070987" />
+    <state width="903" height="56" key="GridCell.Tab.0.center" timestamp="1577419070986">
       <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="903" height="56" key="GridCell.Tab.0.center/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577419070986" />
+    <state width="903" height="56" key="GridCell.Tab.0.left" timestamp="1577419070986">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="903" height="56" key="GridCell.Tab.0.left/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577419070986" />
+    <state width="903" height="56" key="GridCell.Tab.0.right" timestamp="1577419070986">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="903" height="56" key="GridCell.Tab.0.right/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577419070986" />
+    <state width="1807" height="293" key="GridCell.Tab.1.bottom" timestamp="1577416915831">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1807" height="293" key="GridCell.Tab.1.bottom/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577416915831" />
+    <state width="1807" height="293" key="GridCell.Tab.1.center" timestamp="1577416915831">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1807" height="293" key="GridCell.Tab.1.center/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577416915831" />
+    <state width="1807" height="293" key="GridCell.Tab.1.left" timestamp="1577416915831">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1807" height="293" key="GridCell.Tab.1.left/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577416915831" />
+    <state width="1807" height="293" key="GridCell.Tab.1.right" timestamp="1577416915831">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1807" height="293" key="GridCell.Tab.1.right/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577416915831" />
+    <state width="1807" height="293" key="GridCell.Tab.2.bottom" timestamp="1577416915831">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1807" height="293" key="GridCell.Tab.2.bottom/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577416915831" />
+    <state width="1807" height="293" key="GridCell.Tab.2.center" timestamp="1577416915831">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1807" height="293" key="GridCell.Tab.2.center/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577416915831" />
+    <state width="1807" height="293" key="GridCell.Tab.2.left" timestamp="1577416915831">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1807" height="293" key="GridCell.Tab.2.left/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577416915831" />
+    <state width="1807" height="293" key="GridCell.Tab.2.right" timestamp="1577416915831">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1807" height="293" key="GridCell.Tab.2.right/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577416915831" />
+    <state width="1807" height="293" key="GridCell.Tab.3.bottom" timestamp="1577416915831">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1807" height="293" key="GridCell.Tab.3.bottom/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577416915831" />
+    <state width="1807" height="293" key="GridCell.Tab.3.center" timestamp="1577416915831">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1807" height="293" key="GridCell.Tab.3.center/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577416915831" />
+    <state width="1807" height="293" key="GridCell.Tab.3.left" timestamp="1577416915831">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1807" height="293" key="GridCell.Tab.3.left/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577416915831" />
+    <state width="1807" height="293" key="GridCell.Tab.3.right" timestamp="1577416915831">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1807" height="293" key="GridCell.Tab.3.right/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577416915831" />
+    <state x="509" y="289" width="824" height="526" key="IDE.errors.dialog" timestamp="1576666783064">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="509" y="289" width="824" height="526" key="IDE.errors.dialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576666783064" />
+    <state x="2594" y="244" width="481" height="574" key="RollbackChangesDialog" timestamp="1576558933000">
+      <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="674" y="265" width="495" height="574" key="RollbackChangesDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576544061723" />
-    <state x="313" y="219" width="1266" height="730" key="SettingsEditor" timestamp="1576478698533">
+    <state x="2594" y="244" width="481" height="574" key="RollbackChangesDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576558933000" />
+    <state x="347" y="215" width="1266" height="730" key="SettingsEditor" timestamp="1577422789048">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="313" y="219" width="1266" height="730" key="SettingsEditor/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576478698533" />
-    <state x="944" y="288" key="ftp.server.browser" timestamp="1576465120242">
+    <state x="347" y="215" width="1266" height="730" key="SettingsEditor/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577422789048" />
+    <state x="2233" y="197" key="SettingsEditor/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576558575655" />
+    <state x="737" y="285" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1577417780233">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="944" y="288" key="ftp.server.browser/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576465120242" />
+    <state x="737" y="285" width="800" height="528" key="Vcs.Push.Dialog.v2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577417780233" />
+    <state x="100" y="125" width="1653" height="855" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1577084785528">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="100" y="125" width="1653" height="855" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577084785528" />
+    <state x="580" y="170" width="683" height="764" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1576569998398">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="580" y="170" width="683" height="764" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576569998398" />
+    <state x="690" y="316" width="501" height="535" key="com.jetbrains.plugins.remotesdk.ui.RemoteMappingsConfiguration" timestamp="1577074536335">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="690" y="316" width="501" height="535" key="com.jetbrains.plugins.remotesdk.ui.RemoteMappingsConfiguration/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577074536335" />
+    <state x="1954" y="0" width="1317" height="1011" maximized="true" key="dock-window-1" timestamp="1577423128263">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1954" y="0" width="1317" height="1011" maximized="true" key="dock-window-1/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577423128263" />
+    <state x="191" y="27" width="1392" height="1038" maximized="true" key="dock-window-1/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576559694485" />
+    <state x="1920" y="1" width="1314" height="697" maximized="true" key="dock-window-2" timestamp="1576810757253">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1920" y="1" width="1314" height="697" maximized="true" key="dock-window-2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576810757253" />
+    <state x="191" y="27" width="1392" height="1038" key="dock-window-2/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576559694485" />
+    <state x="1920" y="0" width="1807" height="1011" maximized="true" key="dock-window-3" timestamp="1576564979273">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1920" y="0" width="1807" height="1011" maximized="true" key="dock-window-3/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576564979273" />
+    <state x="1920" y="12" width="1807" height="697" key="dock-window-4" timestamp="1576565079489">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1920" y="12" width="1807" height="697" key="dock-window-4/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1576565079489" />
+    <state x="2133" y="262" width="1412" height="694" key="find.popup" timestamp="1577427438524">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2133" y="262" width="1412" height="694" key="find.popup/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577427438524" />
+    <state x="2526" y="275" width="707" height="528" key="find.popup/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576559452229" />
+    <state x="895" y="426" width="817" height="533" key="ftp.server.browser" timestamp="1577074535158">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="895" y="426" width="817" height="533" key="ftp.server.browser/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@0.27.1920.1053" timestamp="1577074535158" />
+    <state x="2543" y="237" width="672" height="678" key="search.everywhere.popup" timestamp="1576559153173">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2543" y="237" width="672" height="678" key="search.everywhere.popup/0.27.1920.1053/1920.0.1920.1080/3840.0.1920.1080@1920.0.1920.1080" timestamp="1576559153173" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/debug_local/debug_flask.py</url>
+          <line>26</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/services/web/manage.py</url>
+          <line>124</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/services/web/project/__init__.py</url>
+          <line>596</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/services/web/project/__init__.py</url>
+          <line>339</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/services/web/project/__init__.py</url>
+          <line>453</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/services/web/project/__init__.py</url>
+          <line>458</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/services/web/project/__init__.py</url>
+          <line>465</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/flask_on_docker$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1577417502526" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/services/web/project" />
+    <SUITE FILE_PATH="coverage/flask_on_docker$flask_app.coverage" NAME="flask_app Coverage Results" MODIFIED="1577084412032" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/services/web/project" />
+    <SUITE FILE_PATH="coverage/flask_on_docker$manage.coverage" NAME="manage Coverage Results" MODIFIED="1577085576473" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/services/web" />
+    <SUITE FILE_PATH="coverage/flask_on_docker$debug_flask.coverage" NAME="debug_flask Coverage Results" MODIFIED="1577083874893" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/debug_local" />
   </component>
 </project>
