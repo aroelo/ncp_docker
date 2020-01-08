@@ -6,9 +6,14 @@ import os
 cli = FlaskGroup(app)
 
 
+@cli.command("drop_db")
+def drop_db():
+    db.drop_all()
+    db.session.commit()
+
+
 @cli.command("create_db")
 def create_db():
-    db.drop_all()
     db.create_all()
     db.session.commit()
 
@@ -106,8 +111,8 @@ def update_support_column(pavian_basename, column_value):
     :param column_value:  column value, 0 if false/no support files, 1 if true
     :return: None
     """
-    pavian_row = PavianInput.query.filter_by(file=pavian_basename)
-    pavian_row.support = column_value
+    pavian_row = PavianInput.query.filter_by(file=pavian_basename).update(dict(support=column_value))
+    # pavian_row.support = column_value
     db.session.commit()
 
 

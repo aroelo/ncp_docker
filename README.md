@@ -37,3 +37,6 @@ Check logs
  
  
  If there are any issues with the databases, it is recommend to do docker-compose down -v and then docker-compose up.  
+ 
+**Debugging**  
+To debug the script in e.g. pycharm that creates all output files per taxid, run services/web/project/\_\_init__.py  with the --human argument and all other required arguments.  
