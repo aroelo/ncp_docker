@@ -102,11 +102,11 @@ def insert_into_sql(input_dir, pavian_basename):
         try:
             organism_taxid = line.split('\t')[4]
         except IndexError:
-            organism_taxid = 'NA'
+            organism_taxid = 0
         try:
             organism_name = line.split('\t')[5].strip(' ')
         except IndexError:
-            organism_name = 'NA'
+            organism_name = ''
         pavian_row = PavianInput(pavian_basename, run, sample, nt, date, organism_taxid, organism_name, support)
         db.session.add(pavian_row)
     db.session.commit()
