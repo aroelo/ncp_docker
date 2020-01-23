@@ -97,8 +97,14 @@ def insert_into_sql(input_dir, pavian_basename):
     pavian_file = open(os.path.join(input_dir, pavian_basename), "r")
     for line in pavian_file:
         line = line.strip('\n')
-        organism_taxid = line.split('\t')[4]
-        organism_name = line.split('\t')[5].strip(' ')
+        try:
+            organism_taxid = line.split('\t')[4]
+        except IndexError:
+            organism_taxid = 'NA'
+        try:
+            organism_name = line.split('\t')[5].strip(' ')
+        except IndexError:
+            organism_name = 'NA'
         pavian_row = PavianInput(pavian_basename, run, sample, nt, date, organism_taxid, organism_name, support)
         db.session.add(pavian_row)
     db.session.commit()
