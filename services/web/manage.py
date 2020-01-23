@@ -93,8 +93,8 @@ def insert_into_sql(input_dir, pavian_basename):
     try:
         datetime.strptime(str(date), '%Y%m%d')
     except ValueError:
-        date = ''
-        # date = '20010101'
+        # date = ''
+        date = '20010101'
     support = False
     pavian_file = open(os.path.join(input_dir, pavian_basename), "r")
     for line in pavian_file:
