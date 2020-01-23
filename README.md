@@ -31,7 +31,8 @@ Check logs
  
  
  **Using this set-up somewhere else**   
- First, git clone repo from  http://gitlab.naktuinbouw.net/bioinformatics/pavian_docker.git  
+ *  First, git clone repo from  http://gitlab.naktuinbouw.net/bioinformatics/pavian_docker.git  
+ *  Make sure that the `services/web/entrypoint.sh` file is executable, before building the docker container  
  
  Then change:  
  *  The directory/file locations in the .env to their correct corresponding locations
@@ -42,3 +43,9 @@ Check logs
  
 **Debugging**  
 To debug the script in e.g. pycharm that creates all output files per taxid, run `services/web/project/__init__.py`  with the --human argument and all other required arguments.  
+
+
+**Syncing pavian input sql database**  
+Sync is done daily with a cronjob from aroe.  
+(-T fixes the input device is not a TTY .. see https://github.com/docker/compose/issues/5696)  
+`30 7 * * * cd /5_workspace/docker/pavian_docker/ && docker-compose exec -T web python manage.py seed_pavian_db > /home/aroe/logs/seed_pavian_db.log 2>&1`
