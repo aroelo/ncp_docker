@@ -1,7 +1,7 @@
 from flask.cli import FlaskGroup
 from project import app, db, User, PavianInput
 import os
-
+from datetime import datetime
 
 cli = FlaskGroup(app)
 
@@ -89,10 +89,12 @@ def insert_into_sql(input_dir, pavian_basename):
         nt = ''
     else:
         run, sample, nt, _ = pavian_basename.split('.')
+    date = pavian_basename.split('_')[0]
     try:
-        date = pavian_basename.split('_')[0]
-    except IndexError:
+        datetime.strptime(str(date), '%Y%m%d')
+    except ValueError:
         date = ''
+        # date = '20010101'
     support = False
     pavian_file = open(os.path.join(input_dir, pavian_basename), "r")
     for line in pavian_file:
