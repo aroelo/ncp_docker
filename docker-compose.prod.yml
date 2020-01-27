@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.prod
       args:
         - BLAST_VERSION=${BLAST_VERSION}
-    command: gunicorn --bind 0.0.0.0:5000 manage:app
+    command: gunicorn --bind 0.0.0.0:5000 manage:app --timeout 300
     volumes:
       - static_volume:/home/app/web/project/static
       - media_volume:/home/app/web/project/media
