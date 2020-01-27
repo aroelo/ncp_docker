@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Unexpected Error</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://fonts.googleapis.com/css?family=Encode+Sans+Semi+Condensed:100,200,300,400" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+
+<body class="loading">
+    <h1> 500 </h1>
+    <h2>Files necessary for visualisation could not be created..
+        <p><b>Please contact bioinformatics team for support and include the following error message:</b><br>
+    {{ traceback}}</p>
+    <img src="{{url_for('static', filename='sad-plant.jpg')}}" style="max-width:20%;max-height:20%;"/>
+    </h2>
+</body>
+</html>
