@@ -2,6 +2,7 @@ import os
 from ete3 import NCBITaxa
 import time
 import tempfile
+import shutil
 import subprocess
 import pysam
 import numpy
@@ -20,7 +21,9 @@ from flask import (
     send_from_directory,
     request,
     redirect,
-    url_for
+    url_for,
+    render_template,
+    abort
 )
 from flask_sqlalchemy import SQLAlchemy
 
@@ -301,7 +304,7 @@ def make_json(prefix, input_dir):
 
 def visualize_jbrowse(taxid, sub_dir_path):
     trackList = make_json(taxid, sub_dir_path)
-    JbrowseBaseUrl = "http://" + app.config['HOST_IP'] + ':' + app.config['JBROWSE_PORT']
+    JbrowseBaseUrl = "http://" + str(app.config['HOST_IP']) + ':' + str(app.config['JBROWSE_PORT'])
     # return_url = JbrowseBaseUrl + '?data=/data/' + sub_dir_path[sub_dir_path.index('pavianfiles'):]
     return_url = JbrowseBaseUrl + '?data=/data/pavianfiles/' + os.path.basename(sub_dir_path)
     handle = open(os.path.join(sub_dir_path, [f for f in os.listdir(sub_dir_path)
@@ -355,24 +358,26 @@ def make_output(sub_dir_path, taxids, bam_in_path, bigwig_path, df_reads_path):
 
     # Get nt sequences
     nt_out_path = sub_dir_path + "/" + str(taxids[0]) + ".nt.fa"
-    blastdb_nt = app.config['BLASTDB_NT']
-    cmd = "mawk 'BEGIN{FS=\"\\|\"} {print $4}' %s | blastdbcmd -db %s -entry_batch - " \
-          "-target_only -outfmt '%%s' | paste -d '\\n' %s - > %s" \
-          % (nt_header_path, blastdb_nt, nt_header_path, nt_out_path)
-    run_cmd(cmd, log_out)
+    if os.path.exists(nt_header_path):
+        blastdb_nt = app.config['BLASTDB_NT']
+        cmd = "mawk 'BEGIN{FS=\"\\|\"} {print $4}' %s | blastdbcmd -db %s -entry_batch - " \
+              "-target_only -outfmt '%%s' | paste -d '\\n' %s - > %s" \
+              % (nt_header_path, blastdb_nt, nt_header_path, nt_out_path)
+        run_cmd(cmd, log_out)
 
     # Get wgs sequences
     wgs_out_path = sub_dir_path + "/" + str(taxids[0]) + ".wgs.fa"
-    # TODO use v5 database when present on /6_db_ssd
-    # cmd = "mawk 'BEGIN{FS=\"\\|\"} {print $4}' %s | blastdbcmd -db /6_db_ssd/blast_DBv5/refseq_genomic_v5/refseq_genomic.fa " \
-    #       "-entry_batch - -target_only -outfmt '%%s' | paste -d '\\n' %s - > %s" \
-    #       % (wgs_header_path, wgs_header_path, wgs_out_path)
+    if os.path.exists(wgs_header_path):
+        # TODO use v5 database when present on /6_db_ssd
+        # cmd = "mawk 'BEGIN{FS=\"\\|\"} {print $4}' %s | blastdbcmd -db /6_db_ssd/blast_DBv5/refseq_genomic_v5/refseq_genomic.fa " \
+        #       "-entry_batch - -target_only -outfmt '%%s' | paste -d '\\n' %s - > %s" \
+        #       % (wgs_header_path, wgs_header_path, wgs_out_path)
 
-    blastdb_refseq = app.config['BLASTDB_REFSEQ']
-    cmd = "mawk 'BEGIN{FS=\"\\|\"} {print $4}' %s | blastdbcmd -db %s " \
-          "-entry_batch - -target_only -outfmt '%%s' | paste -d '\\n' %s - > %s" \
-          % (wgs_header_path, blastdb_refseq, wgs_header_path, wgs_out_path)
-    run_cmd(cmd, log_out)
+        blastdb_refseq = app.config['BLASTDB_REFSEQ']
+        cmd = "mawk 'BEGIN{FS=\"\\|\"} {print $4}' %s | blastdbcmd -db %s " \
+              "-entry_batch - -target_only -outfmt '%%s' | paste -d '\\n' %s - > %s" \
+              % (wgs_header_path, blastdb_refseq, wgs_header_path, wgs_out_path)
+        run_cmd(cmd, log_out)
 
     # Merge references together
     ref_out_path = sub_dir_path + "/" + str(taxids[0]) + ".ref.fa"
@@ -455,15 +460,22 @@ def main(human=False):
     # If files are being made atm, wait until finished.
     elif os.path.exists(running_log):
         while os.path.exists(running_log):
-            time.sleep(1)
+            time.sleep(2)
         pass
     else:
         try:
             os.mkdir(sub_dir_path)
         except FileExistsError:
-            pass
+            shutil.rmtree(sub_dir_path)
+
         open(running_log, "a")
-        make_output(sub_dir_path, taxids, bam_path, bigwig_path, df_reads_path)
+        try:
+            make_output(sub_dir_path, taxids, bam_path, bigwig_path, df_reads_path)
+        except Exception as e:
+            print(str(e))
+            shutil.rmtree(sub_dir_path)
+            abort(500, e)
+
 
     if action == 'jbrowse':
         # get jbrowse url
@@ -548,6 +560,16 @@ def blast_reads():
     return redirect(url, code=302)
 
 
+@app.errorhandler(500)
+def taxid_files_not_created(e):
+    return render_template('500.html', traceback=e), 500
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description='get command line arguments')
@@ -566,7 +588,7 @@ def parse_args():
                                default=5004,
                                help='port on which jbrowse is hosted')
     configuration.add_argument('-out_dir_path', type=str,
-                               default="/5_workspace/pavianfiles/",
+                               default="/8_expand_ssd/pavian_output",
                                help='output directory to store files')
     configuration.add_argument('-taxa_sqlite', type=str,
                                default="/5_workspace/repos/Nanopore-classification-pipeline/data/taxa.sqlite",
@@ -578,8 +600,9 @@ def parse_args():
                                default="/6_db_ssd/blast_DBv4/refseq_genomic/refseq_genomic",
                                help='refseq blastdb to extract reference sequences from')
 
-    configuration.add_argument('--human',
-                               action='store_true')
+    configuration.add_argument('-human',
+                               choices=['main', 'app'],
+                               help='Debug with pycharm, either run "main" or run "app"')
 
     args = parser.parse_args()
     return args
@@ -594,4 +617,7 @@ if __name__ == "__main__":
         app.config['HOST_IP'] = args.host
         app.config['JBROWSE_PORT'] = args.jbrowse_port
         app.config['TAXA_SQLITE'] = args.taxa_sqlite
-        main(human=True)
+        if args.human == 'main':
+            main(human=True)
+        else:
+            app.run(debug=True, host=args.host, port=5000)
