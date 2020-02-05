@@ -2,7 +2,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css">
-    <style>thead input {{width: 100%; }}</style>
+    <style>thead input {width: 100%; }</style>
 </head>
 <body>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -10,54 +10,53 @@
 <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {{
+$(document).ready(function() {
     // Setup - add a text input to each footer cell
     $('#example thead tr').clone(true).appendTo( '#example thead' );
-    $('#example thead tr:eq(1) th').each( function (i) {{
+    $('#example thead tr:eq(1) th').each( function (i) {
         var title = $(this).text();
         // Search fields in datatable to filter
         $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-        $( 'input', this ).on( 'keyup change', function () {{
-            if ( table.column(i).search() !== this.value ) {{
+        $( 'input', this ).on( 'keyup change', function () {
+            if ( table.column(i).search() !== this.value ) {
                 table
                     .column(i)
                     .search( this.value )
                     .draw();
-            }}
-        }} );
-    }} );
+            }
+        } );
+    } );
     var events = $('#events');
-    var table = $('#example').DataTable( {{
+    var table = $('#example').DataTable( {
         orderCellsTop: true,
         fixedHeader: true,
-        "ajax": {{
-            'url': '/get_json_data?df_pickle={}&taxid_list={}',
+        "ajax": {
+            'url': "/get_json_data?df_pickle={{ df_pickle }}&taxid_list={{ taxid_list }}",
             'dataType': 'json',
             'dataSrc': 'data',
             'contentType':'application/json'
-        }},
+        },
         dom: 'Blfrtip',
         select: true,
         buttons: [
             'selectAll',
             'selectNone',
-            {{
+            {
                 text: 'Get selected data',
-                action: function () {{
-                    var all_data = ''
-                    table.rows( {{selected: true}} ).every( function ( rowIdx, tableLoop, rowLoop ) {{
+                action: function () {
+                    var all_data = '';
+                    table.rows( {selected: true} ).every( function ( rowIdx, tableLoop, rowLoop ) {
                         // Get string of read ids separated by a pipe
                         var data = this.data()[0] + "|";
                         all_data += data
-                        }} );
+                        } );
                     // Blast reads link popup
-                    // events.prepend( '<div><a href= "http://localhost:9999/blast_reads?readids='+ all_data + '&subdir= &taxid= " target="_blank">Blast reads!</a></div>' )
-                    events.prepend( '<div><a href= "blast_reads?readids='+ all_data + '&subdir={}&taxid={}" target="_blank">Blast reads!</a></div>' )
-                    }}
-            }}
+                    events.prepend( '<div><a href= "blast_reads?readids='+ all_data + '&subdir={{ sub_dir_path }}&taxid={{ taxid }}" target="_blank">Blast reads!</a></div>' )
+                    }
+            }
             ]
-        }} );
-    }} );
+        } );
+    } );
 
 </script>
 <div id="events">

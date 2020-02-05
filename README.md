@@ -42,7 +42,8 @@ Check logs
  If there are any issues with the databases, it is recommend to do docker-compose down -v and then docker-compose up.  
  
 **Debugging**  
-To debug the script in e.g. pycharm that creates all output files per taxid, run `services/web/project/__init__.py`  with the --human argument and all other required arguments.  
+To debug the script in e.g. pycharm that creates all output files per taxid, run `services/web/project/run.py`  with the -human argument and all other required arguments.  
+Choose '-human main' to just run the main command, creating output files, or choose '-human app' to start up a flask app locally outside the docker environment.
 
 
 **Syncing pavian input sql database**  

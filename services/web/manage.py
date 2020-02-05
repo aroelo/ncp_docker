@@ -1,5 +1,7 @@
 from flask.cli import FlaskGroup
-from project import app, db, User, PavianInput
+from project import app, db
+from project.download_pavian_data.models import User
+from project.models import PavianInput
 import os
 from datetime import datetime
 
