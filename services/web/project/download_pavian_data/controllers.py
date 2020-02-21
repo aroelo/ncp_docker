@@ -78,6 +78,8 @@ def main(args=None, human=False):
                     # os.path.join(sub_dir_path, str(taxid) + ".read_scores.json"),
                     os.path.join(sub_dir_path, str(taxid) + ".ref.fa"),
                     os.path.join(sub_dir_path, str(taxid) + ".ref.fa.fai"),
+                    os.path.join(sub_dir_path, str(taxid) + ".cons.fa"),
+                    os.path.join(sub_dir_path, str(taxid) + ".cons.fa.fai"),
                     os.path.join(sub_dir_path, str(taxid) + ".sorted.bam"),
                     os.path.join(sub_dir_path, str(taxid) + ".sorted.bam.bai"),
                     os.path.join(sub_dir_path, str(taxid) + ".sorted.bw"),

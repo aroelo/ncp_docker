@@ -30,6 +30,13 @@ def make_json(prefix, input_dir):
                                 "storeClass": "JBrowse/Store/SeqFeature/IndexedFasta",
                                 "urlTemplate": "%s.ref.fa" % prefix, \
                                 "refSeqOrder": "False"})
+    tracklist['tracks'].append({"category": "Consensus sequence",
+                                "key": "Consensus sequence",
+                                "label": "Consensus sequence",
+                                "type": "SequenceTrack",
+                                "storeClass": "JBrowse/Store/SeqFeature/IndexedFasta",
+                                "urlTemplate": "%s.cons.fa" % prefix, \
+                                "refSeqOrder": "False"})
     # add bigwig track to trackList.json
     tracklist['tracks'].append({"category": "Sequence data",
                                 "key": "Coverage",

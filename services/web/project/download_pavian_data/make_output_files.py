@@ -217,6 +217,21 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     cmd = "samtools index %s" % capped_bam_out_path
     run_cmd(cmd, log_out)
 
+    # Create consensus sequence
+    consensus_path = sub_dir_path + "/" + str(taxids[0]) + ".cons.fa"
+    mpileup2fa = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'mpileup2fa.py')
+    cmd = f"samtools mpileup {capped_bam_out_path} -Q0 -a | python {mpileup2fa} -o {consensus_path}"
+    run_cmd(cmd, log_out)
+
+    # Index consensus
+    cmd = f"samtools faidx {consensus_path}"
+    run_cmd(cmd, log_out)
+
+    # Use length of longest sequence (reference vs consensus)
+    index_tmp_path = sub_dir_path + "/" + str(taxids[0]) + ".ref.fa.fai.tmp"
+    cmd = f"mawk 'BEGIN{{OFS=\"\\t\"}} {{if(NR==FNR){{_[$1]=$2;next}} {{if (_[$1]>$2) print $1,_[$1],$3,$4,$5; else print $1,$2,$3,$4,$5}}}}' {consensus_path+'.fai'} {ref_out_path+'.fai'} > {index_tmp_path} & mv {index_tmp_path} {ref_out_path+'.fai'}"
+    run_cmd(cmd, log_out)
+
     # Create bigwig track
     bigwig_out_path = bam_out_path.replace('.bam', '.bw')
     make_bigwig(bigwig_path, bigwig_out_path, header_count_path)
