@@ -80,7 +80,12 @@ def counter(read_bases, ref_base, no_reads):
             # index in read_base string
             indel_idx = base[0]
             # get length of deletion/insertion
-            indel_len = read_bases[indel_idx + 1]
+            indel_len = ''
+            for x in read_bases[indel_idx + 1:]:
+                if x.isdigit():
+                    indel_len += x
+                else:
+                    break
             # if insertion, get how many & which bases are inserted. deletions can be determined per base with '*'
             if base[1] == '+':
                 insert_bases = read_bases[indel_idx + 2: indel_idx + 2 + int(indel_len)]
