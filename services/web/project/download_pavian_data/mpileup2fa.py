@@ -34,6 +34,8 @@ def mpileup_to_fasta(mpileup, output):
             fasta += '>' + prev_contig + '\n' + consensus_seq + '\n'
             consensus_seq = ''
 
+        if no_reads == '0':
+            consensus_seq += 'N'
         counter_dict, insert_dict = counter(read_bases, ref_base, int(no_reads))
         base = counter_dict[0][0]
         # if deletion, don't add anything to consensus, else add most common base
