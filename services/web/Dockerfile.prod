@@ -64,8 +64,8 @@ RUN wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${BLAST_VERSION}/nc
     tar xzf ncbi-blast-${BLAST_VERSION}+-x64-linux.tar.gz && \
     mv ncbi-blast-${BLAST_VERSION}+ /blast
 
-# Set path for samtools and blast
-ENV PATH="samtools-1.10.1/bin:/blast/bin:${PATH}"
+# Set path for samtools, blast & bedGraphToBigWig
+ENV PATH="samtools-1.10/samtools:/blast/bin:bedGraphToBigWig:${PATH}"
 
 # Create directories to mount blast & pavian data
 RUN mkdir -p /blast_db/nt /blast_db/refseq /pavian/out /pavian/in
