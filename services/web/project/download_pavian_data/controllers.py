@@ -68,7 +68,7 @@ def main(args=None, human=False):
     assert os.path.exists(df_reads_path)
 
     sub_dir_path = os.path.join(main_dir_path, str(taxid) + "_" + sample)
-    running_log = os.path.join(sub_dir_path, str(taxid) + "running.log")
+    running_log_path = os.path.join(sub_dir_path, str(taxid) + "running.log")
 
     # make sure that output files are generated
     output_files = [os.path.join(sub_dir_path, str(taxid) + ".fasta"),
@@ -88,8 +88,9 @@ def main(args=None, human=False):
     if all([os.path.isfile(f) for f in output_files]):
         pass
     # If files are being made atm, wait until finished.
-    elif os.path.exists(running_log):
-        while os.path.exists(running_log):
+    elif os.path.exists(running_log_path):
+        print('Already creating files, waiting until finished')
+        while os.path.exists(running_log_path):
             time.sleep(2)
         pass
     else:
@@ -97,8 +98,9 @@ def main(args=None, human=False):
             os.mkdir(sub_dir_path)
         except FileExistsError:
             shutil.rmtree(sub_dir_path)
+            os.mkdir(sub_dir_path)
 
-        open(running_log, "a")
+        open(running_log_path, "a")
         try:
             taxid_tmp_file = make_output(sub_dir_path, taxid, bam_path, bigwig_path, df_reads_path)
         except Exception as e:
