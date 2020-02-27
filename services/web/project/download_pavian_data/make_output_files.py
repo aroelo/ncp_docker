@@ -276,17 +276,27 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     cmd = "samtools index %s" % capped_bam_out_path
     run_cmd(cmd, log_out)
 
+    bigwig_out_path = bam_out_path.replace('.bam', '.bw')
+    chromsizes_path = sub_dir_path + "/" + str(taxids[0]) + ".chromsizes.txt"
+    bedgraph_path = sub_dir_path + "/" + str(taxids[0]) + ".bedGraph"
+
     consensus_path = sub_dir_path + "/" + str(taxids[0]) + ".cons.fa"
-    # Check to create consensus
+    # Check to create consensus & method to create bigwig
     # If longest reference is bigger than 1 million bp, don't create consensus
     cmd = f"sort -nrk2,2 {ref_out_path+'.fai'} | cut -f2 | head -n1"
     ps = subprocess.Popen(cmd, shell=True, executable='/bin/bash',
                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = ps.communicate()
     stdout = stdout.decode().replace('\r', '\n')
-    stderr = stderr.decode().replace('\r', '\n')
     #TODO adjust tracklist.Json or make clear to users in other way that consensus isn't made, because file is too big.
     if int(stdout) > 1000000:
+        # create empty cons file
+        cmd = f"touch {consensus_path}; touch {consensus_path+'.fai'}"
+        run_cmd(cmd, log_out)
+
+        # Create bigwig track
+        cmd = f"samtools view -@20 -H {bam_out_path} | mawk 'BEGIN{{FS=\"\tSN:|\tLN:\";OFS=\"\\t\"}} {{if ($1==\"@SQ\") print $2, $3}}' > {chromsizes_path}; bedtools genomecov -ibam {bam_out_path} -bg -split | LC_COLLATE=C sort -k1,1 -k2,2n > {bedgraph_path}; bedGraphToBigWig {bedgraph_path} {chromsizes_path} {bigwig_out_path}"
+        run_cmd(cmd, log_out)
         pass
     else:
         # Create consensus sequence
@@ -303,11 +313,10 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
         cmd = f"mawk 'BEGIN{{OFS=\"\\t\"}} {{if(NR==FNR){{_[$1]=$2;next}} {{if (_[$1]>$2) print $1,_[$1],$3,$4,$5; else print $1,$2,$3,$4,$5}}}}' {consensus_path+'.fai'} {ref_out_path+'.fai'} > {index_tmp_path} & mv {index_tmp_path} {ref_out_path+'.fai'}"
         run_cmd(cmd, log_out)
 
-    # Create bigwig track
-    bigwig_out_path = bam_out_path.replace('.bam', '.bw')
-    print('creating bigwig..')
-    make_bigwig(bigwig_path, bigwig_out_path, header_count_path)
-    print('finished')
+        # Create bigwig track
+        print('creating bigwig..')
+        make_bigwig(bigwig_path, bigwig_out_path, header_count_path)
+        print('finished')
 
     # # Get read scores per taxid, run python script with taxid and df pickle.
     html_path = sub_dir_path + "/" + str(taxids[0]) + ".read_scores.html"
@@ -317,7 +326,7 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
 
     running_log_file = os.path.join(sub_dir_path, str(taxids[0]) + "running.log")
     print('deleting tmp files..')
-    delete_tmp_files(sam_out_path, nt_out_path, wgs_out_path, nt_header_path, wgs_header_path, running_log_file)
+    delete_tmp_files(sam_out_path, nt_out_path, wgs_out_path, nt_header_path, wgs_header_path, chromsizes_path, bedgraph_path, running_log_file)
     print('finished')
 
     return taxid_tmp_file.name
