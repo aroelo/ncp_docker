@@ -53,23 +53,54 @@ def create_taxid_tmp_file(taxids):
     return taxid_tmp_file
 
 
-def make_capped_coverage_bam(bam_in_path, bam_out_path, coverage_cap):
+def make_capped_coverage_bam(bam_in_path, bam_out_path, header_count_path, coverage_cap):
+    header_count = open(header_count_path, 'r')
+    ref_list = []
+    for header in header_count:
+        ref_list.append(header.split(' ')[0])
+
     # In case bam file is empty, check_sq = false
     bam_in = pysam.AlignmentFile(bam_in_path, "rb", check_sq=False)
     bam_out = pysam.AlignmentFile(bam_out_path, "wb", template=bam_in)
     bam_headers_dict = dict(zip(bam_in.header.references, bam_in.header.lengths))
-
+    skip = False
     for contig in bam_headers_dict.keys():
+        if contig not in ref_list:
+            continue
         ref_length = bam_headers_dict[contig]
-        coverage_array = numpy.zeros(shape=ref_length, dtype=int)
-        for read in bam_in.fetch(contig):
-            coverage_array[read.reference_start:read.reference_end] += 1
+        bin_size = 1
+        if ref_length >= 100000:
+            bin_size = 50
+        elif ref_length >= 500000:
+            bin_size = 100
+        coverage_array = numpy.zeros(shape=-(-ref_length//bin_size), dtype=int)
+        notallowed_indices = []
 
+        read_count = 0
+        for read in bam_in.fetch(contig):
+            binned_start = read.reference_start//bin_size
+            binned_end = read.reference_end//bin_size
+            if read_count < coverage_cap-1:
+                read_count += 1
+                bam_out.write(read)
+                coverage_array[binned_start:binned_end] += 1
+                continue
+
+            if notallowed_indices:
+                for idx in notallowed_indices[0]:
+                    if binned_start <= idx <= binned_end:
+                        skip = True
+                        break
+            if skip:
+                skip = False
+                continue
+
+            coverage_array[binned_start:binned_end] += 1
             if numpy.amax(coverage_array) < coverage_cap:
                 bam_out.write(read)
             else:
-                coverage_array[read.reference_start:read.reference_end] -= 1
-
+                notallowed_indices = numpy.nonzero(coverage_array >= coverage_cap)
+                coverage_array[binned_start:binned_end] -= 1
     bam_in.close()
     bam_out.close()
     return None
@@ -77,29 +108,34 @@ def make_capped_coverage_bam(bam_in_path, bam_out_path, coverage_cap):
 
 def make_bigwig(bigwig_in_path, bigwig_out_path, header_count_path):
     """make bigwig from bam"""
-    header_count = open(header_count_path, "r")
     bw = pyBigWig.open(bigwig_in_path)
     bw_out = pyBigWig.open(bigwig_out_path, "w")
     header = []
-    entries = []
 
-    for line in header_count:
-        contig = line.split(' ')[0]
-        length = bw.chroms(contig)
-        if not length:
-            continue
-        header.append((contig, length))
-        values = bw.values(contig, 0, length)
-        entry = (contig, values)
-        entries.append(entry)
+    with open(header_count_path, "r") as header_count:
+        for line in header_count:
+            contig = line.split(' ')[0]
+            length = bw.chroms(contig)
+            if not length:
+                continue
+            header.append((contig, length))
 
     if not header:
         return None
 
     bw_out.addHeader(header)
 
-    for entry in entries:
-        bw_out.addEntries(entry[0], 1, values=entry[1], span=1, step=1)
+    with open(header_count_path, "r") as header_count:
+        for line in header_count:
+            contig = line.split(' ')[0]
+            length = bw.chroms(contig)
+            if not length:
+                continue
+            values = bw.values(contig, 0, length)
+            entry = (contig, values)
+            bw_out.addEntries(entry[0], 1, values=entry[1], span=1, step=1, validate=False)
+
+    bw_out.close()
 
     return None
 
@@ -162,18 +198,27 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     cmd = ''.join(cmd).replace('\n', '')
     run_cmd(cmd, log_out)
 
-    # Sort header_count
+    # Sort header_count and cap at 15 per nt/wgs
     nt_header_path = sub_dir_path + "/" + str(taxids[0]) + ".nt_header.txt"
     wgs_header_path = sub_dir_path + "/" + str(taxids[0]) + ".wgs_header.txt"
-    cmd = "sort -nrk 2,2 %s | mawk '{if ($0 ~ /^C/){print \">\" $1 > \"%s\"; " \
-          "if (c<15){c+=1; C_count[c]=$0}} " \
-          "else if($0 ~ /^W|^>W/){print \">\" $1 > \"%s\";" \
-          "if (w<15){w+=1; W_count[w]=$0}}} " \
-          "END{for (i=1; i<=w; i++) print W_count[i]; " \
-          "for (i=1; i<=c; i++) print C_count[i]}' > %s " \
-          "&& mv %s %s" % (
-              header_count_path, nt_header_path, wgs_header_path, header_count_tmp, header_count_tmp, header_count_path)
+    # cmd = "sort -nrk 2,2 %s | mawk '{if ($0 ~ /^C/){print \">\" $1 > \"%s\"; " \
+    #       "if (c<15){c+=1; C_count[c]=$0}} " \
+    #       "else if($0 ~ /^W|^>W/){print \">\" $1 > \"%s\"; " \
+    #       "if (w<15){w+=1; W_count[w]=$0}}} " \
+    #       "END{for (i=1; i<=w; i++) print W_count[i]; " \
+    #       "for (i=1; i<=c; i++) print C_count[i]}' > %s " \
+    #       "&& mv %s %s" % (
+    #           header_count_path, nt_header_path, wgs_header_path, header_count_tmp, header_count_tmp, header_count_path)
 
+    cmd = "sort -nrk 2,2 %s | mawk '{if ($0 ~ /^C/){ " \
+          "if (c<30){c+=1; C_count[c]=$0}} " \
+          "else if($0 ~ /^W|^>W/){" \
+          "if (w<30){w+=1; W_count[w]=$0}}} " \
+          "END{if (w<15){c2=30-w} else{c2=c}; if (c<15){w2=30-c} else {w2=w}; " \
+          "for (i=1; i<=w2; i++){print W_count[i]; split(W_count[i],x,\" \"); print \">\" x[1] > \"%s\"}; " \
+          "for (i=1; i<=c2; i++){print C_count[i]; split(C_count[i],x,\" \"); print \">\" x[1]  > \"%s\"}}' > %s " \
+          "&& mv %s %s" % (
+              header_count_path, wgs_header_path, nt_header_path, header_count_tmp, header_count_tmp, header_count_path)
     run_cmd(cmd, log_out)
 
     # Get nt sequences
@@ -183,6 +228,12 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
         cmd = "mawk 'BEGIN{FS=\"\\|\"} {print $4}' %s | blastdbcmd -db %s -entry_batch - " \
               "-target_only -outfmt '%%s' | paste -d '\\n' %s - > %s" \
               % (nt_header_path, blastdb_nt, nt_header_path, nt_out_path)
+        # cmd = "head -n15 %s | mawk 'BEGIN{FS=\"\\|\"} {print $4}' - | blastdbcmd -db %s -entry_batch - " \
+        #       "-target_only -outfmt '%%s' | paste -d '\\n' %s - > %s" \
+        #       % (nt_header_path, blastdb_nt, nt_header_path, nt_out_path)
+        # cmd = "mawk 'BEGIN{FS=\"\\|\"} {if ($0 ~ /^C/) print $4}' %s | blastdbcmd -db %s -entry_batch - " \
+        #       "-target_only -outfmt '%%s' | mawk '{getline line < \"%s\"; split(line,lineArr,\" \"); printf(\">%%s\\n%%s\\n\",lineArr[1], $0)}' - > %s" \
+        #       % (header_count_path, blastdb_nt, header_count_path, nt_out_path)
         run_cmd(cmd, log_out)
 
     # Get wgs sequences
@@ -197,6 +248,12 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
         cmd = "mawk 'BEGIN{FS=\"\\|\"} {print $4}' %s | blastdbcmd -db %s " \
               "-entry_batch - -target_only -outfmt '%%s' | paste -d '\\n' %s - > %s" \
               % (wgs_header_path, blastdb_refseq, wgs_header_path, wgs_out_path)
+        # cmd = "head -n15 %s | mawk 'BEGIN{FS=\"\\|\"} {print $4}' - | blastdbcmd -db %s " \
+        #       "-entry_batch - -target_only -outfmt '%%s' | paste -d '\\n' %s - > %s" \
+        #       % (wgs_header_path, blastdb_refseq, wgs_header_path, wgs_out_path)
+        # cmd = "mawk 'BEGIN{FS=\"\\|\"} {if ($0 ~ /^W|^>W/) print $4}' %s | blastdbcmd -db %s " \
+        #         "-entry_batch - -target_only -outfmt '%%s' | mawk '{getline line < \"%s\"; split(line,lineArr,\" \"); printf(\">%%s\\n%%s\\n\",lineArr[1], $0)}' - > %s" \
+        #         % (header_count_path, blastdb_refseq, header_count_path, wgs_out_path)
         run_cmd(cmd, log_out)
 
     # Merge references together
@@ -210,36 +267,57 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
 
     # Create bam file that has a cap on coverage so it can be visualised in Jbrowse.
     capped_bam_out_path = sub_dir_path + "/" + str(taxids[0]) + ".sorted.capped.bam"
-    make_capped_coverage_bam(bam_out_path, capped_bam_out_path, coverage_cap=100)
+    print('creating capped bam..')
+    make_capped_coverage_bam(bam_out_path, capped_bam_out_path, header_count_path, coverage_cap=100)
+    print('finished')
 
     # TODO, can this be somehow piped from stdin?
     # Index capped bam file
     cmd = "samtools index %s" % capped_bam_out_path
     run_cmd(cmd, log_out)
 
-    # Create consensus sequence
     consensus_path = sub_dir_path + "/" + str(taxids[0]) + ".cons.fa"
-    mpileup2fa = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'mpileup2fa.py')
-    cmd = f"samtools mpileup {capped_bam_out_path} -Q0 -a | python {mpileup2fa} -o {consensus_path}"
-    run_cmd(cmd, log_out)
+    # Check to create consensus
+    # If longest reference is bigger than 1 million bp, don't create consensus
+    cmd = f"sort -nrk2,2 {ref_out_path+'.fai'} | cut -f2 | head -n1"
+    ps = subprocess.Popen(cmd, shell=True, executable='/bin/bash',
+                          stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = ps.communicate()
+    stdout = stdout.decode().replace('\r', '\n')
+    stderr = stderr.decode().replace('\r', '\n')
+    #TODO adjust tracklist.Json or make clear to users in other way that consensus isn't made, because file is too big.
+    if int(stdout) > 1000000:
+        pass
+    else:
+        # Create consensus sequence
+        mpileup2fa = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'mpileup2fa.py')
+        cmd = f"samtools mpileup {capped_bam_out_path} -Q0 -a | python {mpileup2fa} -o {consensus_path}"
+        run_cmd(cmd, log_out)
 
-    # Index consensus
-    cmd = f"samtools faidx {consensus_path}"
-    run_cmd(cmd, log_out)
+        # Index consensus
+        cmd = f"samtools faidx {consensus_path}"
+        run_cmd(cmd, log_out)
 
-    # Use length of longest sequence (reference vs consensus)
-    index_tmp_path = sub_dir_path + "/" + str(taxids[0]) + ".ref.fa.fai.tmp"
-    cmd = f"mawk 'BEGIN{{OFS=\"\\t\"}} {{if(NR==FNR){{_[$1]=$2;next}} {{if (_[$1]>$2) print $1,_[$1],$3,$4,$5; else print $1,$2,$3,$4,$5}}}}' {consensus_path+'.fai'} {ref_out_path+'.fai'} > {index_tmp_path} & mv {index_tmp_path} {ref_out_path+'.fai'}"
-    run_cmd(cmd, log_out)
+        # Use length of longest sequence (reference vs consensus)
+        index_tmp_path = sub_dir_path + "/" + str(taxids[0]) + ".ref.fa.fai.tmp"
+        cmd = f"mawk 'BEGIN{{OFS=\"\\t\"}} {{if(NR==FNR){{_[$1]=$2;next}} {{if (_[$1]>$2) print $1,_[$1],$3,$4,$5; else print $1,$2,$3,$4,$5}}}}' {consensus_path+'.fai'} {ref_out_path+'.fai'} > {index_tmp_path} & mv {index_tmp_path} {ref_out_path+'.fai'}"
+        run_cmd(cmd, log_out)
 
     # Create bigwig track
     bigwig_out_path = bam_out_path.replace('.bam', '.bw')
+    print('creating bigwig..')
     make_bigwig(bigwig_path, bigwig_out_path, header_count_path)
+    print('finished')
 
     # # Get read scores per taxid, run python script with taxid and df pickle.
     html_path = sub_dir_path + "/" + str(taxids[0]) + ".read_scores.html"
+    print('creating datatable html..')
     render_datatable_html(df_reads_path, taxid_tmp_file.name, taxids, html_path, sub_dir_path)
+    print('finished')
 
     running_log_file = os.path.join(sub_dir_path, str(taxids[0]) + "running.log")
+    print('deleting tmp files..')
     delete_tmp_files(sam_out_path, nt_out_path, wgs_out_path, nt_header_path, wgs_header_path, running_log_file)
+    print('finished')
+
     return taxid_tmp_file.name
