@@ -201,20 +201,12 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     # Sort header_count and cap at 15 per nt/wgs
     nt_header_path = sub_dir_path + "/" + str(taxids[0]) + ".nt_header.txt"
     wgs_header_path = sub_dir_path + "/" + str(taxids[0]) + ".wgs_header.txt"
-    # cmd = "sort -nrk 2,2 %s | mawk '{if ($0 ~ /^C/){print \">\" $1 > \"%s\"; " \
-    #       "if (c<15){c+=1; C_count[c]=$0}} " \
-    #       "else if($0 ~ /^W|^>W/){print \">\" $1 > \"%s\"; " \
-    #       "if (w<15){w+=1; W_count[w]=$0}}} " \
-    #       "END{for (i=1; i<=w; i++) print W_count[i]; " \
-    #       "for (i=1; i<=c; i++) print C_count[i]}' > %s " \
-    #       "&& mv %s %s" % (
-    #           header_count_path, nt_header_path, wgs_header_path, header_count_tmp, header_count_tmp, header_count_path)
-
     cmd = "sort -nrk 2,2 %s | mawk '{if ($0 ~ /^C/){ " \
           "if (c<30){c+=1; C_count[c]=$0}} " \
           "else if($0 ~ /^W|^>W/){" \
           "if (w<30){w+=1; W_count[w]=$0}}} " \
-          "END{if (w<15){c2=30-w} else{c2=c}; if (c<15){w2=30-c} else {w2=w}; " \
+          "END{total=w+c; if(total>30){total=30}; " \
+          "if (w<15){c2=total-w} else{c2=c}; if (c<15){w2=total-c} else {w2=w}; " \
           "for (i=1; i<=w2; i++){print W_count[i]; split(W_count[i],x,\" \"); print \">\" x[1] > \"%s\"}; " \
           "for (i=1; i<=c2; i++){print C_count[i]; split(C_count[i],x,\" \"); print \">\" x[1]  > \"%s\"}}' > %s " \
           "&& mv %s %s" % (
@@ -228,12 +220,6 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
         cmd = "mawk 'BEGIN{FS=\"\\|\"} {print $4}' %s | blastdbcmd -db %s -entry_batch - " \
               "-target_only -outfmt '%%s' | paste -d '\\n' %s - > %s" \
               % (nt_header_path, blastdb_nt, nt_header_path, nt_out_path)
-        # cmd = "head -n15 %s | mawk 'BEGIN{FS=\"\\|\"} {print $4}' - | blastdbcmd -db %s -entry_batch - " \
-        #       "-target_only -outfmt '%%s' | paste -d '\\n' %s - > %s" \
-        #       % (nt_header_path, blastdb_nt, nt_header_path, nt_out_path)
-        # cmd = "mawk 'BEGIN{FS=\"\\|\"} {if ($0 ~ /^C/) print $4}' %s | blastdbcmd -db %s -entry_batch - " \
-        #       "-target_only -outfmt '%%s' | mawk '{getline line < \"%s\"; split(line,lineArr,\" \"); printf(\">%%s\\n%%s\\n\",lineArr[1], $0)}' - > %s" \
-        #       % (header_count_path, blastdb_nt, header_count_path, nt_out_path)
         run_cmd(cmd, log_out)
 
     # Get wgs sequences
@@ -248,12 +234,6 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
         cmd = "mawk 'BEGIN{FS=\"\\|\"} {print $4}' %s | blastdbcmd -db %s " \
               "-entry_batch - -target_only -outfmt '%%s' | paste -d '\\n' %s - > %s" \
               % (wgs_header_path, blastdb_refseq, wgs_header_path, wgs_out_path)
-        # cmd = "head -n15 %s | mawk 'BEGIN{FS=\"\\|\"} {print $4}' - | blastdbcmd -db %s " \
-        #       "-entry_batch - -target_only -outfmt '%%s' | paste -d '\\n' %s - > %s" \
-        #       % (wgs_header_path, blastdb_refseq, wgs_header_path, wgs_out_path)
-        # cmd = "mawk 'BEGIN{FS=\"\\|\"} {if ($0 ~ /^W|^>W/) print $4}' %s | blastdbcmd -db %s " \
-        #         "-entry_batch - -target_only -outfmt '%%s' | mawk '{getline line < \"%s\"; split(line,lineArr,\" \"); printf(\">%%s\\n%%s\\n\",lineArr[1], $0)}' - > %s" \
-        #         % (header_count_path, blastdb_refseq, header_count_path, wgs_out_path)
         run_cmd(cmd, log_out)
 
     # Merge references together
