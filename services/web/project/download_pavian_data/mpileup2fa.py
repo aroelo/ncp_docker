@@ -31,6 +31,7 @@ def mpileup_to_fasta(mpileup, output):
         read_bases = read_bases.upper()
         # add header & consensus to fasta if new contig
         if contig != prev_contig and prev_contig is not None:
+            consensus_seq = consensus_seq.replace('N', '*')
             fasta += '>' + prev_contig + '\n' + consensus_seq + '\n'
             consensus_seq = ''
 
