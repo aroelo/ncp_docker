@@ -6,6 +6,7 @@ import zipfile
 from project import app
 from project.download_pavian_data.make_output_files import make_output
 from project.jbrowse.visualise_jbrowse import visualize_jbrowse
+import traceback
 
 from flask import (
     Blueprint,
@@ -103,9 +104,10 @@ def main(args=None, human=False):
         open(running_log_path, "a")
         try:
             taxid_tmp_file = make_output(sub_dir_path, taxid, bam_path, bigwig_path, df_reads_path)
-        except Exception as e:
-            print(str(e))
+        except Exception:
+            print(traceback.format_exc())
             shutil.rmtree(sub_dir_path)
+            e = 'item:' +str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc()
             abort(500, e)
 
     if action == 'jbrowse':
