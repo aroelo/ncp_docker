@@ -8,7 +8,7 @@ Docker daemon is hosted on port 2376
 Useful cmds in Naktest-01, `/5_workspace/docker/pavian_docker` using conda bio environment (just for docker-compose to work):  
 **For dev part**  
 Build  
-`docker-compose build --build-arg SSH_PRIVATE_KEY="$(cat /home/aroe/.ssh/id_rsa)" --build-arg SSH_PUBLIC_KEY="$(cat /home/aroe/.ssh/id_rsa.pub)" --build-arg CACHE_DATE=$(date +%s) pavian`  
+`docker-compose build --build-arg SSH_PRIVATE_KEY="$(cat /home/aroe/.ssh/id_rsa)" --build-arg SSH_PUBLIC_KEY="$(cat /home/aroe/.ssh/id_rsa.pub)" --build-arg CACHE_DATE=$(date +%s)`  
 Up  
 `docker-compose up -d`  
 Seed pavian datatable  
