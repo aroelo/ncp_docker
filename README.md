@@ -4,7 +4,7 @@ Following this link to set up dev and production environment:
 https://testdriven.io/blog/dockerizing-flask-with-postgres-gunicorn-and-nginx/
 
 **Using this set-up somewhere else**   
- *  First, git clone repo from  http://gitlab.naktuinbouw.net/bioinformatics/pavian_docker.git  
+ *  First, git clone repo from  https://github.com/aroelo/ncp_docker.git  
  
  Then change:  
  *  The settings in the env to their correct settings
