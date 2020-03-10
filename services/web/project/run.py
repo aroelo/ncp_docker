@@ -15,7 +15,7 @@ def parse_args():
                                help='which action will be executed (either download/jbrowse/view_reads)')
 
     configuration.add_argument('-host', type=str,
-                               default='***REMOVED***',
+                               required=True,
                                help='which address will be used to host the app on')
     configuration.add_argument('-jbrowse_port', type=str,
                                default=5004,
