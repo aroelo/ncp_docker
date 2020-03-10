@@ -54,6 +54,10 @@ def create_taxid_tmp_file(taxids):
 
 
 def make_capped_coverage_bam(bam_in_path, bam_out_path, header_count_path, coverage_cap):
+    """
+    The notallowed_indices list/check is made, because this is faster than numpy.amax(),
+    the number of times numpy.amax() has to be executed is therefore reduced.
+    """
     header_count = open(header_count_path, 'r')
     ref_list = []
     for header in header_count:
@@ -68,26 +72,32 @@ def make_capped_coverage_bam(bam_in_path, bam_out_path, header_count_path, cover
         if contig not in ref_list:
             continue
         ref_length = bam_headers_dict[contig]
+        # Create bin size depending on ref length
         bin_size = 1
         if ref_length >= 100000:
             bin_size = 50
         elif ref_length >= 500000:
             bin_size = 100
-        coverage_array = numpy.zeros(shape=-(-ref_length//bin_size), dtype=int)
+        # Create array, taking into account bin size and rounding upwards
+        coverage_array = numpy.zeros(shape=-(-ref_length // bin_size), dtype=int)
+        # List to store indices of which it is known they are already at coverage_cap
         notallowed_indices = []
 
         read_count = 0
         for read in bam_in.fetch(contig):
-            binned_start = read.reference_start//bin_size
-            binned_end = read.reference_end//bin_size
-            if read_count < coverage_cap-1:
+            binned_start = read.reference_start // bin_size
+            binned_end = read.reference_end // bin_size
+            # Save some time here, the first x reads can be added without any checks at all (x = coverage_cap)
+            if read_count < coverage_cap - 1:
                 read_count += 1
                 bam_out.write(read)
                 coverage_array[binned_start:binned_end] += 1
                 continue
 
             if notallowed_indices:
+                # Go through each index in list
                 for idx in notallowed_indices[0]:
+                    # If the current read overlaps this index then it shouldn't be added
                     if binned_start <= idx <= binned_end:
                         skip = True
                         break
@@ -95,11 +105,15 @@ def make_capped_coverage_bam(bam_in_path, bam_out_path, header_count_path, cover
                 skip = False
                 continue
 
+            # Add potential read
             coverage_array[binned_start:binned_end] += 1
-            if numpy.amax(coverage_array) < coverage_cap:
+            # After adding, check if the max is now still lower than the coverage
+            if numpy.amax(coverage_array) <= coverage_cap:
                 bam_out.write(read)
+                # Recalculate notallowed_indices
+                notallowed_indices = numpy.nonzero(coverage_array == coverage_cap)
+            # If coverage cap is reached, then the read is removed from the array
             else:
-                notallowed_indices = numpy.nonzero(coverage_array >= coverage_cap)
                 coverage_array[binned_start:binned_end] -= 1
     bam_in.close()
     bam_out.close()
@@ -146,15 +160,11 @@ def render_datatable_html(df_pickle, taxid_file, taxids, html_path, sub_dir_path
     taxid_list = ','.join(taxid_list)
 
     html_file = open(html_path, "w")
-    # script_dir = os.path.dirname(os.path.realpath(__file__))
-    # reads_datatables = open(os.path.join(script_dir, "reads_datatable_blast_flask.html")).read().format(df_pickle,
-    #                                                                                                     taxid_list,
-    #                                                                                                     sub_dir_path,
-    #                                                                                                     str(taxids[0]))
 
     # Context is necessary, because template is rendered outside a request.
     with app.app_context():
-        reads_datatables = render_template('reads_datatable_blast.html', df_pickle=df_pickle, taxid_list=taxid_list, sub_dir_path=sub_dir_path, taxid=str(taxids[0]))
+        reads_datatables = render_template('reads_datatable_blast.html', df_pickle=df_pickle, taxid_list=taxid_list,
+                                           sub_dir_path=sub_dir_path, taxid=str(taxids[0]))
     html_file.write(reads_datatables)
     html_file.close()
     return None
@@ -181,36 +191,50 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     sam_out_path = sub_dir_path + "/" + str(taxids[0]) + ".sorted.sam"
     fasta_out = sub_dir_path + "/" + str(taxids[0]) + ".fasta"
 
-    #          {print ">"$1"\\n"$10 > "%s"; if(assigned_taxid==taxid[3]) print $0, header_count[$3]++}}}
-    cmd = ["samtools view -@20 -F2820 %s" % bam_in_path,
-           """| mawk 'NR==FNR{taxids[$1]} {split($3,taxid,"|")}
-          {for (i=12;i<=NF;i++) if ($i ~/^ti:Z:/){assigned_taxid=substr($i,6); if(assigned_taxid in taxids)
-          {print ">"$1"\\n"$10 > "%s"; print $0, header_count[$3]++}}}
-          END {for (header in header_count) print header, header_count[header] > "%s"}' %s /dev/stdin > %s; """
-           % (fasta_out, header_count_path, taxid_tmp_file.name, sam_out_path),
-           "samtools view -H -@20 -F2820 %s" % bam_in_path,
-           """| mawk 'NR==FNR{header_count[$1]} {if ($1=="@SQ"&&substr($2,4) in header_count) {print $0}
-          else {if ($1!="@SQ"&&substr($1,1,1)=="@") print $0}}' %s /dev/stdin | cat - %s |
-          samtools view -@10 -Sb - > %s; samtools index -@10 %s"""
-           % (header_count_path, sam_out_path, bam_out_path, bam_out_path)]
+    cmd = (
+        # View only primary alignments (-F2820)
+        f'samtools view -@20 -F2820 {bam_in_path} | '
+        # Store taxids from taxid_tmp_file.name in array and taxid of current read in 'taxid' var
+        'mawk \'NR==FNR{taxids[$1]} {split($3,taxid,"|")}'
+        # Check all fields/column from 12 and later for 'ti:Z' tag, and store as assigned_taxid
+        '{for (i=12;i<=NF;i++) if ($i ~/^ti:Z:/){assigned_taxid=substr($i,6);'
+        # Print out read in fasta format to file, print read itself to stdout and add 1 to counter for read's reference
+        'if (assigned_taxid in taxids) {print ">"$1"\\n"$10 > ' + f'"{fasta_out}";' + 'print $0, header_count[$3]++}}}'
+        # Print total count for each reference to fle
+        'END {for (header in header_count) print header, header_count[header] > ' + f'"{header_count_path}"' + '}\' '
+        f'{taxid_tmp_file.name} /dev/stdin > {sam_out_path};'
+    )
+    run_cmd(cmd, log_out)
 
-    # cmd = '|'.join(cmd).replace('\n', '')
-    cmd = ''.join(cmd).replace('\n', '')
+    cmd = (
+        # View only primary alignments (-F2820)
+        f'samtools view -H -@20 -F2820 {bam_in_path} | '
+        # Create header_count array, get header lines by looking for "@SQ"
+        'mawk \'NR==FNR{header_count[$1]} {if ($1=="@SQ"&&substr($2,4) in header_count) {print $0}'
+        'else {if ($1!="@SQ"&&substr($1,1,1)=="@") print $0}}\' '
+        f'{header_count_path} /dev/stdin | cat - {sam_out_path} | '
+        f'samtools view -@10 -Sb - > {bam_out_path}; samtools index -@10 {bam_out_path}'
+    )
     run_cmd(cmd, log_out)
 
     # Sort header_count and cap at 15 per nt/wgs
     nt_header_path = sub_dir_path + "/" + str(taxids[0]) + ".nt_header.txt"
     wgs_header_path = sub_dir_path + "/" + str(taxids[0]) + ".wgs_header.txt"
-    cmd = "sort -nrk 2,2 %s | mawk '{if ($0 ~ /^C/){ " \
-          "if (c<30){c+=1; C_count[c]=$0}} " \
-          "else if($0 ~ /^W|^>W/){" \
-          "if (w<30){w+=1; W_count[w]=$0}}} " \
-          "END{total=w+c; if(total>30){total=30}; " \
-          "if (w<15){c2=total-w} else{c2=c}; if (c<15){w2=total-c} else {w2=w}; " \
-          "for (i=1; i<=w2; i++){print W_count[i]; split(W_count[i],x,\" \"); print \">\" x[1] > \"%s\"}; " \
-          "for (i=1; i<=c2; i++){print C_count[i]; split(C_count[i],x,\" \"); print \">\" x[1]  > \"%s\"}}' > %s " \
-          "&& mv %s %s" % (
-              header_count_path, wgs_header_path, nt_header_path, header_count_tmp, header_count_tmp, header_count_path)
+    cmd = (
+        # Sort reference by no of reads mapped to them
+        f'sort -nrk 2,2 {header_count_path} | '
+        # Count no. of nt(C) & wgs(W) references and store them in array
+        'mawk \'{if ($0 ~ /^C/){if (c<30){c+=1; C_count[c]=$0}} '
+        'else if($0 ~ /^W|^>W/){if (w<30){w+=1; W_count[w]=$0}}} '
+        # Cap total no of references to 30
+        'END{total=w+c; if(total>30){total=30}; '
+        # Cap total wgs/nt reference to 15, unless there are less than 15 ref of the other
+        'if (w<15){c2=total-w} else{c2=c}; if (c<15){w2=total-c} else {w2=w}; '
+        # Print these reference names to separate files and store the sorted header_count file 
+        'for (i=1; i<=w2; i++){print W_count[i]; split(W_count[i],x," "); print ">" x[1] > ' + f'"{wgs_header_path}"' + '}; '
+        'for (i=1; i<=c2; i++){print C_count[i]; split(C_count[i],x," "); print ">" x[1] > ' + f'"{nt_header_path}"' + '}}\''
+        f'> {header_count_tmp} && mv {header_count_tmp} {header_count_path}'
+    )
     run_cmd(cmd, log_out)
 
     # Get nt sequences
@@ -263,15 +287,15 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     consensus_path = sub_dir_path + "/" + str(taxids[0]) + ".cons.fa"
     # Check to create consensus & method to create bigwig
     # If longest reference is bigger than 1 million bp, don't create consensus
-    cmd = f"sort -nrk2,2 {ref_out_path+'.fai'} | cut -f2 | head -n1"
+    cmd = f"sort -nrk2,2 {ref_out_path + '.fai'} | cut -f2 | head -n1"
     ps = subprocess.Popen(cmd, shell=True, executable='/bin/bash',
                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = ps.communicate()
     stdout = stdout.decode().replace('\r', '\n')
-    #TODO adjust tracklist.Json or make clear to users in other way that consensus isn't made, because file is too big.
+    # TODO adjust tracklist.Json or make clear to users in other way that consensus isn't made, because file is too big.
     if int(stdout) > 1000000:
         # create empty cons file
-        cmd = f"touch {consensus_path}; touch {consensus_path+'.fai'}"
+        cmd = f"touch {consensus_path}; touch {consensus_path + '.fai'}"
         run_cmd(cmd, log_out)
 
         # Create bigwig track
@@ -290,7 +314,7 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
 
         # Use length of longest sequence (reference vs consensus)
         index_tmp_path = sub_dir_path + "/" + str(taxids[0]) + ".ref.fa.fai.tmp"
-        cmd = f"mawk 'BEGIN{{OFS=\"\\t\"}} {{if(NR==FNR){{_[$1]=$2;next}} {{if (_[$1]>$2) print $1,_[$1],$3,$4,$5; else print $1,$2,$3,$4,$5}}}}' {consensus_path+'.fai'} {ref_out_path+'.fai'} > {index_tmp_path} & mv {index_tmp_path} {ref_out_path+'.fai'}"
+        cmd = f"mawk 'BEGIN{{OFS=\"\\t\"}} {{if(NR==FNR){{_[$1]=$2;next}} {{if (_[$1]>$2) print $1,_[$1],$3,$4,$5; else print $1,$2,$3,$4,$5}}}}' {consensus_path + '.fai'} {ref_out_path + '.fai'} > {index_tmp_path} & mv {index_tmp_path} {ref_out_path + '.fai'}"
         run_cmd(cmd, log_out)
 
         # Create bigwig track
@@ -306,7 +330,8 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
 
     running_log_file = os.path.join(sub_dir_path, str(taxids[0]) + "running.log")
     print('deleting tmp files..')
-    delete_tmp_files(sam_out_path, nt_out_path, wgs_out_path, nt_header_path, wgs_header_path, chromsizes_path, bedgraph_path, running_log_file)
+    delete_tmp_files(sam_out_path, nt_out_path, wgs_out_path, nt_header_path, wgs_header_path, chromsizes_path,
+                     bedgraph_path, running_log_file)
     print('finished')
 
     return taxid_tmp_file.name

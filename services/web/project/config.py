@@ -7,9 +7,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config(object):
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite://")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    STATIC_FOLDER = f"{os.getenv('APP_FOLDER')}/project/static"
-    MEDIA_FOLDER = f"{os.getenv('APP_FOLDER')}/project/media"
-    STRING = f"{os.getenv('PRINT_STRING')}"
+    # STATIC_FOLDER = f"{os.getenv('APP_FOLDER')}/project/static"
+    # MEDIA_FOLDER = f"{os.getenv('APP_FOLDER')}/project/media"
 
     HOST_IP = f"{os.getenv('HOST_IP')}"
     JBROWSE_PORT = f"{os.getenv('JBROWSE_PORT')}"

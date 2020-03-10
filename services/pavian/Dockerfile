@@ -34,28 +34,13 @@ RUN R -e "install.packages('devtools');"
 
 RUN R -e "install.packages('BiocManager');BiocManager::install('Rsamtools')"
 
-# add credentials on build
-ARG SSH_PRIVATE_KEY
-ARG SSH_PUBLIC_KEY
-RUN mkdir /root/.ssh/
-RUN echo "${SSH_PRIVATE_KEY}" > /root/.ssh/id_rsa
-RUN echo "${SSH_PUBLIC_KEY}" > /root/.ssh/id_rsa.pub
-
-#Gitlab requires a private key with strict permission settings
-RUN chmod 600 /root/.ssh/id_rsa
-RUN chmod 600 /root/.ssh/id_rsa.pub
-
-# make sure your domain is accepted
-RUN touch /root/.ssh/known_hosts
-RUN ssh-keyscan gitlab.naktuinbouw.net >> /root/.ssh/known_hosts
-
 ARG BRANCH
 # Execute install_git twice, first time to download & install packages which will likely not change much, cache of this can then be used in the following step, when the up-to-date repo is pulled.
-RUN R -e "creds <- git2r::cred_ssh_key('/root/.ssh/id_rsa.pub', '/root/.ssh/id_rsa');devtools::install_git('git@gitlab.naktuinbouw.net:bioinformatics/pavian.git', ref='${BRANCH}', credentials=creds)"
+RUN R -e "devtools::install_github('git@github.com:aroelo/ncp_pavian.git', ref='${BRANCH}')"
 
 # Use arg with current datetime to make sure everything after here is re-build without cache (so git pull is done again)
 ARG CACHE_DATE=2019-11-28
-RUN R -e "creds <- git2r::cred_ssh_key('/root/.ssh/id_rsa.pub', '/root/.ssh/id_rsa');devtools::install_git('git@gitlab.naktuinbouw.net:bioinformatics/pavian.git', ref='${BRANCH}', credentials=creds)"
+RUN R -e "devtools::install_github('git@github.com:aroelo/ncp_pavian.git', ref='${BRANCH}')"
 
 RUN R -e "sapply(list.files(system.file('shinyapp',package='pavian'),full.names=TRUE),file.copy,to='/srv/shiny-server/',recursive=TRUE)"
 
