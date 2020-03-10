@@ -44,7 +44,10 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_ENV}
       - POSTGRES_DB=${POSTGRES_DB_PROD_ENV}
   nginx:
-    build: ./services/nginx
+    build:
+      context: ./services/nginx
+      args:
+        - POSTGRES_USER_ENV=${POSTGRES_USER_ENV}
     volumes:
       - static_volume:/home/app/web/project/static
       - media_volume:/home/app/web/project/media
@@ -71,7 +74,7 @@ services:
       - PAVIAN_IN=/pavian/in
       - SQL_HOST=${SQL_HOST_ENV}
       - HOST_IP=${HOST_IP_ENV}
-      - FLASK_PORT=${FLASK_PORT_ENV}
+      - FLASK_PORT=1337
       - POSTGRES_USER=${POSTGRES_USER_ENV}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_ENV}
       - POSTGRES_DB=${POSTGRES_DB_PROD_ENV}
