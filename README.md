@@ -4,7 +4,15 @@ Following this link to set up dev and production environment:
 https://testdriven.io/blog/dockerizing-flask-with-postgres-gunicorn-and-nginx/
 
 **Using this set-up somewhere else**   
- *  First, git clone repo from  https://github.com/aroelo/ncp_docker.git  
+ *  Use docker-compose version 1.25.1 or later
+ *  Git clone repo from  https://github.com/aroelo/ncp_docker.git  
+ *  Use the blast_v5 branch
+ *  Make sure all ports are open/accessible:
+    *  3838 - pavian (hardcoded in Dockerfile)
+    *  1337 - nginx (hardcoded)
+    *  $JBROWSE_PORT_ENV
+    *  $FLASK_PORT_ENV
+
  
  Then change:  
  *  The settings in the env to their correct settings
@@ -40,6 +48,7 @@ Check logs
 **Debugging**  
 To debug the script in e.g. pycharm that creates all output files per taxid, run `services/web/project/run.py`  with the -human argument and all other required arguments.  
 Choose '-human main' to just run the main command, creating output files, or choose '-human app' to start up a flask app locally outside the docker environment.
+For the imports to work you have to mark the `services/web` directory as sources root in pycharm.
 
 
 **Syncing pavian input sql database**  
