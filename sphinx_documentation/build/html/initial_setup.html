@@ -1,0 +1,246 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Initial set-up &#8212; Pavian visualisation docker  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Added functionality to pavian" href="functionality.html" />
+    <link rel="prev" title="Script documentation" href="scripts.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="initial-set-up">
+<h1>Initial set-up<a class="headerlink" href="#initial-set-up" title="Permalink to this headline">¶</a></h1>
+<p>The results from the classification pipeline can be visualised with our custom pavian version, which has some extra functionalities compared to the original pavian.</p>
+<div class="line-block">
+<div class="line">The custom pavian can be easily set-up with docker-compose. The pavian docker repository is available at:  <a class="reference external" href="https://github.com/aroelo/ncp_docker">https://github.com/aroelo/ncp_docker</a></div>
+<div class="line">Currently, there are two branches available. The blast_v5 branch works with the latest blast database and should be used for any new set-ups.</div>
+<div class="line">The difference lies in the naming of the blast database that is used with the blastdbcmd.</div>
+</div>
+<div class="line-block">
+<div class="line">For the latest blast databases there is no ‘_v5’ suffix when the database is at version 5.</div>
+<div class="line">This isn’t the case for the blast databases that are currently used at Naktuinbouw.</div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The github repository is mirrored from the internal gitlab repository at <a class="reference external" href="http://gitlab.naktuinbouw.net/bioinformatics/pavian_docker/">http://gitlab.naktuinbouw.net/bioinformatics/pavian_docker/</a></p>
+<p class="last">All sensitive information has been removed from git history with <a class="reference external" href="https://rtyley.github.io/bfg-repo-cleaner/">https://rtyley.github.io/bfg-repo-cleaner/</a>, see <a class="reference external" href="http://gitlab.naktuinbouw.net/bioinformatics/pavian_docker/issues/7">http://gitlab.naktuinbouw.net/bioinformatics/pavian_docker/issues/7</a></p>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>docker-compose version 1.25.1 or later</li>
+<li><dl class="first docutils">
+<dt>open/accessible ports for (defaults):</dt>
+<dd><ul class="first last">
+<li>pavian (3838)</li>
+<li>jbrowse (5004)</li>
+<li>flask app (5000)</li>
+<li>gunicorn (5000)</li>
+<li>nginx (1337)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>output directory on host should be writable for all users</li>
+</ul>
+<div class="section" id="external-files-and-databases">
+<h3>External files and databases<a class="headerlink" href="#external-files-and-databases" title="Permalink to this headline">¶</a></h3>
+<p>There are some external files necessary, these can be found in this repository in the ‘data’ directory’:</p>
+<ul class="simple">
+<li>taxa.sqlite</li>
+<li>taxa.sqlite.traverse.pkl</li>
+</ul>
+<div class="line-block">
+<div class="line">Two databases are needed, these are likely already created for the classification pipeline.</div>
+<div class="line">If this is not the case, they can be created with the ‘download_databases.sh’ script that is available in the classification repository.</div>
+<div class="line">The databases are:</div>
+</div>
+<ul class="simple">
+<li>nt database</li>
+<li>wgs database</li>
+</ul>
+<div class="line-block">
+<div class="line">See <span class="xref std std-ref">reference_databases_setup</span> for instructions on running this script if you haven’t done this yet.</div>
+<div class="line">For the pavian visualisation it is <cite>not</cite> necessary to include the ‘-wgs_fasta’ option.</div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We should include the external files &amp; script in the docker git repository or as a submodule.
+Alternatively we could create a new git repository that only contains shared files/script with the classification pipeline &amp; pavian docker.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Perhaps it would be nice to add some example files to this repository, so they can be used to test functionality in pavian</p>
+</div>
+</div>
+</div>
+<div class="section" id="creating-the-env-file">
+<h2>Creating the .env file<a class="headerlink" href="#creating-the-env-file" title="Permalink to this headline">¶</a></h2>
+<p>Inside this repository there is a ‘env’ file which should be modified with the correct values for paths/ports etc.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Even though some ports seem to be custom, they are still hardcoded in some parts of the code.
+This is the case for:</p>
+<blockquote class="last">
+<div><ol class="arabic simple">
+<li>jbrowse (5004)</li>
+<li>pavian (3838)</li>
+<li>nginx (1337)</li>
+<li>flask (5000)</li>
+</ol>
+<ol class="arabic simple">
+<li>Should be modified in <cite>services/jbrowse/Dockerfile</cite> with an arg based on env value</li>
+<li>Should be modified in <cite>services/pavian/Dockerfile</cite> with an arg based on env value</li>
+<li>Should be modified in <cite>docker-compose.prod.yml</cite> with env value</li>
+<li>Should be modifief in <cite>docker-compose.yml</cite> and <cite>docker-compose.prod.yml</cite> with env value</li>
+</ol>
+</div></blockquote>
+</div>
+<p>After changing the values in the env file, make sure to rename it to ‘.env’, so the values are automatically read-in during docker-compose.</p>
+</div>
+<div class="section" id="docker-compose-commands">
+<h2>Docker-compose commands<a class="headerlink" href="#docker-compose-commands" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="building-the-docker-containers">
+<h3>Building the docker containers<a class="headerlink" href="#building-the-docker-containers" title="Permalink to this headline">¶</a></h3>
+<p>Make sure that you have entered the directory where the docker-compose files are present.</p>
+<p>To build the dev environment:</p>
+<p><cite>docker-compose build –build-arg CACHE_DATE=$(date +%s)</cite></p>
+<p>To build the prod environment:</p>
+<p><cite>docker-compose -f docker-compose.prod.yml build –build-arg CACHE_DATE=$(date +%s)</cite></p>
+<p>The CACHE_DATE building arg is present to ensure that the external pavian repository is cloned from github when re-building the docker container.</p>
+<p>On the initial build this will be done anyway, however when re-building at a later stage, docker-compose will use cache. If the build-arg is not provided it will use the current cached version of the pavian container, even if there is a newer version available from github.</p>
+<p>A re-build of the docker-container(s) is preferred whenever there is either an update in this repository or in the external pavian repository.</p>
+</div>
+<div class="section" id="running-the-docker-containers">
+<h3>Running the docker containers<a class="headerlink" href="#running-the-docker-containers" title="Permalink to this headline">¶</a></h3>
+<p>Dev environment:</p>
+<p><cite>docker-compose up</cite></p>
+<p>Prod environment:</p>
+<p><cite>docker-compose -f docker-compose.prod.yml up</cite></p>
+<p>Add the ‘-d’ parameter to run the containers ‘detached’ in the background.</p>
+<p>If there are any issues with the databases, it is recommend to shut down any running containers (see below) and retry.</p>
+</div>
+<div class="section" id="shutting-down-the-docker-containers">
+<h3>Shutting down the docker containers<a class="headerlink" href="#shutting-down-the-docker-containers" title="Permalink to this headline">¶</a></h3>
+<p>Dev environment:</p>
+<p><cite>docker-compose down -v</cite></p>
+<p>Prod environment:</p>
+<p><cite>docker-compose -f docker-compose.prod.yml down -v</cite></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pavian visualisation docker</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="scripts.html">Script documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Initial set-up</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#external-files-and-databases">External files and databases</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-the-env-file">Creating the .env file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-compose-commands">Docker-compose commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building-the-docker-containers">Building the docker containers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-docker-containers">Running the docker containers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#shutting-down-the-docker-containers">Shutting down the docker containers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="functionality.html">Added functionality to pavian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nanopore_classification_pipeline.html">Nanopore classification pipeline</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="scripts.html" title="previous chapter">Script documentation</a></li>
+      <li>Next: <a href="functionality.html" title="next chapter">Added functionality to pavian</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, tgu, aroe.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/initial_setup.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
