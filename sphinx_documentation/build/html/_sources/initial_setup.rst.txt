@@ -8,7 +8,7 @@ The results from the classification pipeline can be visualised with our custom p
 | The difference lies in the naming of the blast database that is used with the blastdbcmd.
 
 | For the latest blast databases there is no '_v5' suffix when the database is at version 5.
-| This isn't the case for the blast databases that are currently used at Naktuinbouw.
+| This isn't the case for the blast databases that are currently used at Naktuinbouw, so here the 'master' branch should be used.
 
 .. note::
     The github repository is mirrored from the internal gitlab repository at http://gitlab.naktuinbouw.net/bioinformatics/pavian_docker/
@@ -78,7 +78,8 @@ Docker-compose commands
 Building the docker containers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Make sure that you have entered the directory where the docker-compose files are present.
+Make sure that you have entered the directory where the docker-compose files are present. With the docker-compose file several services can be build at once.
+For a full explanation of the docker-compose files (dev & prod) and the services see :ref:`docker_compose1` and :ref:`docker_services`.
 
 To build the dev environment:
 

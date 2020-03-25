@@ -16,7 +16,7 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Added functionality to pavian" href="functionality.html" />
+    <link rel="next" title="Added functionality to pavian" href="custom_pavian_tools.html" />
     <link rel="prev" title="Script documentation" href="scripts.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -44,7 +44,7 @@
 </div>
 <div class="line-block">
 <div class="line">For the latest blast databases there is no ‘_v5’ suffix when the database is at version 5.</div>
-<div class="line">This isn’t the case for the blast databases that are currently used at Naktuinbouw.</div>
+<div class="line">This isn’t the case for the blast databases that are currently used at Naktuinbouw, so here the ‘master’ branch should be used.</div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -128,7 +128,8 @@ This is the case for:</p>
 <h2>Docker-compose commands<a class="headerlink" href="#docker-compose-commands" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="building-the-docker-containers">
 <h3>Building the docker containers<a class="headerlink" href="#building-the-docker-containers" title="Permalink to this headline">¶</a></h3>
-<p>Make sure that you have entered the directory where the docker-compose files are present.</p>
+<p>Make sure that you have entered the directory where the docker-compose files are present. With the docker-compose file several services can be build at once.
+For a full explanation of the docker-compose files (dev &amp; prod) and the services see <a class="reference internal" href="docker_compose.html#docker-compose1"><span class="std std-ref">Docker-compose files</span></a> and <a class="reference internal" href="docker_services.html#docker-services"><span class="std std-ref">Docker services</span></a>.</p>
 <p>To build the dev environment:</p>
 <p><cite>docker-compose build –build-arg CACHE_DATE=$(date +%s)</cite></p>
 <p>To build the prod environment:</p>
@@ -190,7 +191,9 @@ This is the case for:</p>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="functionality.html">Added functionality to pavian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_pavian_tools.html">Added functionality to pavian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docker_compose.html">Docker-compose files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docker_services.html">Docker services</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nanopore_classification_pipeline.html">Nanopore classification pipeline</a></li>
 </ul>
 
@@ -199,7 +202,7 @@ This is the case for:</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="scripts.html" title="previous chapter">Script documentation</a></li>
-      <li>Next: <a href="functionality.html" title="next chapter">Added functionality to pavian</a></li>
+      <li>Next: <a href="custom_pavian_tools.html" title="next chapter">Added functionality to pavian</a></li>
   </ul></li>
 </ul>
 </div>

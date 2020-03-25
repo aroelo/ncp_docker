@@ -11,7 +11,9 @@ Welcome to Pavian visualisation docker's documentation!
 
    scripts
    initial_setup
-   functionality
+   custom_pavian_tools
+   docker_compose
+   docker_services
 
    nanopore_classification_pipeline
 

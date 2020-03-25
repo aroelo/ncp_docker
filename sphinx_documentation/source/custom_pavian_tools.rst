@@ -50,4 +50,6 @@ A coverage track displaying the actual coverage. It's based on all reads that ar
 
 View reads and blast
 ----------------------
-
+This will open a datatable externally that contains all reads and their alignment scores.
+Every row represents one read, in case there are secondary mapping for the reads their alignment scores are displayed as well together with an 'error tag' if applicable.
+This 'error tag' has been assigned during the classification pipeline with the filter_bam.py script.
