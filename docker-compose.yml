@@ -4,19 +4,21 @@ services:
   web:
     build:
       context: ./services/web
+      dockerfile: Dockerfile.prod
       args:
         - BLAST_VERSION=${BLAST_VERSION}
-    command: python manage.py run -h 0.0.0.0
+    command: gunicorn --bind 0.0.0.0:${FLASK_PORT_ENV} manage:app --timeout 300
     volumes:
-      - ./services/web/:/usr/src/app/
+      - static_volume:/home/app/web/project/static
+      - media_volume:/home/app/web/project/media
       - ${PAVIAN_IN_H}:/pavian/in:ro
       - ${PAVIAN_OUT_H}:/pavian/out
       - ${TAXA_SQLITE_H}:/pavian/taxa.sqlite
       - ${TAXA_SQLITE_PKL_H}:/pavian/taxa.sqlite.traverse.pkl
       - ${BLASTDB_NT_H}:/blast_db/nt
       - ${BLASTDB_REFSEQ_H}:/blast_db/refseq
-    ports:
-      - 5000:5000
+    expose:
+      - ${FLASK_PORT_ENV}
     environment:
       - FLASK_APP=project/__init__.py
       - BLASTDB_NT=/blast_db/nt/nt_v5
@@ -30,7 +32,7 @@ services:
       - HOST_IP=${HOST_IP_ENV}
       - JBROWSE_PORT=${JBROWSE_PORT_ENV}
       - FLASK_PORT=${FLASK_PORT_ENV}
-      - DATABASE_URL=postgresql://${POSTGRES_USER_ENV}:${POSTGRES_PASSWORD_ENV}@${SQL_HOST_ENV}:${SQL_PORT_ENV}/${POSTGRES_DB_DEV_ENV}
+      - DATABASE_URL=postgresql://${POSTGRES_USER_ENV}:${POSTGRES_PASSWORD_ENV}@${SQL_HOST_ENV}:${SQL_PORT_ENV}/${POSTGRES_DB_PROD_ENV}
     # Depends on db, because tables Classes are created in __init__.py
     depends_on:
       - db
@@ -41,22 +43,39 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER_ENV}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_ENV}
-      - POSTGRES_DB=${POSTGRES_DB_DEV_ENV}
+      - POSTGRES_DB=${POSTGRES_DB_PROD_ENV}
+  nginx:
+    build:
+      context: ./services/nginx
+      args:
+        - POSTGRES_USER_ENV=${POSTGRES_USER_ENV}
+        - FLASK_PORT_ENV=${FLASK_PORT_ENV}
+    volumes:
+      - static_volume:/home/app/web/project/static
+      - media_volume:/home/app/web/project/media
+    ports:
+      - ${NGINX_PORT_ENV}:80
+    depends_on:
+      - web
   jbrowse:
-    build: ./services/jbrowse
+    build:
+      context: ./services/jbrowse
+      args:
+        - JBROWSE_PORT=${JBROWSE_PORT_ENV}
     volumes:
       - ${PAVIAN_OUT_H}:/jbrowse/data/pavianfiles
     ports:
-      - 5004:5004
+      - ${JBROWSE_PORT_ENV}:${JBROWSE_PORT_ENV}
   pavian:
     build:
       context: ./services/pavian
       args:
-        - BRANCH=dev
+        - BRANCH=${PAVIAN_BRANCH_ENV}
+        - PAVIAN_PORT=${PAVIAN_PORT_ENV}
     volumes:
       - ${PAVIAN_IN_H}:/pavian/in:ro
     ports:
-      - 3838:3838
+      - ${PAVIAN_PORT_ENV}:${PAVIAN_PORT_ENV}
 #    secrets:
 #      - db-user
 #      - db-pass
@@ -64,10 +83,11 @@ services:
       - PAVIAN_IN=/pavian/in
       - SQL_HOST=${SQL_HOST_ENV}
       - HOST_IP=${HOST_IP_ENV}
-      - FLASK_PORT=${FLASK_PORT_ENV}
+      - PAVIAN_PORT=${PAVIAN_PORT_ENV}
+      - NGINX_PORT=${NGINX_PORT_ENV}
       - POSTGRES_USER=${POSTGRES_USER_ENV}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_ENV}
-      - POSTGRES_DB=${POSTGRES_DB_DEV_ENV}
+      - POSTGRES_DB=${POSTGRES_DB_PROD_ENV}
 #      - POSTGRES_USER={{DOCKER-SECRET:db-user}}
 #      - POSTGRES_PASSWORD={{DOCKER-SECRET:db-pass}}
 
@@ -79,3 +99,5 @@ services:
 
 volumes:
   postgres_data:
+  static_volume:
+  media_volume:
