@@ -19,7 +19,8 @@ RUN rm -rf /usr/share/nginx/html && ln -s /conda/opt/jbrowse/ /usr/share/nginx/h
     sed -i '/include += {dataRoot}\/tracks.conf/a include += {dataRoot}\/datasets.conf' /conda/opt/jbrowse/jbrowse.conf && \
     sed -i '/include += {dataRoot}\/tracks.conf/a include += {dataRoot}\/../datasets.conf' /conda/opt/jbrowse/jbrowse.conf
 
+ARG JBROWSE_PORT
 # Replace default port 80 with port 5004
-RUN sed -i 's/listen       80;/listen       5004;/g' /etc/nginx/conf.d/default.conf
+RUN sed -i 's/listen       80;/listen       '$JBROWSE_PORT';/g' /etc/nginx/conf.d/default.conf
 
 CMD ["nginx", "-g", "daemon off;"]
