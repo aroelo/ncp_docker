@@ -1,0 +1,15 @@
+# image: python:3.6-alpine
+
+pages:
+  stage: deploy
+  script:
+  - pip install --user sphinx
+  - pip install --user sphinx_rtd_theme
+  - pip install --user recommonmark
+  - sphinx-build sphinx_documentation/source/ _build/html
+  - mv _build/html public
+  artifacts:
+    paths:
+      - public
+  only:
+  - master
