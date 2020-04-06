@@ -4,11 +4,19 @@ Initial set-up
 The results from the classification pipeline can be visualised with our custom pavian version, which has some extra functionalities compared to the original pavian.
 
 | The custom pavian can be easily set-up with docker-compose. The pavian docker repository is available at:  https://github.com/aroelo/ncp_docker
+
+Branches: master vs blast_v5
+---------------------------------
+
 | Currently, there are two branches available. The blast_v5 branch works with the latest blast database and should be used for any new set-ups.
 | The difference lies in the naming of the blast database that is used with the blastdbcmd.
 
 | For the latest blast databases there is no '_v5' suffix when the database is at version 5.
 | This isn't the case for the blast databases that are currently used at Naktuinbouw, so here the 'master' branch should be used.
+| The suffix has to be hardcoded in both of the docker-compose files in the BLASTDB_NT environment variable, because of how the blastdbcmd works.
+
+| If the directory path where e.g. the nt blast database is stored is `/6_db_ssd/blastdb/nt`, then the full path that the blastdbcmd uses is `/6_db_ssd/blastdb/nt/nt_v5`.
+| For the latest blast database release it would just be `/6_db_ssd/blastdb/nt/nt`.
 
 .. note::
     The github repository is mirrored from the internal gitlab repository at http://gitlab.naktuinbouw.net/bioinformatics/pavian_docker/
