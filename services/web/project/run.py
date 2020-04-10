@@ -21,7 +21,7 @@ def parse_args():
                                default=5004,
                                help='port on which jbrowse is hosted')
     configuration.add_argument('-out_dir_path', type=str,
-                               default="/8_expand_ssd/pavian_output",
+                               default="/6_db_ssd/pavian_output",
                                help='output directory to store files')
     configuration.add_argument('-taxa_sqlite', type=str,
                                default="/5_workspace/repos/Nanopore-classification-pipeline/data/taxa.sqlite",
@@ -30,7 +30,7 @@ def parse_args():
                                default="/6_db_ssd/blast_DBv5/nt_v5/nt_v5",
                                help='nt blastdb to extract reference sequences from')
     configuration.add_argument('-blastdb_refseq', type=str,
-                               default="/6_db_ssd/blast_DBv4/refseq_genomic/refseq_genomic",
+                               default="/6_db_ssd/blast_DBv5/refseq_genomic_v5/",
                                help='refseq blastdb to extract reference sequences from')
 
     configuration.add_argument('-human',
