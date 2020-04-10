@@ -51,9 +51,10 @@ RUN chown shiny:shiny /var/lib/shiny-server
 RUN mkdir -p /var/log/shiny-server
 RUN chown shiny:shiny /var/log/shiny-server
 
-EXPOSE 3838
+ARG PAVIAN_PORT
+EXPOSE $PAVIAN_PORT
 
-CMD R -e "options('shiny.port'=3838,shiny.host='0.0.0.0'); shiny::runApp('/srv/shiny-server/app.R')"
+CMD R -e "options(shiny.port=${PAVIAN_PORT}, shiny.host='0.0.0.0'); shiny::runApp('/srv/shiny-server/app.R')"
 
 #COPY ./entrypoint.sh /usr/bin/shiny-server.sh
 #

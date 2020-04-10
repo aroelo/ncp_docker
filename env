@@ -11,12 +11,17 @@ PAVIAN_OUT_H= # /pavian_output_dir - can be empty
 TAXA_SQLITE_H= # /path/to/taxa.sqlite
 TAXA_SQLITE_PKL_H= # /path/to/taxa.sqlite.traverse.pkl
 
+# Pavian branch. 'dev' or 'master'
+PAVIAN_BRANCH_ENV= # master
+
 # IP's and ports
 SQL_HOST_ENV= # e.g. db
 SQL_PORT_ENV= # default 5432
 HOST_IP_ENV= # host ip-address
+PAVIAN_PORT_ENV= # e.g. 3838
 JBROWSE_PORT_ENV= # e.g. 5004
 FLASK_PORT_ENV= # e.g. 5000
+NGINX_PORT_ENV= # e.g. 1337
 
 # db
 POSTGRES_USER_ENV= # postgres username
