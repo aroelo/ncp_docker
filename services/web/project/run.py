@@ -21,7 +21,7 @@ def parse_args():
                                default=5004,
                                help='port on which jbrowse is hosted')
     configuration.add_argument('-out_dir_path', type=str,
-                               default="/8_expand_ssd/pavian_output",
+                               default="/6_db_ssd/pavian_output",
                                help='output directory to store files')
     configuration.add_argument('-taxa_sqlite', type=str,
                                default="/5_workspace/repos/Nanopore-classification-pipeline/data/taxa.sqlite",
