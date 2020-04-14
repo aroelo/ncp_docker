@@ -18,7 +18,7 @@ https://testdriven.io/blog/dockerizing-flask-with-postgres-gunicorn-and-nginx/
  If there are any issues with the databases, it is recommend to do docker-compose down -v and then docker-compose up.  
 
 Useful cmds in Naktest-01, `/5_workspace/docker/pavian_docker` using conda bio environment (just for docker-compose to work):  
-**For dev part - default port 3838**  
+**For dev part - default port 3839**  
 Build  
 `docker-compose -p dev build --build-arg CACHE_DATE=$(date +%s)`  
 Up  
@@ -29,7 +29,7 @@ Check logs
 `docker-compose -p dev logs -f`
 
 
-**For prod part - default port 3839**  
+**For prod part - default port 3838**  
  Build  
  `docker-compose build --build-arg CACHE_DATE=$(date +%s)`  
  Up  
