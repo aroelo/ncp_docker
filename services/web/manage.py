@@ -23,10 +23,14 @@ def create_db():
 @cli.command("seed_pavian_db")
 def seed_pavian_db():
     input_dir = app.config['PAVIAN_IN']
+    # pavian files in sql
     pavian_sql = pavian_files_sql()
-    pavian_dir = pavian_files_dir(input_dir)
+    # pavian files in dir
+    pavian_dir, pavian_symlink_files = pavian_files_dir(input_dir)
 
+    # pavian files that are not yet in sql, but in directory (should be added to sql)
     not_in_sql = pavian_dir - pavian_sql
+    # pavian files that are in sql, but not in directory (should be deleted from sql)
     not_in_dir = pavian_sql - pavian_dir
 
     print("Added new runs:")
@@ -42,6 +46,10 @@ def seed_pavian_db():
             update_support_column(pavian_basename, False)
         else:
             update_support_column(pavian_basename, True)
+
+    print("\nIgnored pavian symlink files:")
+    for pavian_basename in pavian_symlink_files:
+        print(pavian_basename.strip('.pavian'))
 
     print("\nDeleted runs:")
     for pavian_basename in not_in_dir:
@@ -66,15 +74,19 @@ def pavian_files_dir(input_dir):
     """
     (root, dirs, files) = next(os.walk(input_dir))
     pavian_files = []
+    pavian_symlink_files = []
     for file in files:
         if file.endswith('.pavian'):
-            pavian_files.append(file)
-    return set(pavian_files)
+            if os.path.islink(os.path.join(root, file)):
+                pavian_symlink_files.append(file)
+            else:
+                pavian_files.append(file)
+    return set(pavian_files), set(pavian_symlink_files)
 
 
 def insert_into_sql(input_dir, pavian_basename):
     """
-    Create info file and use info file to insert data into mysql database
+    Insert data into mysql database
     :param input_dir: directory containing pavian files
     :param pavian_basename: relative pavian file name
     :return: None

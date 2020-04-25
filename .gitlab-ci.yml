@@ -1,5 +1,7 @@
 # image: python:3.6-alpine
-
+variables:
+  reposerver: '172.27.26.5'
+  repobasepath: '/5_workspace/repos/'
 pages:
   stage: deploy
   script:
@@ -13,3 +15,13 @@ pages:
       - public
   only:
   - master
+downloadrepo:
+  stage: test
+  script:
+    - ssh -t gitlabrunner@$reposerver "cd $repobasepath"
+  only:
+    - master
+test_variable:
+  stage: test
+  script:
+    - echo $CI_JOB_STAGE
