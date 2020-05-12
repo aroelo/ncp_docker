@@ -35,10 +35,10 @@ dev:
     - eval $(keychain --eval id_rsa_airflow)
     # this part must be done from prod!
     - >
-    ssh airflow@$AIRFLOW_MASTER
-    "cd $DEV_PATH &&
-    git reset --hard && 
-    git checkout $CI_COMMIT_REF_NAME &&
-    git pull"
+      ssh airflow@$AIRFLOW_MASTER
+      "cd $DEV_PATH &&
+      git reset --hard && 
+      git checkout $CI_COMMIT_REF_NAME &&
+      git pull"
    - if [[ $? != 0 ]]; then exit $?; fi
 
