@@ -1,12 +1,13 @@
 import os
-from ete3 import NCBITaxa
-import tempfile
 import subprocess
-import pysam
+import tempfile
+
 import numpy
 import pyBigWig
-from project import app
+import pysam
+from ete3 import NCBITaxa
 from flask import render_template
+from project import app
 
 
 def run_cmd(cmd, log_out):
@@ -176,6 +177,10 @@ def delete_tmp_files(*args):
             os.remove(tmp_file)
 
 
+def add_gff3(ids):
+    return None
+
+
 def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     # get all child taxids for given taxid.
     taxids = [taxid] + get_child_taxa(taxid)
@@ -190,6 +195,7 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     bam_out_path = sub_dir_path + "/" + str(taxids[0]) + ".sorted.bam"
     sam_out_path = sub_dir_path + "/" + str(taxids[0]) + ".sorted.sam"
     fasta_out = sub_dir_path + "/" + str(taxids[0]) + ".fasta"
+    gff_out = sub_dir_path + "/" + str(taxids[0]) + ".gff3"
 
     cmd = (
         # View only primary alignments (-F2820)
@@ -268,6 +274,27 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     # Index reference
     cmd = "samtools faidx %s" % ref_out_path
     run_cmd(cmd, log_out)
+
+    # download gff3 files
+    cmd = (  # read the fai file line by line
+        f'while read line;'
+        # make sure we get gbid, this is at position 4
+        f'do gbid=$(echo $line|cut -f4 -d "|");'
+        # $longid is the first line, this is what we need to use in the gff3
+        f'longid=$(echo $line|cut -d " " -f1);'
+        # put some details in the log file, send gff3 file to stdout
+        f'echo getting genbank entry $gbid from genbank for $longid;'
+        f'wget "https://www.ncbi.nlm.nih.gov/sviewer/viewer.cgi?db=nuccore&report=gff3&id=$gbid" -O /dev/stdout '
+        # replace $gbid for $longid and remove empty lines /^$/d
+        f'|sed "s/$gbid/$longid/;/^$/d"   >> {gff_out};'
+        # parse ref_out_path line by line, limit,
+        # todo: determine if we ever need more than 40 entries
+        f'done < head -n 40 {ref_out_path}.fai'
+        f';bgzip {gff_out} && tabix -p gff {gff_out}.gz')
+    run_cmd(cmd, log_out)
+    # make sure our gff_out gets the proper extension
+    gff_out += '.gz'
+    assert os.path.exists(gff_out)
 
     # Create bam file that has a cap on coverage so it can be visualised in Jbrowse.
     capped_bam_out_path = sub_dir_path + "/" + str(taxids[0]) + ".sorted.capped.bam"
