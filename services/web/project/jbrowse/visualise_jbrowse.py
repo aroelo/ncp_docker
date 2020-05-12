@@ -1,6 +1,7 @@
-from project import app
-import os
 import json
+import os
+
+from project import app
 
 
 def visualize_jbrowse(taxid, sub_dir_path):
@@ -66,6 +67,27 @@ def make_json(prefix, input_dir):
                                 # add bigwig histogram option
                                 "cacheMismatches": "True",
                                 "chunkSizeLimit": "5000000"
+                                })
+    # add GFF3 file to trackList.json
+    tracklist['tracks'].append({"category": "Annotation",
+                                "key": "Genbank annotation",
+                                "label": "Genbank annotation",
+                                "type": "JBrowse/View/Track/CanvasFeatures",
+                                "urlTemplate": "%s.gff3.gz" % prefix,
+                                "style": {
+                                    "_defaultHistScale": 4,
+                                    "_defaultLabelScale": 30,
+                                    "_defaultDescriptionScale": 120,
+                                    # Comma-separated list of case-insensitive feature tags to use
+                                    # for showing the feature's label.
+                                    # The first one found will be used. Default 'name,id'.
+                                    "label": "produt,id",
+                                    # style→description	Comma-separated list of case-insensitive
+                                    # feature tags to check for the feature's long description.
+                                    # The first one found will be used. Default 'note,description'.
+                                    # If blank no description is used.
+                                    "description": "note, description"
+                                },
                                 })
 
     json_path = os.path.join(input_dir, 'trackList.json')
