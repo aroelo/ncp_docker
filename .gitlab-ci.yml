@@ -41,5 +41,10 @@ dev:
       git checkout $CI_COMMIT_REF_NAME &&
       git pull"
     - if [[ $? != 0 ]]; then exit $?; fi
+    - >
+      ssh airflow@$reposerver
+      "cd $DEV_PATH;
+      docker-compose -p dev up -d"
+    - if [[ $? != 0 ]]; then exit $?; fi
   only:
     - dev
