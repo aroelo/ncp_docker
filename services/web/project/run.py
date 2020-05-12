@@ -30,7 +30,7 @@ def parse_args():
                                default="/6_db_ssd/blast_DBv5/nt_v5/nt_v5",
                                help='nt blastdb to extract reference sequences from')
     configuration.add_argument('-blastdb_refseq', type=str,
-                               default="/6_db_ssd/blast_DBv4/refseq_genomic/refseq_genomic",
+                               default="/6_db_ssd/blast_DBv5/refseq_genomic_v5/",
                                help='refseq blastdb to extract reference sequences from')
 
     configuration.add_argument('-human',
