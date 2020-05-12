@@ -38,7 +38,7 @@ dev:
     - >
       ssh airflow@$reposerver
       "cd $DEV_PATH;
-      docker-compose -p dev up -d"
+      docker-compose -p pavian_docker_dev up -d"
     - if [[ $? != 0 ]]; then exit $?; fi
   only:
     - dev
