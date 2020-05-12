@@ -289,7 +289,7 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
         f'|sed "s/$gbid/$longid/;/^$/d"   >> {gff_out};'
         # parse ref_out_path line by line, limit,
         # todo: determine if we ever need more than 40 entries
-        f'done < (head -n 40 {ref_out_path}.fai)'
+        f'done < {ref_out_path}.fai'
         f';bgzip {gff_out} && tabix -p gff {gff_out}.gz')
     run_cmd(cmd, log_out)
     # make sure our gff_out gets the proper extension
