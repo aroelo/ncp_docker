@@ -18,12 +18,6 @@ pages:
       - public
   only:
   - master
-downloadrepo:
-  stage: test
-  script:
-    - ssh -t gitlabrunner@$reposerver "cd $repobasepath"
-  only:
-    - master
 test_variable:
   stage: test
   script:
