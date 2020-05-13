@@ -17,6 +17,7 @@ services:
       - ${TAXA_SQLITE_PKL_H}:/pavian/taxa.sqlite.traverse.pkl
       - ${BLASTDB_NT_H}:/blast_db/nt
       - ${BLASTDB_REFSEQ_H}:/blast_db/refseq
+      - ${CODE_VOLUME}:/home/app/web
     expose:
       - ${FLASK_PORT_ENV}
     environment:

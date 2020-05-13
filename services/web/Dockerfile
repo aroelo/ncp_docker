@@ -71,7 +71,7 @@ ENV PATH="/home/app/web/samtools-1.10:/blast/bin:/home/app/web:${PATH}"
 RUN mkdir -p /blast_db/nt /blast_db/refseq /pavian/out /pavian/in
 
 # copy project
-COPY . $APP_HOME
+#COPY . $APP_HOME
 
 # chown all the files to the app user
 RUN chown -R app:app $APP_HOME
