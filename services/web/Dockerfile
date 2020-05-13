@@ -76,6 +76,9 @@ RUN mkdir -p /blast_db/nt /blast_db/refseq /pavian/out /pavian/in
 # chown all the files to the app user
 RUN chown -R app:app $APP_HOME
 
+#
+RUN apt-get install tabix
+
 # change to the app user
 USER app
 
