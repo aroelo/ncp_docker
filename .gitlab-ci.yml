@@ -33,7 +33,8 @@ dev:
       "cd $DEV_PATH &&
       git reset --hard && 
       git checkout $CI_COMMIT_REF_NAME &&
-      git pull"
+      git pull &&
+      cat env > .env"
     - if [[ $? != 0 ]]; then exit $?; fi
     - >
       ssh airflow@$reposerver
