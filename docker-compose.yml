@@ -22,7 +22,7 @@ services:
     environment:
       - FLASK_APP=project/__init__.py
       - BLASTDB_NT=/blast_db/nt/nt_v5
-      - BLASTDB_REFSEQ=/blast_db/refseq/refseq_genomic
+      - BLASTDB_REFSEQ=/blast_db/refseq/refseq_genomic.fa
       - PAVIAN_IN=/pavian/in
       - PAVIAN_OUT=/pavian/out
       - TAXA_SQLITE=/pavian/taxa.sqlite
