@@ -19,8 +19,6 @@ services:
       - ${BLASTDB_REFSEQ_H}:/blast_db/refseq
     expose:
       - ${FLASK_PORT_ENV}
-    ports:
-      - ${WEB_DEBUG_PORT}:${WEB_DEBUG_PORT}
     environment:
       - FLASK_APP=project/__init__.py
       - BLASTDB_NT=/blast_db/nt/nt_v5
