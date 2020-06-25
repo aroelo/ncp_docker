@@ -14,17 +14,17 @@ TAXA_SQLITE_H=/5_workspace/repos/Nanopore-classification-pipeline/data/taxa.sqli
 TAXA_SQLITE_PKL_H=/5_workspace/repos/Nanopore-classification-pipeline/data/taxa.sqlite.traverse.pkl
 
 # Pavian branch. 'dev' or 'master'
-PAVIAN_BRANCH_ENV=dev
-CODE_VOLUME=/5_workspace/docker/pavian_docker_dev
+PAVIAN_BRANCH_ENV=master
+CODE_VOLUME=/5_workspace/docker/pavian_docker
 
 # IP's and ports
 SQL_HOST_ENV=db
 SQL_PORT_ENV=5432
 HOST_IP_ENV=172.27.26.5
-PAVIAN_PORT_ENV=3839
-JBROWSE_PORT_ENV=5005
-FLASK_PORT_ENV=5001
-NGINX_PORT_ENV=1338
+PAVIAN_PORT_ENV=3838
+JBROWSE_PORT_ENV=5004
+FLASK_PORT_ENV=5000
+NGINX_PORT_ENV=1337
 
 # db
 POSTGRES_USER_ENV=hello_flask
