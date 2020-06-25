@@ -7,7 +7,7 @@ BLAST_VERSION=2.10.0
 
 # Host volumes
 BLASTDB_NT_H=/6_db_ssd/blast_DBv5/nt_v5
-BLASTDB_REFSEQ_H=/6_db_ssd/blast_DBv4/refseq_genomic
+BLASTDB_REFSEQ_H=/6_db_ssd/blast_DBv5
 PAVIAN_IN_H=/6_db_ssd/pavian_input
 PAVIAN_OUT_H=/6_db_ssd/pavian_output
 TAXA_SQLITE_H=/5_workspace/repos/Nanopore-classification-pipeline/data/taxa.sqlite
@@ -25,6 +25,7 @@ PAVIAN_PORT_ENV=3839
 JBROWSE_PORT_ENV=5005
 FLASK_PORT_ENV=5001
 NGINX_PORT_ENV=1338
+DEBUG_WEB=6060
 
 # db
 POSTGRES_USER_ENV=hello_flask
