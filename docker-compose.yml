@@ -35,7 +35,7 @@ services:
       - HOST_DOMAIN=${HOST_DOMAIN_ENV}
       - JBROWSE_PORT=${JBROWSE_PORT_ENV}
       - FLASK_PORT=${FLASK_PORT_ENV}
-      - DATABASE_URL=postgresql://${POSTGRES_USER_ENV}:${POSTGRES_PASSWORD_ENV}@${SQL_HOST_ENV}:${SQL_PORT_ENV}/${POSTGRES_DB_PROD_ENV}
+      - DATABASE_URL=postgresql://${POSTGRES_USER_ENV}:${POSTGRES_PASSWORD_ENV}@${SQL_HOST_ENV}:${SQL_PORT_ENV}/${POSTGRES_DB_DEV_ENV}
     # Depends on db, because tables Classes are created in __init__.py
     depends_on:
       - db
