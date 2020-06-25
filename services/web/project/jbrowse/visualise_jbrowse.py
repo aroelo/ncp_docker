@@ -81,7 +81,7 @@ def make_json(prefix, input_dir):
                                     # Comma-separated list of case-insensitive feature tags to use
                                     # for showing the feature's label.
                                     # The first one found will be used. Default 'name,id'.
-                                    "label": "produt,id",
+                                    "label": "product,id",
                                     # style→description	Comma-separated list of case-insensitive
                                     # feature tags to check for the feature's long description.
                                     # The first one found will be used. Default 'note,description'.
