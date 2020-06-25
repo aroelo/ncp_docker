@@ -1,6 +1,7 @@
-from project import app
-from download_pavian_data import controllers
 import argparse
+
+from download_pavian_data import controllers
+from project import app
 
 
 def parse_args():
@@ -30,8 +31,10 @@ def parse_args():
                                default="/6_db_ssd/blast_DBv5/nt_v5/nt_v5",
                                help='nt blastdb to extract reference sequences from')
     configuration.add_argument('-blastdb_refseq', type=str,
-                               default="/6_db_ssd/blast_DBv5/refseq_genomic_v5/",
-                               help='refseq blastdb to extract reference sequences from')
+                               default=f"'/6_db_ssd/blast_DBv5/ref_viroids_rep_genomes/ref_viroids_rep_genomes "
+                                       f"/6_db_ssd/blast_DBv5/ref_viruses_rep_genomes/ref_viruses_rep_genomes "
+                                       f"/6_db_ssd/blast_DBv5/ref_prok_rep_genomes/ref_prok_rep_genomes'",
+                               help='refseq blastdbs to extract reference sequences from')
 
     configuration.add_argument('-human',
                                choices=['main', 'app'],
