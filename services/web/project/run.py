@@ -50,7 +50,7 @@ if __name__ == "__main__":
         app.config['PAVIAN_OUT'] = args.out_dir_path
         app.config['BLASTDB_NT'] = args.blastdb_nt
         app.config['BLASTDB_REFSEQ'] = args.blastdb_refseq
-        app.config['HOST_IP'] = args.host
+        app.config['HOST_DOMAIN'] = args.host
         app.config['JBROWSE_PORT'] = args.jbrowse_port
         app.config['TAXA_SQLITE'] = args.taxa_sqlite
         if args.human == 'main':

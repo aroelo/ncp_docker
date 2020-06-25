@@ -11,7 +11,7 @@ class Config(object):
     # STATIC_FOLDER = f"{os.getenv('APP_FOLDER')}/project/static"
     # MEDIA_FOLDER = f"{os.getenv('APP_FOLDER')}/project/media"
 
-    HOST_IP = f"{os.getenv('HOST_IP')}"
+    HOST_DOMAIN = f"{os.getenv('HOST_DOMAIN')}"
     JBROWSE_PORT = f"{os.getenv('JBROWSE_PORT')}"
     PAVIAN_IN = f"{os.getenv('PAVIAN_IN')}"
     PAVIAN_OUT = f"{os.getenv('PAVIAN_OUT')}"

@@ -320,8 +320,6 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     stdout, stderr = ps.communicate()
     stdout = stdout.decode().replace('\r', '\n')
     # TODO adjust tracklist.Json or make clear to users in other way that consensus isn't made, because file is too big.
-    if stdout == '':
-        pass
     if int(stdout) > 1000000:
         # create empty cons file
         cmd = f"touch {consensus_path}; touch {consensus_path + '.fai'}"

@@ -20,7 +20,7 @@ CODE_VOLUME=/5_workspace/docker/pavian_docker_dev
 # IP's and ports
 SQL_HOST_ENV=db
 SQL_PORT_ENV=5432
-HOST_IP_ENV=172.27.26.5
+HOST_DOMAIN_ENV=-dev.naktuinbouw.cloud
 PAVIAN_PORT_ENV=3839
 JBROWSE_PORT_ENV=5005
 FLASK_PORT_ENV=5001
