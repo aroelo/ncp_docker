@@ -1,5 +1,6 @@
 import os
 
+import glob
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -17,3 +18,8 @@ class Config(object):
     TAXA_SQLITE = f"{os.getenv('TAXA_SQLITE')}"
     BLASTDB_NT = f"{os.getenv('BLASTDB_NT')}"
     BLASTDB_REFSEQ = f"{os.getenv('BLASTDB_REFSEQ')}"
+    print('original env variable', BLASTDB_REFSEQ)
+    # enables listing multiple blast db's
+    BLASTDB_REFSEQ = "'%s'" % ("  ".join([f.replace('.not', '') for f
+                                          in glob.glob(f'{BLASTDB_REFSEQ}/ref_*/*.not')]))
+    print(f'{BLASTDB_REFSEQ}/ref_*/*.not', BLASTDB_REFSEQ)
