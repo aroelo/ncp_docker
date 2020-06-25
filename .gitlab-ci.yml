@@ -8,6 +8,7 @@ variables:
 pages:
   stage: deploy
   script:
+    - python -m ensurepip
     - python -m pip install --user sphinx
     - python -m pip install --user sphinx_rtd_theme
     - python -m pip install --user recommonmark
