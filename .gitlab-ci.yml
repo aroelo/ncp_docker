@@ -2,6 +2,9 @@
 variables:
   reposerver: '172.27.26.5'
   repobasepath: '/5_workspace/repos/'
+  MASTER_PATH: /5_workspace/docker/pavian_docker
+  DEV_PATH: /5_workspace/docker/pavian_docker_dev
+  AIRFLOW_MASTER: prod-01.airflow.naktuinbouw.cloud
 pages:
   stage: deploy
   script:
@@ -19,3 +22,24 @@ test_variable:
   stage: test
   script:
     - echo $CI_JOB_STAGE
+dev:
+  stage:
+    build
+  script:
+    - eval $(keychain --eval id_rsa_airflow)
+    # this part must be done from prod!
+    - >
+      ssh airflow@$AIRFLOW_MASTER
+      "cd $DEV_PATH &&
+      git reset --hard && 
+      git checkout $CI_COMMIT_REF_NAME &&
+      git pull &&
+      cat env > .env"
+    - if [[ $? != 0 ]]; then exit $?; fi
+    - >
+      ssh airflow@$reposerver
+      "cd $DEV_PATH;
+      docker-compose -p pavian_docker_dev up -d"
+    - if [[ $? != 0 ]]; then exit $?; fi
+  only:
+    - dev

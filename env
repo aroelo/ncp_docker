@@ -1,30 +1,33 @@
-# After filling in these values, rename this file to '.env' so the environment variables can be used
 # These values are visible in the docker-compose file, but not in the container.
+
+# Docker daemon is hosted on port 2376
+
 # ARGS Blast version
-BLAST_VERSION= # tested with version 2.10.0
+BLAST_VERSION=2.10.0
 
 # Host volumes
-BLASTDB_NT_H= # e.g. /blast_nt_dir/nt
-BLASTDB_REFSEQ_H= # e.g. /blast_refseq_dir/refseq_genomic
-PAVIAN_IN_H= # /pavian_input_dir - contains pavian files & support dir
-PAVIAN_OUT_H= # /pavian_output_dir - can be empty
-TAXA_SQLITE_H= # /path/to/taxa.sqlite
-TAXA_SQLITE_PKL_H= # /path/to/taxa.sqlite.traverse.pkl
+BLASTDB_NT_H=/6_db_ssd/blast_DBv5/nt_v5
+BLASTDB_REFSEQ_H=/6_db_ssd/blast_DBv4/refseq_genomic
+PAVIAN_IN_H=/6_db_ssd/pavian_input
+PAVIAN_OUT_H=/6_db_ssd/pavian_output
+TAXA_SQLITE_H=/5_workspace/repos/Nanopore-classification-pipeline/data/taxa.sqlite
+TAXA_SQLITE_PKL_H=/5_workspace/repos/Nanopore-classification-pipeline/data/taxa.sqlite.traverse.pkl
 
 # Pavian branch. 'dev' or 'master'
-PAVIAN_BRANCH_ENV= # master
+PAVIAN_BRANCH_ENV=dev
+CODE_VOLUME=/5_workspace/docker/pavian_docker_dev
 
 # IP's and ports
-SQL_HOST_ENV= # e.g. db
-SQL_PORT_ENV= # default 5432
-HOST_IP_ENV= # host ip-address
-PAVIAN_PORT_ENV= # e.g. 3838
-JBROWSE_PORT_ENV= # e.g. 5004
-FLASK_PORT_ENV= # e.g. 5000
-NGINX_PORT_ENV= # e.g. 1337
+SQL_HOST_ENV=db
+SQL_PORT_ENV=5432
+HOST_IP_ENV=172.27.26.5
+PAVIAN_PORT_ENV=3839
+JBROWSE_PORT_ENV=5005
+FLASK_PORT_ENV=5001
+NGINX_PORT_ENV=1338
 
 # db
-POSTGRES_USER_ENV= # postgres username
-POSTGRES_PASSWORD_ENV= # postgres password
-POSTGRES_DB_DEV_ENV= # postgres dev db name
-POSTGRES_DB_PROD_ENV= # postgres prod db name
+POSTGRES_USER_ENV=hello_flask
+POSTGRES_PASSWORD_ENV=hello_flask
+POSTGRES_DB_DEV_ENV=hello_flask_dev
+POSTGRES_DB_PROD_ENV=hello_flask_prod

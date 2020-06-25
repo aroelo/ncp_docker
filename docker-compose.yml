@@ -17,8 +17,11 @@ services:
       - ${TAXA_SQLITE_PKL_H}:/pavian/taxa.sqlite.traverse.pkl
       - ${BLASTDB_NT_H}:/blast_db/nt
       - ${BLASTDB_REFSEQ_H}:/blast_db/refseq
+      - ${CODE_VOLUME}/services/web:/home/app/web
     expose:
       - ${FLASK_PORT_ENV}
+    ports:
+      - ${DEBUG_WEB}:${DEBUG_WEB}
     environment:
       - FLASK_APP=project/__init__.py
       - BLASTDB_NT=/blast_db/nt/nt_v5
