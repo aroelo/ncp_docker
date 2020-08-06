@@ -6,7 +6,7 @@ from project import app
 
 def visualize_jbrowse(taxid, sub_dir_path):
     trackList = make_json(taxid, sub_dir_path)
-    JbrowseBaseUrl = "http://" + str(app.config['HOST_DOMAIN'])
+    JbrowseBaseUrl = f'http://jbrowse{app.config["HOST_DOMAIN"]}'
     # return_url = JbrowseBaseUrl + '?data=/data/' + sub_dir_path[sub_dir_path.index('pavianfiles'):]
     return_url = JbrowseBaseUrl + '?data=/data/pavianfiles/' + os.path.basename(sub_dir_path)
     handle = open(os.path.join(sub_dir_path, [f for f in os.listdir(sub_dir_path)
