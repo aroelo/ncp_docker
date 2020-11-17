@@ -121,7 +121,12 @@ def main(args=None, human=False):
 
     if action == 'jbrowse':
         # get jbrowse url
-        url = visualize_jbrowse(taxid, sub_dir_path)
+        try:
+            url = visualize_jbrowse(taxid, sub_dir_path)
+        except Exception:
+            print(traceback.format_exc())
+            e = 'item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc()
+            abort(500, e)
         print('<meta http-equiv="refresh" content="0;URL=%s" />' % url)
         return redirect(url, code=302)
 
