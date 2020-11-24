@@ -59,7 +59,7 @@ def main(args=None, human=False):
     taxid, pavian_file, action = get_parameters(human, args)
 
     main_dir_path = app.config['PAVIAN_OUT']
-    sample = Path(pavian_file).with_suffix('')
+    sample = Path(pavian_file).stem
 
     support_files_path = Path(pavian_file).parent / "support_files" / sample
     bam_path = support_files_path / f"{sample}.filtered_s.bam"
@@ -72,8 +72,9 @@ def main(args=None, human=False):
         assert df_reads_path.exists(), f'DF reads path did not exist. Given:\n{df_reads_path}'
     except Exception:
         print(traceback.format_exc())
-        e = ('item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc() + '\n' +
-             '\n'.join([str(f) for f in [bam_path, bigwig_path, df_reads_path] if not f.exists()]))
+        e = ('item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc() + '\n' # +
+             # '\n'.join([str(f) for f in [bam_path, bigwig_path, df_reads_path] if not f.exists()])
+             )
         abort(500, e)
 
     sub_dir_path = os.path.join(main_dir_path, str(taxid) + "_" + sample)
