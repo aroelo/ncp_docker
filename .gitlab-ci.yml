@@ -8,11 +8,11 @@ variables:
 pages:
   stage: deploy
   script:
-  - pip install --user sphinx
-  - pip install --user sphinx_rtd_theme
-  - pip install --user recommonmark
-  - sphinx-build sphinx_documentation/source/ _build/html
-  - mv _build/html public
+    - python -m pip install --user sphinx
+    - python -m pip install --user sphinx_rtd_theme
+    - python -m pip install --user recommonmark
+    - sphinx-build sphinx_documentation/source/ _build/html
+    - mv _build/html public
   artifacts:
     paths:
       - public
