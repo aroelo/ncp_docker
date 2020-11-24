@@ -1,6 +1,8 @@
 import argparse
-
-from download_pavian_data import controllers
+try:
+    from download_pavian_data import controllers
+except ImportError:
+    from services.web.project.download_pavian_data import controllers
 from project import app
 
 
