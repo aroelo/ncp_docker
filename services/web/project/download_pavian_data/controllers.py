@@ -73,7 +73,7 @@ def main(args=None, human=False):
     except Exception:
         print(traceback.format_exc())
         e = ('item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc() + '\n' +
-             '\n'.join([f for f in [bam_path, bigwig_path, df_reads_path] if not f.exists()]))
+             '\n'.join([str(f) for f in [bam_path, bigwig_path, df_reads_path] if not f.exists()]))
         abort(500, e)
 
     sub_dir_path = os.path.join(main_dir_path, str(taxid) + "_" + sample)
