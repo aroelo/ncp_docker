@@ -72,8 +72,7 @@ def main(args=None, human=False):
         assert df_reads_path.exists(), f'DF reads path did not exist. Given:\n{df_reads_path}'
     except Exception:
         print(traceback.format_exc())
-        e = ('item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc() +
-             'item:This file did not exist:\n' +
+        e = ('item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc() + '\n' +
              '\n'.join([f for f in [bam_path, bigwig_path, df_reads_path] if not f.exists()]))
         abort(500, e)
 
