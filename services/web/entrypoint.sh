@@ -8,6 +8,7 @@ done
 
 echo "PostgreSQL started"
 python manage.py create_db
+echo "DB created"
 python manage.py seed_pavian_db
-
+echo "DB seeded"
 exec "$@"
