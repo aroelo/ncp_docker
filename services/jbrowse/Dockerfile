@@ -1,7 +1,9 @@
 FROM nginx
-ARG UID=$UID
-ARG GID=$GID
+ARG UID
+ARG GID
+ARG JBROWSE_PORT
 RUN echo UID:$UID
+RUN echo JBROWSE_PORT:$JBROWSE_PORT
 RUN echo GID:$GID
 RUN groupadd -r $GID && useradd -r -g $GID $UID
 ENV DEBIAN_FRONTEND noninteractive
