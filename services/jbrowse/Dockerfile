@@ -2,7 +2,7 @@ FROM nginx
 ARG UID
 ARG GID
 RUN echo UID:$UID
-RUN echo GID:$GID
+RUN echo GID:π$GID
 RUN groupadd -r $GID && useradd -r -g $GID $UID
 ENV DEBIAN_FRONTEND noninteractive
 
