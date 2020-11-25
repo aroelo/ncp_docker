@@ -77,7 +77,7 @@ RUN mkdir -p /blast_db/nt /blast_db/refseq /pavian/out /pavian/in
 RUN chown -R app:app $APP_HOME
 
 #
-RUN apt-get install -y tabix
+RUN apt-get update && apt-get install -y tabix --fix-missing
 
 # change to the app user
 USER app
