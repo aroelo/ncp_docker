@@ -1,4 +1,7 @@
 FROM nginx
+ARG UID
+ARG GID
+RUN groupadd -r $GID && useradd -r -g $GID $UID
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7
