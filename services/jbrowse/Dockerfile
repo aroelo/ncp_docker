@@ -1,6 +1,6 @@
 FROM nginx
-ARG UID
-ARG GID
+ARG UID=$UID
+ARG GID=$GID
 RUN echo UID:$UID
 RUN echo GID:$GID
 RUN groupadd -r $GID && useradd -r -g $GID $UID
