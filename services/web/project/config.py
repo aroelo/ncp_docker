@@ -22,4 +22,4 @@ class Config(object):
     # enables listing multiple blast db's
     BLASTDB_REFSEQ = "'%s'" % ("  ".join([f.replace('.not', '') for f
                                           in glob.glob(f'{BLASTDB_REFSEQ}/ref_*/*.not')]))
-    print(f'{BLASTDB_REFSEQ}/ref_*/*.not', BLASTDB_REFSEQ)
+    print(f'Glob: {BLASTDB_REFSEQ}/ref_*/*.not', '\n\nLoading:\n', BLASTDB_REFSEQ.replace('  ', '\n'))

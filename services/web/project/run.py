@@ -1,6 +1,8 @@
 import argparse
-
-from download_pavian_data import controllers
+try:
+    from download_pavian_data import controllers
+except ImportError:
+    from services.web.project.download_pavian_data import controllers
 from project import app
 
 
@@ -56,4 +58,4 @@ if __name__ == "__main__":
         if args.human == 'main':
             controllers.main(args, human=True)
         else:
-            app.run(debug=True, host=args.host, port=5001)
+            app.run(debug=True, host=args.host, port=5000)

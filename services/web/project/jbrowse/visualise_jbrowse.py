@@ -22,6 +22,7 @@ def make_json(prefix, input_dir):
     # set reference sequence
     tracklist = {'formatVersion': 1,
                  'refSeqs': '%s.ref.fa.fai' % prefix,
+                 "refSeqOrder": "length descending",
                  'tracks': []}
     # add reference sequence track to tracklist.json
     tracklist['tracks'].append({"category": "Reference sequence",
@@ -29,14 +30,14 @@ def make_json(prefix, input_dir):
                                 "label": "Reference sequence",
                                 "type": "SequenceTrack",
                                 "storeClass": "JBrowse/Store/SeqFeature/IndexedFasta",
-                                "urlTemplate": "%s.ref.fa" % prefix, \
+                                "urlTemplate": "%s.ref.fa" % prefix,
                                 "refSeqOrder": "False"})
     tracklist['tracks'].append({"category": "Consensus sequence",
                                 "key": "Consensus sequence",
                                 "label": "Consensus sequence",
                                 "type": "SequenceTrack",
                                 "storeClass": "JBrowse/Store/SeqFeature/IndexedFasta",
-                                "urlTemplate": "%s.cons.fa" % prefix, \
+                                "urlTemplate": "%s.cons.fa" % prefix,
                                 "refSeqOrder": "False"})
     # add bigwig track to trackList.json
     tracklist['tracks'].append({"category": "Sequence data",
@@ -81,7 +82,7 @@ def make_json(prefix, input_dir):
                                     # Comma-separated list of case-insensitive feature tags to use
                                     # for showing the feature's label.
                                     # The first one found will be used. Default 'name,id'.
-                                    "label": "produt,id",
+                                    "label": "product,id",
                                     # style→description	Comma-separated list of case-insensitive
                                     # feature tags to check for the feature's long description.
                                     # The first one found will be used. Default 'note,description'.

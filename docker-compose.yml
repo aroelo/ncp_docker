@@ -36,7 +36,7 @@ services:
       - HOST_DOMAIN=${HOST_DOMAIN_ENV}
       - JBROWSE_PORT=${JBROWSE_PORT_ENV}
       - FLASK_PORT=${FLASK_PORT_ENV}
-      - DATABASE_URL=postgresql://${POSTGRES_USER_ENV}:${POSTGRES_PASSWORD_ENV}@${SQL_HOST_ENV}:${SQL_PORT_ENV}/${POSTGRES_DB_DEV_ENV}
+      - DATABASE_URL=postgresql://${POSTGRES_USER_ENV}:${POSTGRES_PASSWORD_ENV}@${SQL_HOST_ENV}:${SQL_PORT_ENV}/${POSTGRES_DB_ENV}
     # Depends on db, because tables Classes are created in __init__.py
     depends_on:
       - db
@@ -50,7 +50,7 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER_ENV}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_ENV}
-      - POSTGRES_DB=${POSTGRES_DB_DEV_ENV}
+      - POSTGRES_DB=${POSTGRES_DB_ENV}
   nginx:
     user: "${UID}:${GID}"
     build:
@@ -97,7 +97,7 @@ services:
       - NGINX_PORT=${NGINX_PORT_ENV}
       - POSTGRES_USER=${POSTGRES_USER_ENV}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_ENV}
-      - POSTGRES_DB=${POSTGRES_DB_PROD_ENV}
+      - POSTGRES_DB=${POSTGRES_DB_ENV}
 #      - POSTGRES_USER={{DOCKER-SECRET:db-user}}
 #      - POSTGRES_PASSWORD={{DOCKER-SECRET:db-pass}}
 

@@ -3,6 +3,8 @@ import time
 import tempfile
 import shutil
 import zipfile
+from pathlib import Path
+
 from project import app
 from project.download_pavian_data.make_output_files import make_output
 from project.jbrowse.visualise_jbrowse import visualize_jbrowse
@@ -57,16 +59,23 @@ def main(args=None, human=False):
     taxid, pavian_file, action = get_parameters(human, args)
 
     main_dir_path = app.config['PAVIAN_OUT']
+    sample = Path(pavian_file).stem
 
-    sample = os.path.basename(pavian_file).strip('.pavian')
-    support_files_path = os.path.join(os.path.dirname(pavian_file), "support_files", sample)
-    bam_path = os.path.join(support_files_path, sample + ".filtered_s.bam")
-    bigwig_path = os.path.join(support_files_path, sample + ".filtered_s.bw")
-    df_reads_path = os.path.join(support_files_path, sample + ".readsdf.pickle")
+    support_files_path = Path(pavian_file).parent / "support_files" / sample
+    bam_path = support_files_path / f"{sample}.filtered_s.bam"
+    bigwig_path = support_files_path / f"{sample}.filtered_s.bw"
+    df_reads_path = support_files_path / f"{sample}.reads_df.pickle"
     # Make sure that input files are available
-    assert os.path.exists(bam_path)
-    assert os.path.exists(bigwig_path)
-    assert os.path.exists(df_reads_path)
+    try:
+        assert bam_path.exists(), f'Bam path did not exist. Given:\n{bam_path}'
+        assert bigwig_path.exists(), f'Bigwig path did not exist. Given:\n{bigwig_path}'
+        assert df_reads_path.exists(), f'DF reads path did not exist. Given:\n{df_reads_path}'
+    except Exception:
+        print(traceback.format_exc())
+        e = ('item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc() + '\n' # +
+             # '\n'.join([str(f) for f in [bam_path, bigwig_path, df_reads_path] if not f.exists()])
+             )
+        abort(500, e)
 
     sub_dir_path = os.path.join(main_dir_path, str(taxid) + "_" + sample)
     running_log_path = os.path.join(sub_dir_path, str(taxid) + "running.log")
@@ -106,13 +115,18 @@ def main(args=None, human=False):
             taxid_tmp_file = make_output(sub_dir_path, taxid, bam_path, bigwig_path, df_reads_path)
         except Exception:
             print(traceback.format_exc())
-            shutil.rmtree(sub_dir_path)
-            e = 'item:' +str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc()
+            shutil.rmtree(sub_dir_path)  # fixme: Consider moving this to an "error-spot" so we can review problems
+            e = 'item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc()
             abort(500, e)
 
     if action == 'jbrowse':
         # get jbrowse url
-        url = visualize_jbrowse(taxid, sub_dir_path)
+        try:
+            url = visualize_jbrowse(taxid, sub_dir_path)
+        except Exception:
+            print(traceback.format_exc())
+            e = 'item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc()
+            abort(500, e)
         print('<meta http-equiv="refresh" content="0;URL=%s" />' % url)
         return redirect(url, code=302)
 
