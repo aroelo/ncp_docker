@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   web:
+    user: "${UID}:${GID}"
     build:
       context: ./services/web
       dockerfile: Dockerfile
@@ -40,6 +41,7 @@ services:
     depends_on:
       - db
   db:
+    user: "${UID}:${GID}"
     build:
       context: ./services/db
     image: postgres:12.0-alpine
@@ -50,6 +52,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_ENV}
       - POSTGRES_DB=${POSTGRES_DB_DEV_ENV}
   nginx:
+    user: "${UID}:${GID}"
     build:
       context: ./services/nginx
       args:
@@ -63,6 +66,7 @@ services:
     depends_on:
       - web
   jbrowse:
+    user: "${UID}:${GID}"
     build:
       context: ./services/jbrowse
       args:
@@ -72,6 +76,7 @@ services:
     ports:
       - ${JBROWSE_PORT_ENV}:${JBROWSE_PORT_ENV}
   pavian:
+    user: "${UID}:${GID}"
     build:
       context: ./services/pavian
       args:
