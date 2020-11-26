@@ -8,6 +8,8 @@ services:
       dockerfile: Dockerfile
       args:
         - BLAST_VERSION=${BLAST_VERSION}
+        - DOCKER_UID=${UID_ENV}
+        - DOCKER_GID=${GID_ENV}
     command: gunicorn --bind 0.0.0.0:${FLASK_PORT_ENV} manage:app --timeout 300
     volumes:
       - static_volume:/home/app/web/project/static
@@ -62,6 +64,8 @@ services:
       args:
         - POSTGRES_USER_ENV=${POSTGRES_USER_ENV}
         - FLASK_PORT_ENV=${FLASK_PORT_ENV}
+        - DOCKER_UID=${UID_ENV}
+        - DOCKER_GID=${GID_ENV}
     volumes:
       - static_volume:/home/app/web/project/static
       - media_volume:/home/app/web/project/media
@@ -94,6 +98,8 @@ services:
       args:
         - BRANCH=${PAVIAN_BRANCH_ENV}
         - PAVIAN_PORT=${PAVIAN_PORT_ENV}
+        - DOCKER_UID=${UID_ENV}
+        - DOCKER_GID=${GID_ENV}
     volumes:
       - ${PAVIAN_IN_H}:/pavian/in:ro
     ports:
