@@ -77,7 +77,7 @@ services:
       - DOCKER_UID=${UID_ENV}
       - DOCKER_GID=${GID_ENV}
   jbrowse:
-    user: "${UID_ENV}:${GID_ENV}"
+#    user: "${UID_ENV}:${GID_ENV}"
     build:
       context: ./services/jbrowse
       args:
