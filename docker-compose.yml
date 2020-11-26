@@ -45,7 +45,7 @@ services:
     depends_on:
       - db
   db:
-    user: "${UID_ENV}:${GID_ENV}"
+#    user: "${UID_ENV}:${GID_ENV}"
     #    build:
     #      context: ./services/db
     image: postgres:12.0-alpine
@@ -58,7 +58,7 @@ services:
       - DOCKER_UID=${UID_ENV}
       - DOCKER_GID=${GID_ENV}
   nginx:
-    user: "${UID_ENV}:${GID_ENV}"
+    #    user: "${UID_ENV}:${GID_ENV}"
     build:
       context: ./services/nginx
       args:
