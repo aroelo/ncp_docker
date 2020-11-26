@@ -6,7 +6,7 @@ ARG BLAST_VERSION
 RUN mkdir -p /home/app
 
 # create the app user & group
-RUN groupadd -r app && useradd -r -g app app
+RUN groupadd -r -g $GID_ENV app && useradd -r -u $UID_ENV -g app app
 
 # create the appropriate directories
 ENV HOME=/home/app
