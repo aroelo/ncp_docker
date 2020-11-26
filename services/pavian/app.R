@@ -36,16 +36,6 @@ options(
     search = list(regex = TRUE, caseInsensitive = TRUE)
   )
 )
-server_dir <- Sys.getenv("PAVIAN_IN")
-flask_host <- Sys.getenv("HOST_IP")
-flask_port <- Sys.getenv("NGINX_PORT")
-db_type <- "Postgresql"
-db_name <- Sys.getenv("POSTGRES_DB")
-db_host <- Sys.getenv('SQL_HOST')
-db_user <- Sys.getenv('POSTGRES_USER')
-db_passwd <- Sys.getenv('POSTGRES_PASSWORD')
-
-print(c(server_dir,flask_host,flask_port,db_type,db_name,db_host,db_user,db_passwd))
 
 # Uses environment variables from .env.dev & env.dev.db or .env.prod & .env.prod.db, determined by env_file(s) in pavian service
 pavian::runApp(server_dir = Sys.getenv("PAVIAN_IN"),
