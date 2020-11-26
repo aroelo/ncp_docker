@@ -7,7 +7,7 @@ from pathlib import Path
 
 from project import app
 from project.download_pavian_data.make_output_files import make_output
-from project.jbrowse.visualise_jbrowse import visualize_jbrowse
+from project.jbrowse.visualise_jbrowse import visualize_jbrowse, make_json
 import traceback
 
 from flask import (
@@ -109,7 +109,7 @@ def main(args=None, human=False):
         except FileExistsError:
             shutil.rmtree(sub_dir_path)
             os.mkdir(sub_dir_path)
-
+        print("Missing: ", *[f for f in output_files if not os.path.isfile(f)], sep='\n')
         open(running_log_path, "a")
         try:
             taxid_tmp_file = make_output(sub_dir_path, taxid, bam_path, bigwig_path, df_reads_path)
@@ -121,12 +121,19 @@ def main(args=None, human=False):
 
     if action == 'jbrowse':
         # get jbrowse url
-        try:
-            url = visualize_jbrowse(taxid, sub_dir_path)
-        except Exception:
-            print(traceback.format_exc())
-            e = 'item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc()
-            abort(500, e)
+        JbrowseBaseUrl = f'http://jbrowse{app.config["HOST_DOMAIN"]}'
+        url = JbrowseBaseUrl + '?data=/data/pavianfiles/' + os.path.basename(sub_dir_path)
+        if not (Path(sub_dir_path) / 'trackList.json').exists():
+            # If trackList.json already exists, we presume its correctly made, if not JBrowse will given an error,
+            # if it doesn't exist and we can't make it. Then WE throw an error for the user to send to us
+            try:
+                trackList = make_json(taxid, sub_dir_path)
+            except:
+            # except PermissionError:
+                print("Making tracklist.json failed, maybe we don't have permission to overwrite. Lets see if the file that is there ")
+                print(traceback.format_exc())
+                e = 'item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc()
+                abort(500, e)
         print('<meta http-equiv="refresh" content="0;URL=%s" />' % url)
         return redirect(url, code=302)
 
