@@ -78,6 +78,8 @@ services:
       context: ./services/jbrowse
       args:
         - JBROWSE_PORT=${JBROWSE_PORT_ENV}
+        - DOCKER_UID=${UID_ENV}
+        - DOCKER_GID=${GID_ENV}
     volumes:
       - ${PAVIAN_OUT_H}:/jbrowse/data/pavianfiles
     ports:
