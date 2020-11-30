@@ -40,8 +40,8 @@ dev:
       docker-compose -p pavian_docker_dev down -v;
       docker-compose -p pavian_docker_dev up -d"
     - if [[ $? != 0 ]]; then exit $?; fi
-  only:
-    - dev
+  except:
+    - master
 
 prod:
   stage:
