@@ -64,7 +64,7 @@ def main(args=None, human=False):
     support_files_path = Path(pavian_file).parent / "support_files" / sample
     bam_path = support_files_path / f"{sample}.filtered_s.bam"
     bigwig_path = support_files_path / f"{sample}.filtered_s.bw"
-    df_reads_path = support_files_path / f"{sample}.reads_df.pickle"
+    df_reads_path = support_files_path / f"{sample}.readsdf.pickle"
     # Make sure that input files are available
     try:
         assert bam_path.exists(), f'Bam path did not exist. Given:\n{bam_path}'
