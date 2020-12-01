@@ -39,7 +39,8 @@ ARG BRANCH
 RUN R -e "devtools::install_gitlab('git@gitlab.naktuinbouw.net:bioinformatics/pavian.git', ref='${BRANCH}')"
 
 # Use arg with current datetime to make sure everything after here is re-build without cache (so git pull is done again)
-ARG CACHE_DATE=2020-11-38
+ARG CACHE_DATE=2020-12-1
+# format: YYYY-MM-DD
 RUN R -e "devtools::install_gitlab('git@gitlab.naktuinbouw.net:bioinformatics/pavian.git', ref='${BRANCH}')"
 
 RUN R -e "sapply(list.files(system.file('shinyapp',package='pavian'),full.names=TRUE),file.copy,to='/srv/shiny-server/',recursive=TRUE)"
