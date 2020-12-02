@@ -36,7 +36,7 @@ RUN R -e "install.packages('BiocManager');BiocManager::install('Rsamtools')"
 
 RUN R -e "remotes::install_local('/pavian/code/', force=TRUE); install.packages('shiny');"
 
-RUN R -e "sapply(list.files(system.file('shinyapp',package='pavian'),full.names=TRUE),file.copy,to='/srv/shiny-server/',recursive=TRUE)"
+RUN R -e "library('shiny'); sapply(list.files(system.file('shinyapp',package='pavian'),full.names=TRUE),file.copy,to='/srv/shiny-server/',recursive=TRUE)"
 
 # Overwrite app.R from gitlab with this app.R
 COPY ./app.R /srv/shiny-server/app.R
