@@ -34,7 +34,7 @@ RUN R -e "install.packages('remotes');"
 
 RUN R -e "install.packages('BiocManager');BiocManager::install('Rsamtools')"
 
-RUN R -e "remotes::install_local('/pavian/code/', force=TRUE)"
+RUN R -e "remotes::install_local('/pavian/code/', force=TRUE); install.packages('shiny');"
 
 RUN R -e "sapply(list.files(system.file('shinyapp',package='pavian'),full.names=TRUE),file.copy,to='/srv/shiny-server/',recursive=TRUE)"
 
