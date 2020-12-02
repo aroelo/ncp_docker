@@ -44,24 +44,24 @@ dev:
     - master
 
 
-rebuild_docker:
-  stage:
-    build
-  script:
-    - eval $(keychain --eval id_rsa_airflow)
-    - >
-      ssh airflow@$reposerver
-      "cd $DEV_PATH &&
-      docker-compose build --build-arg SSH_PRIVATE_KEY="$(cat /home/aroe/.ssh/id_rsa)
-      --build-arg SSH_PUBLIC_KEY="$(cat /home/aroe/.ssh/id_rsa.pub)" --build-arg CACHE_DATE=$(date +%s)"
-    - if [[ $? != 0 ]]; then exit $?; fi
-  only:
-    refs:
-      - dev
-    changes:
-      - /services/*/Dockerfile
-      - docker-compose.yml
-      - dev.env
+#rebuild_docker:
+#  stage:
+#    build
+#  script:
+#    - eval $(keychain --eval id_rsa_airflow)
+#    - >
+#      ssh airflow@$reposerver
+#      "cd $DEV_PATH &&
+#      docker-compose build pavian_docker_dev --build-arg SSH_PRIVATE_KEY=$(cat /home/airflow/.ssh/id_rsa)
+#      --build-arg SSH_PUBLIC_KEY=$(cat /home/airflow/.ssh/id_rsa.pub) --build-arg CACHE_DATE=$(date +%s)"
+#    - if [[ $? != 0 ]]; then exit $?; fi
+#  only:
+#    refs:
+#      - dev
+#    changes:
+#      - /services/*/Dockerfile
+#      - docker-compose.yml
+#      - dev.env
 
 prod:
   stage:

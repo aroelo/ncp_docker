@@ -101,6 +101,7 @@ services:
         - DOCKER_UID=${UID_ENV}
         - DOCKER_GID=${GID_ENV}
     volumes:
+      - ${PAVIAN_CODE_DIR}:/pavian/code:ro
       - ${PAVIAN_IN_H}:/pavian/in:ro
     ports:
       - ${PAVIAN_PORT_ENV}:${PAVIAN_PORT_ENV}
