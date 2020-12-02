@@ -33,8 +33,8 @@ RUN apt-get install -y libssh2-1 libssh2-1-dev
 RUN R -e "install.packages('remotes');"
 
 RUN R -e "install.packages('BiocManager');BiocManager::install('Rsamtools')"
-
-RUN R -e "remotes::install_local('/pavian/code/', force=TRUE, dependencies=TRUE); install.packages('shiny');"
+RUN R -e "install.packages(c('shiny','shinydashboard','shinyjs','shinycssloaders','shinyWidgets','DT','dplyr','htmltools','htmlwidgets','plyr','rmarkdown','sankeyD3','shinyFileTree','RColorBrewer','colorspace','ggplot2','rhandsontable','rappdirs','DBI','RMySQL','RPostgres'))"
+RUN R -e "remotes::install_local('/pavian/code/', force=TRUE, dependencies=TRUE); "
 
 RUN R -e "library('shiny'); sapply(list.files(system.file('shinyapp',package='pavian'),full.names=TRUE),file.copy,to='/srv/shiny-server/',recursive=TRUE)"
 
