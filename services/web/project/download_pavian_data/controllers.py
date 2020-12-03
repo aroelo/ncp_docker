@@ -104,12 +104,13 @@ def main(args=None, human=False):
             time.sleep(2)
         pass
     else:
+        print("Missing: ", *[f for f in output_files if not os.path.isfile(f)], sep='\n')
+
         try:
             os.mkdir(sub_dir_path)
         except FileExistsError:
             shutil.rmtree(sub_dir_path)
             os.mkdir(sub_dir_path)
-        print("Missing: ", *[f for f in output_files if not os.path.isfile(f)], sep='\n')
         open(running_log_path, "a")
         try:
             taxid_tmp_file = make_output(sub_dir_path, taxid, bam_path, bigwig_path, df_reads_path)
