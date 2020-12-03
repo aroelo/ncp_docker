@@ -14,7 +14,10 @@ db = SQLAlchemy(app)
 
 @app.errorhandler(500)
 def taxid_files_not_created(e):
-    return render_template('500.html', taxid=e.description.split('item:')[1], sample=e.description.split('item:')[2], traceback=e.description.split('item:')[3]), 500
+    return render_template('500.html',
+                           taxid=e.description.split('item:')[1],
+                           sample=e.description.split('item:')[2],
+                           traceback=e.description.split('item:')[3].replace('\n', '<br>')), 500
 
 
 @app.route('/favicon.ico')
