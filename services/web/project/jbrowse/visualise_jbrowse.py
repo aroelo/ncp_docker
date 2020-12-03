@@ -22,7 +22,6 @@ def make_json(prefix, input_dir):
     # set reference sequence
     tracklist = {'formatVersion': 1,
                  'refSeqs': '%s.ref.fa.fai' % prefix,
-                 "refSeqOrder": "length descending",
                  'tracks': []}
     # add reference sequence track to tracklist.json
     tracklist['tracks'].append({"category": "Reference sequence",
