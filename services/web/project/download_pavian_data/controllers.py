@@ -16,7 +16,7 @@ from flask import (
     send_from_directory,
     request,
     redirect,
-    abort
+    abort, flash
 )
 
 
@@ -105,7 +105,7 @@ def main(args=None, human=False):
         pass
     else:
         print("Missing: ", *[f for f in output_files if not os.path.isfile(f)], sep='\n')
-
+        flash('Missing files!' + '\n'.join([f for f in output_files if not os.path.isfile(f)]))
         try:
             os.mkdir(sub_dir_path)
         except FileExistsError:
@@ -117,6 +117,15 @@ def main(args=None, human=False):
         except Exception:
             print(traceback.format_exc())
             shutil.rmtree(sub_dir_path)  # fixme: Consider moving this to an "error-spot" so we can review problems
+            e = 'item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc()
+            abort(500, e)
+        try:
+            if Path(sub_dir_path, f"{str(taxid)}.cons.fa").stat().st_size < 10 :
+                flash('Consensus track will be empty as it was too large to generate!')
+        except FileNotFoundError:
+            pass
+        except Exception:
+            print(traceback.format_exc())
             e = 'item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc()
             abort(500, e)
 
