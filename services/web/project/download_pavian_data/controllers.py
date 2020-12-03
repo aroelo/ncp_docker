@@ -90,6 +90,8 @@ def main(args=None, human=False):
                     os.path.join(sub_dir_path, str(taxid) + ".ref.fa.fai"),
                     os.path.join(sub_dir_path, str(taxid) + ".cons.fa"),
                     os.path.join(sub_dir_path, str(taxid) + ".cons.fa.fai"),
+                    # os.path.join(sub_dir_path, str(taxid) + ".gff3"),
+                    # os.path.join(sub_dir_path, str(taxid) + ".gff3.gz.tbi"),
                     os.path.join(sub_dir_path, str(taxid) + ".sorted.bam"),
                     os.path.join(sub_dir_path, str(taxid) + ".sorted.bam.bai"),
                     os.path.join(sub_dir_path, str(taxid) + ".sorted.bw"),
@@ -120,7 +122,7 @@ def main(args=None, human=False):
             e = 'item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc()
             abort(500, e)
         try:
-            if Path(sub_dir_path, f"{str(taxid)}.cons.fa").stat().st_size < 10 :
+            if Path(sub_dir_path, f"{str(taxid)}.cons.fa").stat().st_size < 1:
                 flash('Consensus track will be empty as it was too large to generate!')
         except FileNotFoundError:
             pass

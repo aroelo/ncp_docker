@@ -301,6 +301,12 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     # make sure our gff_out gets the proper extension
     gff_out += '.gz'
     assert os.path.exists(gff_out)
+    if not os.path.exists(gff_out+'.tbi'):
+        cmd = (f'cp {gff_out} {gff_out}.unsorted && '
+               f'gunzip gff_out && '
+               f'/5_workspace/tools/gff3sort/gff3sort.pl {gff_out[:-3]} > {gff_out[:-3]} &&'
+               f'bgzip {gff_out[:-3]} && tabix -p gff {gff_out}')
+        run_cmd(cmd, log_out)
 
     # Create bam file that has a cap on coverage so it can be visualised in Jbrowse.
     capped_bam_out_path = sub_dir_path + "/" + str(taxids[0]) + ".sorted.capped.bam"
