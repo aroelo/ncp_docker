@@ -16,7 +16,7 @@ from flask import (
     send_from_directory,
     request,
     redirect,
-    abort, flash
+    abort
 )
 
 
@@ -80,6 +80,10 @@ def main(args=None, human=False):
     sub_dir_path = os.path.join(main_dir_path, str(taxid) + "_" + sample)
     running_log_path = os.path.join(sub_dir_path, str(taxid) + "running.log")
 
+    if str(taxid) == '0' and not os.path.exists(os.path.join(sub_dir_path, str(taxid) + ".read_scores.html")):
+        e = 'item:' + str(taxid) + 'item:' + str(sample) + 'item:' + 'Taxid 0 cannot be shown.'
+        abort(500, e)
+
     # make sure that output files are generated
     output_files = [os.path.join(sub_dir_path, str(taxid) + ".fasta"),
                     os.path.join(sub_dir_path, str(taxid) + ".header_count.txt"),
@@ -107,7 +111,6 @@ def main(args=None, human=False):
         pass
     else:
         print("Missing: ", *[f for f in output_files if not os.path.isfile(f)], sep='\n')
-        flash('Missing files!' + '\n'.join([f for f in output_files if not os.path.isfile(f)]))
         try:
             os.mkdir(sub_dir_path)
         except FileExistsError:
@@ -123,7 +126,8 @@ def main(args=None, human=False):
             abort(500, e)
         try:
             if Path(sub_dir_path, f"{str(taxid)}.cons.fa").stat().st_size < 1:
-                flash('Consensus track will be empty as it was too large to generate!')
+                print('Consensus track will be empty as it was too large to generate!')
+            # idea: remove consensus track from trackList.json
         except FileNotFoundError:
             pass
         except Exception:

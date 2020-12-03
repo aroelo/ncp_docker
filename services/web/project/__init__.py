@@ -25,6 +25,9 @@ def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
+@app.route("/")
+def home():
+    return render_template('home.html')
 
 # Import modules using blueprint handler variable
 from project.download_pavian_data.controllers import download_pavian_data_blueprint as download_pavian_data_module

@@ -185,7 +185,6 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     # get all child taxids for given taxid.
     if int(taxid) == 0:
         print('Do not make output for unclassified reads.')
-        flash('Do not make output for unclassified reads.')
         return
     taxids = [taxid] + get_child_taxa(taxid)
 
