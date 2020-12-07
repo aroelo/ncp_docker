@@ -16,7 +16,7 @@ TAXA_SQLITE_H=/5_workspace/repos/Nanopore-classification-pipeline/data/taxa.sqli
 TAXA_SQLITE_PKL_H=/5_workspace/repos/Nanopore-classification-pipeline/data/taxa.sqlite.traverse.pkl
 
 # Pavian branch. 'dev' or 'master'
-PAVIAN_BRANCH_ENV=dev
+PAVIAN_BRANCH_ENV=master
 CODE_VOLUME=/5_workspace/docker/pavian_docker
 
 # IP's and ports
@@ -24,7 +24,7 @@ SQL_HOST_ENV=db
 SQL_PORT_ENV=5432
 HOST_IP_ENV=172.27.26.5
 # this is a suffix, prefix is determined by app being run in respective scripts
-HOST_DOMAIN_ENV=-dev.naktuinbouw.cloud
+HOST_DOMAIN_ENV=.naktuinbouw.cloud
 PAVIAN_PORT_ENV=3838
 JBROWSE_PORT_ENV=5004
 FLASK_PORT_ENV=5000
