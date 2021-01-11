@@ -1,4 +1,5 @@
 from project.blast_reads import NCBIWWWcustom
+from Bio.Blast import NCBIWWW
 from flask import (
     Blueprint,
     request,
@@ -10,6 +11,7 @@ import os
 
 
 def create_query(readids, subdir, taxid, VA):
+    # subdir = subdir.replace('/pavian/out', '/6_db_ssd/pavian_output')
     if VA:
         fasta_file_path = os.path.join(subdir, taxid + ".ref.fa")
     else:
@@ -20,7 +22,11 @@ def create_query(readids, subdir, taxid, VA):
                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     ps1.wait()
     stdout, stderr = ps1.communicate()
-    stdout = stdout.decode().replace('\r', '\n')
+    try:
+        stdout = stdout.decode().replace('\r', '\n')
+    except AttributeError:
+        # str object has no attribute decode, so then there is no need to decode
+        pass
     if not stdout:
         e = f'item:{str(taxid)}item:{os.path.basename(subdir)}item:No reads found\n'
         abort(500, e)

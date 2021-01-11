@@ -216,7 +216,7 @@ def qblast(program, database, sequence, url_base=NCBI_BLAST_URL,
         ]
     query = [x for x in parameters if x[1] is not None]
     message = urlencode(query).encode()
-    message_string = str(message)
+    message_string = str(message.decode())
     get_url = url_base + "?" + message_string
 
     return get_url
