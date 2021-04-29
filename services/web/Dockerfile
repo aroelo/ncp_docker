@@ -1,12 +1,14 @@
 FROM ubuntu:18.04
 
 ARG BLAST_VERSION
+ARG GID_ENV
+ARG UID_ENV
 
 # create directory for the app user
 RUN mkdir -p /home/app
 
 # create the app user & group
-RUN groupadd -r app && useradd -r -g app app
+RUN groupadd -r -g $GID_ENV app && useradd -r -u $UID_ENV -g app app
 
 # create the appropriate directories
 ENV HOME=/home/app
@@ -77,7 +79,7 @@ RUN mkdir -p /blast_db/nt /blast_db/refseq /pavian/out /pavian/in
 RUN chown -R app:app $APP_HOME
 
 #
-RUN apt-get install -y tabix
+RUN apt-get update && apt-get install -y tabix --fix-missing
 
 # change to the app user
 USER app

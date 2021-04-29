@@ -17,5 +17,15 @@
             Traceback: {{ traceback }}</p>
     <img src="{{url_for('static', filename='sad-plant.jpg')}}" style="max-width:20%;max-height:20%;"/>
     </h2>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 </body>
 </html>

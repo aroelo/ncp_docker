@@ -1,6 +1,8 @@
 import argparse
-
-from download_pavian_data import controllers
+try:
+    from download_pavian_data import controllers
+except ImportError:
+    from services.web.project.download_pavian_data import controllers
 from project import app
 
 
@@ -50,10 +52,10 @@ if __name__ == "__main__":
         app.config['PAVIAN_OUT'] = args.out_dir_path
         app.config['BLASTDB_NT'] = args.blastdb_nt
         app.config['BLASTDB_REFSEQ'] = args.blastdb_refseq
-        app.config['HOST_IP'] = args.host
+        app.config['HOST_DOMAIN'] = args.host
         app.config['JBROWSE_PORT'] = args.jbrowse_port
         app.config['TAXA_SQLITE'] = args.taxa_sqlite
         if args.human == 'main':
             controllers.main(args, human=True)
         else:
-            app.run(debug=True, host=args.host, port=5000)
+            app.run(debug=True, host=args.host, port=12345)

@@ -1,4 +1,13 @@
 FROM nginx
+#ARG DOCKER_UID
+#ARG DOCKER_GID
+ARG JBROWSE_PORT
+
+#RUN echo DOCKER_UID:$DOCKER_UID
+#RUN echo JBROWSE_PORT:$JBROWSE_PORT
+#RUN echo DOCKER_GID:$DOCKER_GID
+
+#RUN groupadd -r $DOCKER_GID && useradd -r -g $DOCKER_GID $DOCKER_UID
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7

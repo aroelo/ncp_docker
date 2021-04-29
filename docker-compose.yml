@@ -2,11 +2,15 @@ version: '3.7'
 
 services:
   web:
+    restart: always
+    user: "${UID_ENV}:${GID_ENV}"
     build:
       context: ./services/web
       dockerfile: Dockerfile
       args:
         - BLAST_VERSION=${BLAST_VERSION}
+        - DOCKER_UID=${UID_ENV}
+        - DOCKER_GID=${GID_ENV}
     command: gunicorn --bind 0.0.0.0:${FLASK_PORT_ENV} manage:app --timeout 300
     volumes:
       - static_volume:/home/app/web/project/static
@@ -32,27 +36,39 @@ services:
       - TAXA_SQLITE_PKL=/pavian/taxa.sqlite.traverse.pkl
       - SQL_HOST=${SQL_HOST_ENV}
       - SQL_PORT=${SQL_PORT_ENV}
-      - HOST_IP=${HOST_IP_ENV}
+      - HOST_DOMAIN=${HOST_DOMAIN_ENV}
       - JBROWSE_PORT=${JBROWSE_PORT_ENV}
       - FLASK_PORT=${FLASK_PORT_ENV}
-      - DATABASE_URL=postgresql://${POSTGRES_USER_ENV}:${POSTGRES_PASSWORD_ENV}@${SQL_HOST_ENV}:${SQL_PORT_ENV}/${POSTGRES_DB_PROD_ENV}
+      - DATABASE_URL=postgresql://${POSTGRES_USER_ENV}:${POSTGRES_PASSWORD_ENV}@${SQL_HOST_ENV}:${SQL_PORT_ENV}/${POSTGRES_DB_ENV}
+      - DOCKER_UID=${UID_ENV}
+      - DOCKER_GID=${GID_ENV}
     # Depends on db, because tables Classes are created in __init__.py
     depends_on:
       - db
   db:
+    restart: always
+#    user: "${UID_ENV}:${GID_ENV}"
+    #    build:
+    #      context: ./services/db
     image: postgres:12.0-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=${POSTGRES_USER_ENV}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_ENV}
-      - POSTGRES_DB=${POSTGRES_DB_PROD_ENV}
+      - POSTGRES_DB=${POSTGRES_DB_ENV}
+      - DOCKER_UID=${UID_ENV}
+      - DOCKER_GID=${GID_ENV}
   nginx:
+    restart: always
+    #    user: "${UID_ENV}:${GID_ENV}"
     build:
       context: ./services/nginx
       args:
         - POSTGRES_USER_ENV=${POSTGRES_USER_ENV}
         - FLASK_PORT_ENV=${FLASK_PORT_ENV}
+        - DOCKER_UID=${UID_ENV}
+        - DOCKER_GID=${GID_ENV}
     volumes:
       - static_volume:/home/app/web/project/static
       - media_volume:/home/app/web/project/media
@@ -60,21 +76,35 @@ services:
       - ${NGINX_PORT_ENV}:80
     depends_on:
       - web
+    environment:
+      - DOCKER_UID=${UID_ENV}
+      - DOCKER_GID=${GID_ENV}
   jbrowse:
+    restart: always
+#    user: "${UID_ENV}:${GID_ENV}"
     build:
       context: ./services/jbrowse
       args:
         - JBROWSE_PORT=${JBROWSE_PORT_ENV}
+        - DOCKER_UID=${UID_ENV}
+        - DOCKER_GID=${GID_ENV}
     volumes:
       - ${PAVIAN_OUT_H}:/jbrowse/data/pavianfiles
     ports:
       - ${JBROWSE_PORT_ENV}:${JBROWSE_PORT_ENV}
+    environment:
+      - DOCKER_UID=${UID_ENV}
+      - DOCKER_GID=${GID_ENV}
   pavian:
+    restart: always
+    user: "${UID_ENV}:${GID_ENV}"
     build:
       context: ./services/pavian
       args:
         - BRANCH=${PAVIAN_BRANCH_ENV}
         - PAVIAN_PORT=${PAVIAN_PORT_ENV}
+        - DOCKER_UID=${UID_ENV}
+        - DOCKER_GID=${GID_ENV}
     volumes:
       - ${PAVIAN_IN_H}:/pavian/in:ro
     ports:
@@ -85,12 +115,15 @@ services:
     environment:
       - PAVIAN_IN=/pavian/in
       - SQL_HOST=${SQL_HOST_ENV}
-      - HOST_IP=${HOST_IP_ENV}
+      - HOST_DOMAIN=${HOST_DOMAIN_ENV}
       - PAVIAN_PORT=${PAVIAN_PORT_ENV}
+      - HOST_IP=${HOST_IP_ENV}
       - NGINX_PORT=${NGINX_PORT_ENV}
       - POSTGRES_USER=${POSTGRES_USER_ENV}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_ENV}
-      - POSTGRES_DB=${POSTGRES_DB_PROD_ENV}
+      - POSTGRES_DB=${POSTGRES_DB_ENV}
+      - DOCKER_UID=${UID_ENV}
+      - DOCKER_GID=${GID_ENV}
 #      - POSTGRES_USER={{DOCKER-SECRET:db-user}}
 #      - POSTGRES_PASSWORD={{DOCKER-SECRET:db-pass}}
 

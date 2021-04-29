@@ -63,7 +63,16 @@ $(document).ready(function() {
     Secondary alignments always keep originally assigned taxid.<br/>
     <b>NA</b>=Passed all filtering. <b>sc</b>=Too much soft clipping at read. <b>sd</b>=Score difference between primary and secondary is too high.
     <b>sa</b>=Common taxid of all valid alignments is assigned to primary. <b>ct</b>=Common taxid is 0 or 1.
-				</div>
+</div>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 <table id="example" class="display" style="width:100%">
 <thead>
     <tr>
