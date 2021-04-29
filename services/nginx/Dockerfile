@@ -1,9 +1,9 @@
 FROM nginx:1.17.4-alpine
 
-ARG DOCKER_GID
-ARG DOCKER_UID
-
-RUN groupadd -r -g $DOCKER_UID app && useradd -r -u $DOCKER_GID -g app app
+#ARG DOCKER_GID
+#ARG DOCKER_UID
+#
+#RUN groupadd -r -g $DOCKER_UID app && useradd -r -u $DOCKER_GID -g app app
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/nginx.conf.template
