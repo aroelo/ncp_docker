@@ -6,7 +6,8 @@ ARG JBROWSE_PORT
 #RUN echo DOCKER_UID:$DOCKER_UID
 #RUN echo JBROWSE_PORT:$JBROWSE_PORT
 #RUN echo DOCKER_GID:$DOCKER_GID
-
+ARG DOCKER_GID
+ARG DOCKER_UID
 # create the app user & group
 RUN groupadd -r -g $DOCKER_UID app && useradd -r -u $DOCKER_GID -g app app
 
