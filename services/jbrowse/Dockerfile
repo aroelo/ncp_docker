@@ -6,8 +6,11 @@ ARG JBROWSE_PORT
 #RUN echo DOCKER_UID:$DOCKER_UID
 #RUN echo JBROWSE_PORT:$JBROWSE_PORT
 #RUN echo DOCKER_GID:$DOCKER_GID
+ARG DOCKER_GID
+ARG DOCKER_UID
+# create the app user & group
+RUN groupadd -r -g $DOCKER_UID app && useradd -r -u $DOCKER_GID -g app app
 
-#RUN groupadd -r $DOCKER_GID && useradd -r -g $DOCKER_GID $DOCKER_UID
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7
