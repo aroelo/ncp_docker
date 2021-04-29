@@ -1,8 +1,8 @@
 FROM ubuntu:18.04
 
 ARG BLAST_VERSION
-ARG GID_ENV
-ARG UID_ENV
+#ARG GID_ENV
+#ARG UID_ENV
 
 # create directory for the app user
 RUN mkdir -p /home/app
