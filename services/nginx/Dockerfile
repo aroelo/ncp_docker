@@ -1,5 +1,6 @@
 FROM nginx:1.17.4-alpine
 
+# this won't work on alpine
 #ARG DOCKER_GID
 #ARG DOCKER_UID
 #
