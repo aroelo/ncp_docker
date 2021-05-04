@@ -123,11 +123,11 @@ def make_capped_coverage_bam(bam_in_path, bam_out_path, header_count_path, cover
 
 def make_bigwig(bigwig_in_path, bigwig_out_path, header_count_path):
     """make bigwig from bam"""
-    bw = pyBigWig.open(bigwig_in_path)
-    bw_out = pyBigWig.open(bigwig_out_path, "w")
+    bw = pyBigWig.open(str(bigwig_in_path))
+    bw_out = pyBigWig.open(str(bigwig_out_path), "w")
     header = []
 
-    with open(header_count_path, "r") as header_count:
+    with open(str(header_count_path), "r") as header_count:
         for line in header_count:
             contig = line.split(' ')[0]
             length = bw.chroms(contig)
@@ -140,7 +140,7 @@ def make_bigwig(bigwig_in_path, bigwig_out_path, header_count_path):
 
     bw_out.addHeader(header)
 
-    with open(header_count_path, "r") as header_count:
+    with open(str(header_count_path), "r") as header_count:
         for line in header_count:
             contig = line.split(' ')[0]
             length = bw.chroms(contig)
