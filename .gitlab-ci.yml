@@ -73,7 +73,7 @@ bkd:
   script:
     - eval $(keychain --eval id_rsa_airflow)
     - >
-      ssh thomas@$reposerver
+      ssh airflow@$reposerver
       "cd BKD_PATH &&
       git reset --hard &&
       git checkout $CI_COMMIT_REF_NAME &&
