@@ -1,22 +1,35 @@
 from project.blast_reads import NCBIWWWcustom
+from Bio.Blast import NCBIWWW
 from flask import (
     Blueprint,
     request,
-    redirect
+    redirect,
+    abort
 )
 import subprocess
 import os
 
 
-def create_query(readids, subdir, taxid):
-    fasta_file_path = os.path.join(subdir, taxid + ".fasta")
+def create_query(readids, subdir, taxid, VA):
+    # subdir = subdir.replace('/pavian/out', '/6_db_ssd/pavian_output')
+    if VA:
+        fasta_file_path = os.path.join(subdir, taxid + ".ref.fa")
+    else:
+        fasta_file_path = os.path.join(subdir, taxid + ".fasta")
 
     cmd1 = "mawk '/%s/ {print $0; getline; print $0}' %s" % (readids.strip("|"), fasta_file_path)
     ps1 = subprocess.Popen(cmd1, shell=True, executable='/bin/bash',
                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     ps1.wait()
     stdout, stderr = ps1.communicate()
-    stdout = stdout.decode().replace('\r', '\n')
+    try:
+        stdout = stdout.decode().replace('\r', '\n')
+    except AttributeError:
+        # str object has no attribute decode, so then there is no need to decode
+        pass
+    if not stdout:
+        e = f'item:{str(taxid)}item:{os.path.basename(subdir)}item:No reads found\n'
+        abort(500, e)
     return stdout
 
 
@@ -34,7 +47,11 @@ def get_parameters_blast():
 
     taxid = request.args.get('taxid')
     taxid = str(taxid)
-    return readids, subdir, taxid
+
+    VA = request.args.get('VA', default=False)
+    VA = bool(VA)
+
+    return readids, subdir, taxid, VA
 
 
 # Define the blueprint
@@ -44,9 +61,9 @@ blast_reads_blueprint = Blueprint('blast_reads', __name__)
 @blast_reads_blueprint.route("/blast_reads")
 def blast_reads():
     # get parameters, if cgi use form otherwise use argparse
-    readids, subdir, taxid = get_parameters_blast()
+    readids, subdir, taxid, VA = get_parameters_blast()
     print("Parameters: " + readids, subdir, taxid)
-    fasta_string = create_query(readids, subdir, taxid)
+    fasta_string = create_query(readids, subdir, taxid, VA)
     # print("Fasta string: " + fasta_string)
     url = blast_query(fasta_string)
     # print('<meta http-equiv="refresh" content="0;URL=%s" />' % url)

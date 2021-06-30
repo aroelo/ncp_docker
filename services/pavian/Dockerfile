@@ -1,5 +1,11 @@
 FROM rocker/r-ver:3.6.1
 
+ARG DOCKER_GID
+ARG DOCKER_UID
+
+# create the app user & group
+RUN groupadd -r -g $DOCKER_UID app && useradd -r -u $DOCKER_GID -g app app
+
 RUN apt-get update && apt-get install -y \
     sudo \
     gdebi-core \
@@ -39,7 +45,7 @@ ARG BRANCH
 RUN R -e "devtools::install_github('git@github.com:aroelo/ncp_pavian.git', ref='${BRANCH}')"
 
 # Use arg with current datetime to make sure everything after here is re-build without cache (so git pull is done again)
-ARG CACHE_DATE=2019-11-28
+ARG CACHE_DATE=2021-30-4
 RUN R -e "devtools::install_github('git@github.com:aroelo/ncp_pavian.git', ref='${BRANCH}')"
 
 RUN R -e "sapply(list.files(system.file('shinyapp',package='pavian'),full.names=TRUE),file.copy,to='/srv/shiny-server/',recursive=TRUE)"

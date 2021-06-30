@@ -38,7 +38,7 @@ dev:
       ssh airflow@$DOCKER_SERVER
       "cd $DEV_PATH;
       docker-compose -p pavian_docker_dev down -v;
-      docker-compose -p pavian_docker_dev up -d"
+      docker-compose -p pavian_docker_dev up -d --build"
     - if [[ $? != 0 ]]; then exit $?; fi
   only:
     - dev
@@ -59,8 +59,8 @@ prod:
     - >
       ssh airflow@$DOCKER_SERVER
       "cd $MASTER_PATH;
-      docker-compose pavian_docker_dev down -v;
-      docker-compose -p pavian_docker_dev up -d"
+      docker-compose -p pavian_docker down -v;
+      docker-compose -p pavian_docker up -d --build"
     - if [[ $? != 0 ]]; then exit $?; fi
   only:
     - master

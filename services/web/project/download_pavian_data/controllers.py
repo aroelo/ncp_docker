@@ -7,7 +7,7 @@ from pathlib import Path
 
 from project import app
 from project.download_pavian_data.make_output_files import make_output
-from project.jbrowse.visualise_jbrowse import visualize_jbrowse
+from project.jbrowse.visualise_jbrowse import visualize_jbrowse, make_json
 import traceback
 
 from flask import (
@@ -64,7 +64,7 @@ def main(args=None, human=False):
     support_files_path = Path(pavian_file).parent / "support_files" / sample
     bam_path = support_files_path / f"{sample}.filtered_s.bam"
     bigwig_path = support_files_path / f"{sample}.filtered_s.bw"
-    df_reads_path = support_files_path / f"{sample}.reads_df.pickle"
+    df_reads_path = support_files_path / f"{sample}.readsdf.pickle"
     # Make sure that input files are available
     try:
         assert bam_path.exists(), f'Bam path did not exist. Given:\n{bam_path}'
@@ -80,6 +80,10 @@ def main(args=None, human=False):
     sub_dir_path = os.path.join(main_dir_path, str(taxid) + "_" + sample)
     running_log_path = os.path.join(sub_dir_path, str(taxid) + "running.log")
 
+    if str(taxid) == '0' and not os.path.exists(os.path.join(sub_dir_path, str(taxid) + ".read_scores.html")):
+        e = 'item:' + str(taxid) + 'item:' + str(sample) + 'item:' + 'Taxid 0 cannot be shown.'
+        abort(500, e)
+
     # make sure that output files are generated
     output_files = [os.path.join(sub_dir_path, str(taxid) + ".fasta"),
                     os.path.join(sub_dir_path, str(taxid) + ".header_count.txt"),
@@ -90,6 +94,8 @@ def main(args=None, human=False):
                     os.path.join(sub_dir_path, str(taxid) + ".ref.fa.fai"),
                     os.path.join(sub_dir_path, str(taxid) + ".cons.fa"),
                     os.path.join(sub_dir_path, str(taxid) + ".cons.fa.fai"),
+                    # os.path.join(sub_dir_path, str(taxid) + ".gff3"),
+                    # os.path.join(sub_dir_path, str(taxid) + ".gff3.gz.tbi"),
                     os.path.join(sub_dir_path, str(taxid) + ".sorted.bam"),
                     os.path.join(sub_dir_path, str(taxid) + ".sorted.bam.bai"),
                     os.path.join(sub_dir_path, str(taxid) + ".sorted.bw"),
@@ -104,12 +110,12 @@ def main(args=None, human=False):
             time.sleep(2)
         pass
     else:
+        print("Missing: ", *[f for f in output_files if not os.path.isfile(f)], sep='\n')
         try:
             os.mkdir(sub_dir_path)
         except FileExistsError:
             shutil.rmtree(sub_dir_path)
             os.mkdir(sub_dir_path)
-
         open(running_log_path, "a")
         try:
             taxid_tmp_file = make_output(sub_dir_path, taxid, bam_path, bigwig_path, df_reads_path)
@@ -118,15 +124,32 @@ def main(args=None, human=False):
             shutil.rmtree(sub_dir_path)  # fixme: Consider moving this to an "error-spot" so we can review problems
             e = 'item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc()
             abort(500, e)
-
-    if action == 'jbrowse':
-        # get jbrowse url
         try:
-            url = visualize_jbrowse(taxid, sub_dir_path)
+            if Path(sub_dir_path, f"{str(taxid)}.cons.fa").stat().st_size < 1:
+                print('Consensus track will be empty as it was too large to generate!')
+            # idea: remove consensus track from trackList.json
+        except FileNotFoundError:
+            pass
         except Exception:
             print(traceback.format_exc())
             e = 'item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc()
             abort(500, e)
+
+    if action == 'jbrowse':
+        # get jbrowse url
+        JbrowseBaseUrl = f'http://jbrowse{app.config["HOST_DOMAIN"]}'
+        url = JbrowseBaseUrl + '?data=/data/pavianfiles/' + os.path.basename(sub_dir_path)
+        if not (Path(sub_dir_path) / 'trackList.json').exists():
+            # If trackList.json already exists, we presume its correctly made, if not JBrowse will given an error,
+            # if it doesn't exist and we can't make it. Then WE throw an error for the user to send to us
+            try:
+                trackList = make_json(taxid, sub_dir_path)
+            except:
+            # except PermissionError:
+                print("Making tracklist.json failed, maybe we don't have permission to overwrite. Lets see if the file that is there ")
+                print(traceback.format_exc())
+                e = 'item:' + str(taxid) + 'item:' + str(sample) + 'item:' + traceback.format_exc()
+                abort(500, e)
         print('<meta http-equiv="refresh" content="0;URL=%s" />' % url)
         return redirect(url, code=302)
 

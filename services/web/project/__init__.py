@@ -14,7 +14,10 @@ db = SQLAlchemy(app)
 
 @app.errorhandler(500)
 def taxid_files_not_created(e):
-    return render_template('500.html', taxid=e.description.split('item:')[1], sample=e.description.split('item:')[2], traceback=e.description.split('item:')[3]), 500
+    return render_template('500.html',
+                           taxid=e.description.split('item:')[1],
+                           sample=e.description.split('item:')[2],
+                           traceback=e.description.split('item:')[3].replace('\n', '<br>')), 500
 
 
 @app.route('/favicon.ico')
@@ -22,6 +25,9 @@ def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
+@app.route("/")
+def home():
+    return render_template('home.html')
 
 # Import modules using blueprint handler variable
 from project.download_pavian_data.controllers import download_pavian_data_blueprint as download_pavian_data_module

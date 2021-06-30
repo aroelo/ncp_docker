@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   web:
+    restart: always
     user: "${UID_ENV}:${GID_ENV}"
     build:
       context: ./services/web
@@ -45,6 +46,7 @@ services:
     depends_on:
       - db
   db:
+    restart: always
 #    user: "${UID_ENV}:${GID_ENV}"
     #    build:
     #      context: ./services/db
@@ -58,6 +60,7 @@ services:
       - DOCKER_UID=${UID_ENV}
       - DOCKER_GID=${GID_ENV}
   nginx:
+    restart: always
     #    user: "${UID_ENV}:${GID_ENV}"
     build:
       context: ./services/nginx
@@ -77,6 +80,7 @@ services:
       - DOCKER_UID=${UID_ENV}
       - DOCKER_GID=${GID_ENV}
   jbrowse:
+    restart: always
 #    user: "${UID_ENV}:${GID_ENV}"
     build:
       context: ./services/jbrowse
@@ -92,6 +96,7 @@ services:
       - DOCKER_UID=${UID_ENV}
       - DOCKER_GID=${GID_ENV}
   pavian:
+    restart: always
     user: "${UID_ENV}:${GID_ENV}"
     build:
       context: ./services/pavian
@@ -112,6 +117,7 @@ services:
       - SQL_HOST=${SQL_HOST_ENV}
       - HOST_DOMAIN=${HOST_DOMAIN_ENV}
       - PAVIAN_PORT=${PAVIAN_PORT_ENV}
+      - HOST_IP=${HOST_IP_ENV}
       - NGINX_PORT=${NGINX_PORT_ENV}
       - POSTGRES_USER=${POSTGRES_USER_ENV}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_ENV}

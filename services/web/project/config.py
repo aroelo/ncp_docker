@@ -1,5 +1,5 @@
 import os
-
+import secrets
 import glob
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -10,7 +10,7 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # STATIC_FOLDER = f"{os.getenv('APP_FOLDER')}/project/static"
     # MEDIA_FOLDER = f"{os.getenv('APP_FOLDER')}/project/media"
-
+    SECRET_KEY = secrets.token_hex(16)
     HOST_DOMAIN = f"{os.getenv('HOST_DOMAIN')}"
     JBROWSE_PORT = f"{os.getenv('JBROWSE_PORT')}"
     PAVIAN_IN = f"{os.getenv('PAVIAN_IN')}"

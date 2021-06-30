@@ -6,7 +6,7 @@ import numpy
 import pyBigWig
 import pysam
 from ete3 import NCBITaxa
-from flask import render_template
+from flask import render_template, flash
 from project import app
 
 
@@ -123,11 +123,11 @@ def make_capped_coverage_bam(bam_in_path, bam_out_path, header_count_path, cover
 
 def make_bigwig(bigwig_in_path, bigwig_out_path, header_count_path):
     """make bigwig from bam"""
-    bw = pyBigWig.open(bigwig_in_path)
-    bw_out = pyBigWig.open(bigwig_out_path, "w")
+    bw = pyBigWig.open(str(bigwig_in_path))
+    bw_out = pyBigWig.open(str(bigwig_out_path), "w")
     header = []
 
-    with open(header_count_path, "r") as header_count:
+    with open(str(header_count_path), "r") as header_count:
         for line in header_count:
             contig = line.split(' ')[0]
             length = bw.chroms(contig)
@@ -140,7 +140,7 @@ def make_bigwig(bigwig_in_path, bigwig_out_path, header_count_path):
 
     bw_out.addHeader(header)
 
-    with open(header_count_path, "r") as header_count:
+    with open(str(header_count_path), "r") as header_count:
         for line in header_count:
             contig = line.split(' ')[0]
             length = bw.chroms(contig)
@@ -183,6 +183,9 @@ def add_gff3(ids):
 
 def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     # get all child taxids for given taxid.
+    if int(taxid) == 0:
+        print('Do not make output for unclassified reads.')
+        return
     taxids = [taxid] + get_child_taxa(taxid)
 
     log_out = open(sub_dir_path + "/" + str(taxids[0]) + '.log', 'wt')
@@ -205,9 +208,12 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
         # Check all fields/column from 12 and later for 'ti:Z' tag, and store as assigned_taxid
         '{for (i=12;i<=NF;i++) if ($i ~/^ti:Z:/){assigned_taxid=substr($i,6);'
         # Print out read in fasta format to file, print read itself to stdout and add 1 to counter for read's reference
-        'if (assigned_taxid in taxids) {print ">"$1"\\n"$10 > ' + f'"{fasta_out}";' + 'print $0, header_count[$3]++}}}'
+        'if (assigned_taxid in taxids) {print ">"$1"\\n"$10 > '   
+        f'"{fasta_out}";'
+        'print $0, header_count[$3]++}}}'
         # Print total count for each reference to fle
-        'END {for (header in header_count) print header, header_count[header] > ' + f'"{header_count_path}"' + '}\' '
+        'END {for (header in header_count) print header, header_count[header] > '
+        f'"{header_count_path}"'   '}\' '
         f'{taxid_tmp_file.name} /dev/stdin > {sam_out_path};'
     )
     run_cmd(cmd, log_out)
@@ -237,8 +243,11 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
         # Cap total wgs/nt reference to 15, unless there are less than 15 ref of the other
         'if (w<15){c2=total-w} else{c2=c}; if (c<15){w2=total-c} else {w2=w}; '
         # Print these reference names to separate files and store the sorted header_count file 
-        'for (i=1; i<=w2; i++){print W_count[i]; split(W_count[i],x," "); print ">" x[1] > ' + f'"{wgs_header_path}"' + '}; '
-        'for (i=1; i<=c2; i++){print C_count[i]; split(C_count[i],x," "); print ">" x[1] > ' + f'"{nt_header_path}"' + '}}\''
+        'for (i=1; i<=w2; i++){print W_count[i]; split(W_count[i],x," "); print ">" x[1] > '
+        f'"{wgs_header_path}"'  '}; '
+        'for (i=1; i<=c2; i++){print C_count[i]; split(C_count[i],x," "); print ">" x[1] > '
+        f'"{nt_header_path}"'
+        '}}\''
         f'> {header_count_tmp} && mv {header_count_tmp} {header_count_path}'
     )
     run_cmd(cmd, log_out)
@@ -295,6 +304,12 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     # make sure our gff_out gets the proper extension
     gff_out += '.gz'
     assert os.path.exists(gff_out)
+    if not os.path.exists(gff_out+'.tbi'):
+        cmd = (f'cp {gff_out} {gff_out}.unsorted && '
+               f'gunzip gff_out && '
+               f'/5_workspace/tools/gff3sort/gff3sort.pl {gff_out[:-3]} > {gff_out[:-3]} &&'
+               f'bgzip {gff_out[:-3]} && tabix -p gff {gff_out}')
+        run_cmd(cmd, log_out)
 
     # Create bam file that has a cap on coverage so it can be visualised in Jbrowse.
     capped_bam_out_path = sub_dir_path + "/" + str(taxids[0]) + ".sorted.capped.bam"
@@ -326,7 +341,11 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
         run_cmd(cmd, log_out)
 
         # Create bigwig track
-        cmd = f"samtools view -@20 -H {bam_out_path} | mawk 'BEGIN{{FS=\"\tSN:|\tLN:\";OFS=\"\\t\"}} {{if ($1==\"@SQ\") print $2, $3}}' > {chromsizes_path}; bedtools genomecov -ibam {bam_out_path} -bg -split | LC_COLLATE=C sort -k1,1 -k2,2n > {bedgraph_path}; bedGraphToBigWig {bedgraph_path} {chromsizes_path} {bigwig_out_path}"
+        cmd = (
+            f"samtools view -@20 -H {bam_out_path} | "
+            f"mawk 'BEGIN{{FS=\"\tSN:|\tLN:\";OFS=\"\\t\"}} {{if ($1==\"@SQ\") print $2, $3}}' > {chromsizes_path};"
+            f"bedtools genomecov -ibam {bam_out_path} -bg -split | LC_COLLATE=C sort -k1,1 -k2,2n > {bedgraph_path}; "
+            f"bedGraphToBigWig {bedgraph_path} {chromsizes_path} {bigwig_out_path}")
         run_cmd(cmd, log_out)
         pass
     else:

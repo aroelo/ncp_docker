@@ -1,12 +1,14 @@
 FROM ubuntu:18.04
 
 ARG BLAST_VERSION
+ARG DOCKER_GID
+ARG DOCKER_UID
 
 # create directory for the app user
 RUN mkdir -p /home/app
 
 # create the app user & group
-RUN groupadd -r app && useradd -r -g app app
+RUN groupadd -r -g $DOCKER_UID app && useradd -r -u $DOCKER_GID -g app app
 
 # create the appropriate directories
 ENV HOME=/home/app
