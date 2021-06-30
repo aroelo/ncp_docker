@@ -87,4 +87,4 @@ bkd:
       docker-compose -p pavian_docker up -d --build"
     - if [[ $? != 0 ]]; then exit $?; fi
   only:
-    - master
+    - pavian_BKD
