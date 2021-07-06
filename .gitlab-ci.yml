@@ -6,7 +6,7 @@ variables:
   BKD_PATH: /5_workspace/repos/pavian_docker_BKD
   DEV_PATH: /5_workspace/docker/pavian_docker_dev
   DOCKER_SERVER: prod-01.airflow.naktuinbouw.cloud
-  BKD_SERVER: pavian-bkd.naktuinbouw.cloud
+  BKD_SERVER: 172.27.33.7
 
 pages:
   stage: deploy
