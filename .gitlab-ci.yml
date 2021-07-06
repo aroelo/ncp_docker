@@ -82,7 +82,7 @@ bkd:
     - if [[ $? != 0 ]]; then exit $?; fi
     - >
       ssh airflow@$BKD_SERVER
-      "cd BKD_PATH;
+      "cd $BKD_PATH;
       docker-compose -p pavian_docker down -v;
       docker-compose -p pavian_docker up -d --build"
     - if [[ $? != 0 ]]; then exit $?; fi
