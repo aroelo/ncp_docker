@@ -4,7 +4,7 @@ ARG DOCKER_GID
 ARG DOCKER_UID
 
 # create the app user & group
-RUN groupadd -r -g $DOCKER_UID app && useradd -r -u $DOCKER_GID -g app app
+RUN groupadd -r -g $DOCKER_UID app && useradd -m -r -u $DOCKER_GID -g app app
 
 RUN apt-get update && apt-get install -y \
     sudo \
