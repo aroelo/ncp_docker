@@ -1,6 +1,4 @@
 FROM nginx
-#ARG DOCKER_UID
-#ARG DOCKER_GID
 ARG JBROWSE_PORT
 
 #RUN echo DOCKER_UID:$DOCKER_UID
@@ -9,7 +7,7 @@ ARG JBROWSE_PORT
 ARG DOCKER_GID
 ARG DOCKER_UID
 # create the app user & group
-RUN groupadd -r -g $DOCKER_UID app && useradd -r -u $DOCKER_GID -g app app
+RUN groupadd -r -g $DOCKER_UID app && useradd -m -r -u $DOCKER_GID -g app app
 
 ENV DEBIAN_FRONTEND noninteractive
 
