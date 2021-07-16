@@ -360,8 +360,11 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
 
         # Use length of longest sequence (reference vs consensus)
         index_tmp_path = sub_dir_path + "/" + str(taxids[0]) + ".ref.fa.fai.tmp"
-        cmd = f"mawk 'BEGIN{{OFS=\"\\t\"}} {{if(NR==FNR){{_[$1]=$2;next}} {{if (_[$1]>$2) print $1,_[$1],$3,$4,$5; else print $1,$2,$3,$4,$5}}}}' {consensus_path + '.fai'} {ref_out_path + '.fai'} > {index_tmp_path} & mv {index_tmp_path} {ref_out_path + '.fai'}"
-        run_cmd(cmd, log_out)
+        # cmd = f"mawk 'BEGIN{{OFS=\"\\t\"}} {{if(NR==FNR){{_[$1]=$2;next}}
+        #       {{if (_[$1]>$2) print $1,_[$1],$3,$4,$5; else print $1,$2,$3,$4,$5}}}}'
+        #       {consensus_path + '.fai'} {ref_out_path + '.fai'} > {index_tmp_path} &
+        #       mv {index_tmp_path} {ref_out_path + '.fai'}"
+        # run_cmd(cmd, log_out)
 
         cd, rd = {}, {}
         with open(consensus_path + '.fai') as conhandle, open(ref_out_path + '.fai') as refhandle:
