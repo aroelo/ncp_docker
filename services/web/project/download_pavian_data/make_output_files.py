@@ -208,7 +208,7 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
         # Check all fields/column from 12 and later for 'ti:Z' tag, and store as assigned_taxid
         '{for (i=12;i<=NF;i++) if ($i ~/^ti:Z:/){assigned_taxid=substr($i,6);'
         # Print out read in fasta format to file, print read itself to stdout and add 1 to counter for read's reference
-        'if (assigned_taxid in taxids) {print ">"$1"\\n"$10 > '   
+        'if (assigned_taxid in taxids) {print ">"$1"\\n"$10 > '
         f'"{fasta_out}";'
         'print $0, header_count[$3]++}}}'
         # Print total count for each reference to fle
@@ -281,7 +281,7 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     run_cmd(cmd, log_out)
 
     # Index reference
-    cmd = "samtools faidx %s" % ref_out_path
+    cmd = f"samtools faidx {ref_out_path} && echo 'Idx line_no: ' && wc -l {ref_out_path}.fai"
     run_cmd(cmd, log_out)
 
     # download gff3 files
@@ -304,7 +304,7 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
     # make sure our gff_out gets the proper extension
     gff_out += '.gz'
     assert os.path.exists(gff_out)
-    if not os.path.exists(gff_out+'.tbi'):
+    if not os.path.exists(gff_out + '.tbi'):
         cmd = (f'cp {gff_out} {gff_out}.unsorted && '
                f'gunzip gff_out && '
                f'/5_workspace/tools/gff3sort/gff3sort.pl {gff_out[:-3]} > {gff_out[:-3]} &&'
@@ -362,6 +362,19 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
         index_tmp_path = sub_dir_path + "/" + str(taxids[0]) + ".ref.fa.fai.tmp"
         cmd = f"mawk 'BEGIN{{OFS=\"\\t\"}} {{if(NR==FNR){{_[$1]=$2;next}} {{if (_[$1]>$2) print $1,_[$1],$3,$4,$5; else print $1,$2,$3,$4,$5}}}}' {consensus_path + '.fai'} {ref_out_path + '.fai'} > {index_tmp_path} & mv {index_tmp_path} {ref_out_path + '.fai'}"
         run_cmd(cmd, log_out)
+
+        cd, rd = {}, {}
+        with open(consensus_path + '.fai') as conhandle, open(ref_out_path + '.fai') as refhandle:
+            for conline, refline in zip(conhandle, refhandle):
+                c = conline.strip().split('\t')
+                r = refline.strip().split('\t')
+                cd[c[0]] = int(c[1]), conline.strip()
+                rd[r[0]] = int(r[1]), refline.strip()
+
+        with open(index_tmp_path, 'w') as refout_handle:
+            for key, (conlen, line) in cd.items():
+                print(line if conlen > rd[key][0] else rd[key][1], file=refout_handle)
+        run_cmd(f'mv {index_tmp_path} {ref_out_path}.fai', log_out)
 
         # Create bigwig track
         print('creating bigwig..')
