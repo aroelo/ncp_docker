@@ -377,7 +377,7 @@ def make_output(sub_dir_path, taxid, bam_in_path, bigwig_path, df_reads_path):
         with open(index_tmp_path, 'w') as refout_handle:
             for key, (conlen, line) in cd.items():
                 print(line if conlen > rd[key][0] else rd[key][1], file=refout_handle)
-        run_cmd(f'mv {index_tmp_path} {ref_out_path}.fai', log_out)
+        run_cmd(f'wc -l {ref_out_path} {index_tmp_path}; mv {index_tmp_path} {ref_out_path}.fai', log_out)
 
         # Create bigwig track
         print('creating bigwig..')
