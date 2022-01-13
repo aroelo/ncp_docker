@@ -23,8 +23,8 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.6.14-Linux-x86
     rm ~/miniconda.sh
 
 ENV PATH="/conda/bin:${PATH}"
-
-RUN conda install -y --override-channels --channel iuc --channel conda-forge --channel bioconda --channel defaults jbrowse=1.16.10
+RUN conda install -y mamba
+RUN mamba install -y --override-channels --channel iuc --channel conda-forge --channel bioconda --channel defaults jbrowse=1.16.10
 
 RUN rm -rf /usr/share/nginx/html && ln -s /conda/opt/jbrowse/ /usr/share/nginx/html && \
     ln -s /jbrowse/data /conda/opt/jbrowse/data && \
