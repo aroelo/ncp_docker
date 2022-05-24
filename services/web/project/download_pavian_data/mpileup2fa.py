@@ -1,5 +1,6 @@
 import sys
 from argparse import ArgumentParser
+from collections import Counter
 
 
 def argument_parser():
@@ -46,7 +47,7 @@ def mpileup_to_fasta(mpileup, output):
         # if insertion add respective inserted bases
         insert = insert_dict[0][0]
         if insert.startswith('+'):
-            consensus_seq += insert[2:]
+            consensus_seq += insert.split('_')[-1]
 
         prev_contig = contig
 
@@ -71,7 +72,7 @@ def counter(read_bases, ref_base, no_reads):
     # add ref_base at start, if counts are the same for multiple bases, ref_base comes first
     counter_list = [ref_base, 'A', 'C', 'G', 'T', '*', 'N']
     counter_dict = {i: 0 for i in counter_list}
-    insert_dict = {}
+    insert_dict = Counter()
     indel_count = 0
     it = enumerate(read_bases)
     for base in it:
@@ -89,13 +90,12 @@ def counter(read_bases, ref_base, no_reads):
                     break
             # if insertion, get how many & which bases are inserted. deletions can be determined per base with '*'
             if base[1] == '+':
-                insert_bases = read_bases[indel_idx + 2: indel_idx + 2 + int(indel_len)]
-                try:
-                    insert_dict[base[1]+indel_len + insert_bases] += 1
-                except KeyError:
-                    insert_dict[base[1]+indel_len + insert_bases] = 1
+                indel_start = indel_idx + len(indel_len) + 1
+                insert_bases = read_bases[indel_start:  indel_start + int(indel_len)]
+                indel_key = '_'.join((base[1], indel_len, insert_bases))
+                insert_dict[indel_key] += 1
             # skip the next characters in read_base, depending on length of deletion/insertion
-            [next(it, None) for _ in range(int(indel_len)+1)]
+            [next(it, None) for _ in range(int(indel_len) + 1)]
 
         else:
             # match with forward or reverse
